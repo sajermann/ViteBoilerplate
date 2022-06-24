@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import logo from './logo.svg';
-import Home from './Pages/Home';
+import { BrowserRouter } from 'react-router-dom';
+
 import './App.css';
+import Poc from './Pages/Poc';
+import Routes from './Pages/Routes';
 
 function App() {
-	const [count, setCount] = useState(0);
-
 	return (
-		<div className="App">
-			<Home />
-		</div>
+		<BrowserRouter>
+			<Poc />
+			<Routes />
+		</BrowserRouter>
 	);
 }
 
