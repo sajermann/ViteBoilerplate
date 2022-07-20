@@ -13,3 +13,5 @@ Esse Boilerplate vem completo com tudo instalado e funcionando:
 *Jest*
 
 *Typescript*
+
+*Versão Atual: *
