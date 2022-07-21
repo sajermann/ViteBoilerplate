@@ -14,4 +14,4 @@ Esse Boilerplate vem completo com tudo instalado e funcionando:
 
 *Typescript*
 
-*Versão Atual: *
+*Versão Atual:*
