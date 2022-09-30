@@ -1,7 +1,7 @@
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Poc() {
-	const history = useHistory();
+	const navigate = useNavigate();
 	return (
 		<header>
 			<p>
@@ -12,7 +12,7 @@ export default function Poc() {
 			</p>
 			<p>
 				{/* <Link to="/C">page C</Link> */}
-				<button type="button" onClick={() => history.push('/C')}>
+				<button type="button" onClick={() => navigate('/C')}>
 					Ir pra C
 				</button>
 			</p>

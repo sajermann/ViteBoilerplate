@@ -1,20 +1,14 @@
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import PageA from '../PageA';
 import PageB from '../PageB';
 import PageC from '../PageC';
 
-export default function Routes() {
+export default function RoutesConfig() {
 	return (
-		<Switch>
-			<Route path="/A" exact>
-				<PageA />
-			</Route>
-			<Route path="/B" exact>
-				<PageB />
-			</Route>
-			<Route path="/C" exact>
-				<PageC />
-			</Route>
-		</Switch>
+		<Routes>
+			<Route path="/A" element={<PageA />} />
+			<Route path="/B" element={<PageB />} />
+			<Route path="/C" element={<PageC />} />
+		</Routes>
 	);
 }

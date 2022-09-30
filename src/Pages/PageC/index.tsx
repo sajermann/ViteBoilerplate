@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function PageC() {
-	const { replace } = useHistory();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		console.log('Page C, redirect for A');
-		replace('/A');
+		navigate('/A', { replace: true });
 	}, []);
 
 	return null;
