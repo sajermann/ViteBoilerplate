@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useTranslation } from '../../i18n/UseTranslation';
 
 export default function Home() {
+	const { translate } = useTranslation();
 	const [newItem, setNewItem] = useState('');
 	const [list, setList] = useState(['Bruno', 'Marcia']);
 
@@ -17,6 +19,7 @@ export default function Home() {
 	}
 	return (
 		<div data-testid="Batata">
+			<h1>{translate('WELCOME_TO_VITE_BOILERPLATE')}</h1>
 			<input
 				type="text"
 				data-testid="inputNewItem"
