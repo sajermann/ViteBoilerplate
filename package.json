@@ -10,6 +10,7 @@
     "vitest": "vitest run --coverage"
   },
   "dependencies": {
+    "@radix-ui/react-select": "^1.1.1",
     "i18next": "^21.10.0",
     "i18next-browser-languagedetector": "^6.1.8",
     "react": "^18.2.0",
