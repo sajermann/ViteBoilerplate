@@ -7,6 +7,8 @@ import {
 	useEffect,
 } from 'react';
 
+const IDENTIFIER = '@vite/boilerplate:darkMode';
+
 type DarkModeContextType = {
 	darkMode: boolean;
 	toggleDarkMode: () => void;
@@ -45,13 +47,13 @@ export function DarkModeProvider({ children }: Props) {
 	}
 
 	function toggleDarkMode() {
-		sessionStorage.setItem('@sajermann/ui-react:darkMode', String(!darkMode));
+		localStorage.setItem(IDENTIFIER, String(!darkMode));
 		setDarkMode(!darkMode);
 		handleChangeDom(!darkMode);
 	}
 
 	useEffect(() => {
-		const result = sessionStorage.getItem('@sajermann/ui-react:darkMode');
+		const result = localStorage.getItem(IDENTIFIER);
 		if (result) {
 			setDarkMode(result === 'true');
 			handleChangeDom(result === 'true');
