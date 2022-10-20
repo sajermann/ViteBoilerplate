@@ -1,5 +1,12 @@
 {
 	"translations": {
-		"WELCOME_TO_VITE_BOILERPLATE": "Welcome to Vite Boilerplate"
+		"WELCOME_TO_VITE_BOILERPLATE": "Welcome to Vite Boilerplate",
+		"TODO_LIST": "TODO List",
+		"ADDED_ITEMS": "Added Items",
+		"ADD": "Add",
+		"ADDING...": "Adding...",
+		"NEW_ITEM":"New Item",
+		"REMOVE":"Remove",
+		"REMOVING...": "Removing..."
 	}
 }

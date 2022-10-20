@@ -1,41 +1,80 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from '../../i18n/UseTranslation';
+import { delay } from '../../Utils/Delay';
+import styles from './index.module.css';
 
 export default function Home() {
 	const { translate } = useTranslation();
 	const [newItem, setNewItem] = useState('');
 	const [list, setList] = useState(['Bruno', 'Marcia']);
+	const [isLoading, setIsLoading] = useState(false);
+	const [isRemoving, setIsRemoving] = useState<string | null>(null);
 
-	function addToList() {
-		setTimeout(() => {
-			setList(state => [...state, newItem]);
-		}, 500);
+	async function addToList(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		if (isLoading) {
+			return;
+		}
+		setIsLoading(true);
+
+		if (list.find(item => item === newItem)) {
+			setNewItem('');
+			setIsLoading(false);
+			return;
+		}
+
+		await delay(1000);
+		setList(state => [...state, newItem]);
+		setNewItem('');
+		setIsLoading(false);
 	}
 
-	function removeFromList(itemRemove: string) {
-		setTimeout(() => {
-			setList(state => state.filter(item => item !== itemRemove));
-		}, 500);
+	async function removeFromList(itemForRemove: string) {
+		setIsRemoving(itemForRemove);
+		await delay(1000);
+		setList(state => state.filter(item => item !== itemForRemove));
+		setIsRemoving(null);
 	}
 	return (
-		<div data-testid="Batata">
-			<h1>{translate('WELCOME_TO_VITE_BOILERPLATE')}</h1>
-			<input
-				type="text"
-				data-testid="inputNewItem"
-				placeholder="Novo Item"
-				value={newItem}
-				onChange={e => setNewItem(e.target.value)}
-			/>
-			<button type="button" onClick={addToList} className="bg-brand-500">
-				Adicionar
-			</button>
-			<ul>
+		<div data-testid="Batata" className={styles.container}>
+			<h1 className={styles.heading}>
+				{translate('WELCOME_TO_VITE_BOILERPLATE')} - {translate('TODO_LIST')}
+			</h1>
+			<form onSubmit={addToList} className={styles.form}>
+				<input
+					disabled={isLoading}
+					required
+					type="text"
+					data-testid="inputNewItem"
+					placeholder={translate('NEW_ITEM')}
+					value={newItem}
+					onChange={e => setNewItem(e.target.value)}
+					className={styles.input}
+				/>
+				<button
+					type="submit"
+					className={styles.buttonSubmit}
+					disabled={isLoading}
+				>
+					{isLoading ? translate('ADDING...') : translate('ADD')}
+				</button>
+			</form>
+			{list.length > 0 && (
+				<h2 className={styles.subHeading}>{translate('ADDED_ITEMS')}</h2>
+			)}
+			<ul className={styles.containerList}>
 				{list.map(item => (
 					<li key={item}>
-						{item}
-						<button type="button" onClick={() => removeFromList(item)}>
-							Remover
+						<span>{item}</span>
+						<button
+							disabled={isRemoving === item}
+							type="button"
+							className={styles.buttonRemove}
+							onClick={() => removeFromList(item)}
+						>
+							{isRemoving === item
+								? translate('REMOVING...')
+								: translate('REMOVE')}
 						</button>
 					</li>
 				))}

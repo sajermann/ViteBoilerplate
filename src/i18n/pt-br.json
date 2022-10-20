@@ -1,6 +1,13 @@
 {
 	"translations": {
 		"WELCOME_TO_VITE_BOILERPLATE": "Bem Vindo ao Vite",
-		"userMessagesUnread_other": "Hello <1>{{name}}</1>, you have {{count}} unread messages.  <5>Go to messages</5>."
+		"userMessagesUnread_other": "Hello <1>{{name}}</1>, you have {{count}} unread messages.  <5>Go to messages</5>.",
+		"TODO_LIST": "Lista de Tarefas",
+		"ADDED_ITEMS": "Itens Adicionados",
+		"ADD": "Adicionar",
+		"ADDING...": "Adicionando...",
+		"NEW_ITEM":"Novo Item",
+		"REMOVE":"Remover",
+		"REMOVING...":"Removendo..."
 	}
 }
