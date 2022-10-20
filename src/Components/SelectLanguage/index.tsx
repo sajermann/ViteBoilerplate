@@ -1,6 +1,6 @@
 import * as Select from '@radix-ui/react-select';
 import { useState } from 'react';
-import { useTranslation } from '../../i18n/UseTranslation';
+import { useTranslation } from '../../Hooks/UseTranslation';
 
 const LANGUAGES_LIST = [
 	{ id: 'en', text: 'EN' },
