@@ -20,37 +20,33 @@ describe('Pages/Home', () => {
 	it(`should add new item to the list`, async () => {
 		const { getByText, debug, getByTestId, findByText } = render(<Mock />);
 		const inputElement = getByTestId('inputNewItem');
-		const addButton = getByText('Adicionar');
+		const addButton = getByText('ADD');
 		debug();
 		await userEvent.type(inputElement, 'Dereck');
 		await userEvent.click(addButton);
-		debug();
-
-		// Modo 1
 		expect(await findByText('Dereck')).toBeInTheDocument();
-
-		// Modo 2
-		await waitFor(() => {
-			expect(getByText('Dereck')).toBeInTheDocument();
-		});
 	});
 
 	it(`should remove item to the list`, async () => {
-		const { getByText, getAllByText, debug, getByTestId, queryByText } = render(
-			<Mock />
-		);
-		const removeButton = getAllByText('Remover');
+		const { getAllByText, debug, queryByText } = render(<Mock />);
+		const removeButton = getAllByText('REMOVE');
 		debug();
 		await userEvent.click(removeButton[0]);
-		debug();
-
-		// Modo 1
 		await waitFor(() => {
 			expect(queryByText('Bruno')).not.toBeInTheDocument();
 		});
-		// Modo 2
-		// await waitForElementToBeRemoved(() => {
-		//   return getByText("Bruno");
-		// });
+	});
+
+	it(`should not add repeat item`, async () => {
+		const { getByText, debug, getByTestId, findAllByText } = render(<Mock />);
+		const inputElement = getByTestId('inputNewItem');
+		const addButton = getByText('ADD');
+		debug();
+		await userEvent.type(inputElement, 'Bruno');
+		await userEvent.click(addButton);
+		await waitFor(async () => {
+			const items = await findAllByText('Bruno');
+			expect(items.length).toBe(1);
+		});
 	});
 });

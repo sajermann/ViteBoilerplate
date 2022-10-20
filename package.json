@@ -7,7 +7,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "jest --coverage --watch",
-    "vitest": "vitest run --coverage"
+    "vitest": "vitest watch --coverage"
   },
   "dependencies": {
     "i18next": "^21.10.0",

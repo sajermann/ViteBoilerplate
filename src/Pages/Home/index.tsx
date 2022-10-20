@@ -36,7 +36,7 @@ export default function Home() {
 		setIsRemoving(null);
 	}
 	return (
-		<div data-testid="Batata" className={styles.container}>
+		<div className={styles.container}>
 			<h1 className={styles.heading}>
 				{translate('WELCOME_TO_VITE_BOILERPLATE')} - {translate('TODO_LIST')}
 			</h1>

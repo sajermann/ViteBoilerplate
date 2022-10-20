@@ -12,12 +12,14 @@ export function SelectLanguage() {
 
 	function handleChangeLanguage(e: ChangeEvent<HTMLSelectElement>) {
 		const { value } = e.target;
+		console.log('Trocando', { value });
 		setLanguage(value);
 		changeLanguage(value);
 	}
 
 	return (
 		<select
+			data-testid="selectLanguage"
 			className="bg-slate-600 rounded h-7 w-28 flex justify-between items-center"
 			onChange={handleChangeLanguage}
 			defaultValue={language}
