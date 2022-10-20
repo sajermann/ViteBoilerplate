@@ -12,7 +12,6 @@ export function SelectLanguage() {
 
 	function handleChangeLanguage(e: ChangeEvent<HTMLSelectElement>) {
 		const { value } = e.target;
-		console.log('Trocando', { value });
 		setLanguage(value);
 		changeLanguage(value);
 	}
