@@ -14,10 +14,12 @@
 
 .heading {
 	@apply text-3xl;
+	@apply text-white;
 }
 
 .subHeading {
 	@apply text-2xl;
+	@apply text-white;
 }
 
 .form {
@@ -40,6 +42,7 @@
 	@apply transition-colors;
 	@apply duration-500;
 	@apply disabled:cursor-not-allowed;
+	@apply text-white;
 }
 
 .buttonRemove {
@@ -50,6 +53,7 @@
 	@apply transition-colors;
 	@apply duration-500;
 	@apply disabled:cursor-not-allowed;
+	@apply text-white;
 }
 
 .containerList {
@@ -61,6 +65,7 @@
 
 .containerList li {
 	@apply flex;
+	@apply text-white;
 }
 
 .containerList li span {

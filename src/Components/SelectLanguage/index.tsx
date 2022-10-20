@@ -1,5 +1,4 @@
-import * as Select from '@radix-ui/react-select';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useTranslation } from '../../Hooks/UseTranslation';
 
 const LANGUAGES_LIST = [
@@ -11,40 +10,23 @@ export function SelectLanguage() {
 	const { changeLanguage, currentLanguage } = useTranslation();
 	const [language, setLanguage] = useState(currentLanguage);
 
-	function handleChangeLanguage(newLanguage: string) {
-		setLanguage(newLanguage);
-		changeLanguage(newLanguage);
+	function handleChangeLanguage(e: ChangeEvent<HTMLSelectElement>) {
+		const { value } = e.target;
+		setLanguage(value);
+		changeLanguage(value);
 	}
 
 	return (
-		<Select.Root
-			onValueChange={handleChangeLanguage}
-			value={language}
+		<select
+			className="bg-slate-600 rounded h-7 w-28 flex justify-between items-center"
+			onChange={handleChangeLanguage}
 			defaultValue={language}
 		>
-			<Select.Trigger className="bg-slate-600 rounded h-7 w-28 flex justify-between items-center p-2">
-				<Select.Value placeholder="Pick an option" className="m-auto">
-					{LANGUAGES_LIST.find(item => item.id === language)?.text}
-				</Select.Value>
-				<Select.Icon />
-			</Select.Trigger>
-
-			<Select.Portal className="bg-slate-900 h-96 w-28">
-				<Select.Content>
-					<Select.ScrollUpButton />
-					<Select.Viewport>
-						{LANGUAGES_LIST.map(item => (
-							<Select.Item value={item.id} key={item.id}>
-								<Select.ItemText>{item.text}</Select.ItemText>
-								<Select.ItemIndicator> ✔</Select.ItemIndicator>
-							</Select.Item>
-						))}
-
-						<Select.Separator />
-					</Select.Viewport>
-					<Select.ScrollDownButton />
-				</Select.Content>
-			</Select.Portal>
-		</Select.Root>
+			{LANGUAGES_LIST.map(item => (
+				<option value={item.id} key={item.id}>
+					{item.text}
+				</option>
+			))}
+		</select>
 	);
 }
