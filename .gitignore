@@ -12,6 +12,8 @@ coverage
 dist
 dist-ssr
 *.local
+.scannerwork
+sonar-report.xml
 
 # Editor directories and files
 .vscode/*

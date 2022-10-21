@@ -3,7 +3,7 @@
  */
 import { fireEvent, render } from '@testing-library/react';
 import { it, describe, expect } from 'vitest';
-import { SelectLanguage } from '.';
+import { SelectLanguage } from './index';
 import '../../Config/i18n';
 import { useTranslation } from '../../Hooks/UseTranslation';
 
@@ -18,7 +18,7 @@ function Mock() {
 }
 
 describe('Components/SelectLanguage', () => {
-	it(`should change language`, async () => {
+	test(`should change language`, async () => {
 		const { getByTestId, debug, findByText } = render(<Mock />);
 		const select = getByTestId('selectLanguage') as HTMLSelectElement;
 		await fireEvent.change(select, { target: { value: 'pt-BR' } });
