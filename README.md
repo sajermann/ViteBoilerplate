@@ -12,8 +12,11 @@ Vite hoje é sem dúvidas a melhor escolha para se iniciar um projeto frontent, 
 ### Typescript
 Projetos profissionais utilizam o Typescript para desenvolvimento, com ele o desenvolvedor tem mais segurança para desenvolver localizando mais rapidamente os bugs e dando mais manutenibilidade ao projeto.
 
-### Tailwind
-Tailwind é um framework CSS que me lembra muito o Bootstrap, porém melhorado, depois de instalado e configurado basta adicionar as classes necessárias para ver o resultado em tela, por exemplo utilizando a classe `flex`, o tailwind já converte para `display: flex;`, esse é só um exemplo das facilidades que o tailwind entrega. Vale lembrar que o Tailwind não entrega componentes prontos como por exemplo o MUI, a criação do componente em si continua a cargo do desenvolvedor.
+### Tailwind CSS
+Tailwind CSS é um framework CSS que me lembra muito o Bootstrap, porém melhorado, depois de instalado e configurado basta adicionar as classes necessárias para ver o resultado em tela, por exemplo utilizando a classe `flex`, o tailwind já converte para `display: flex;`, esse é só um exemplo das facilidades que o tailwind entrega. Vale lembrar que o Tailwind não entrega componentes prontos como por exemplo o MUI, a criação do componente em si continua a cargo do desenvolvedor.
+
+### React Router Dom
+React Router Dom é uma lib que gerencia o roteamento da aplicação e que dificilmente fica de fora de qualquer projeto que tenha mais de uma rota.
 
 ### EsLint
 EsLint tem como objetivo padronizar o código entre diversos desenvolvedores no mesmo projeto. Vale lembrar que para o EsLint funcionar corretamente nesse projeto, são necessários algumas configurações no Vs Code do desenvolvedor.
