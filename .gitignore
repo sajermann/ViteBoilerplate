@@ -13,7 +13,7 @@ dist
 dist-ssr
 *.local
 .scannerwork
-sonar-report.xml
+.env
 
 # Editor directories and files
 .vscode/*

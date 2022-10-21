@@ -12,17 +12,12 @@ export default function Home() {
 
 	async function addToList(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		if (isLoading) {
-			return;
-		}
 		setIsLoading(true);
-
 		if (list.find(item => item === newItem)) {
 			setNewItem('');
 			setIsLoading(false);
 			return;
 		}
-
 		await delay(1000);
 		setList(state => [...state, newItem]);
 		setNewItem('');
