@@ -7,7 +7,7 @@ Sabemos que cada caso é um caso, cada projeto demanda uma necessidade diferente
 ## Principais Recursos e Configurações Desse Boilerplate
 
 ### Vite
-[link](https://vitejs.dev/){:target="_blank"}
+<a href="https://vitejs.dev/" target="_blank">Vite</a>
 Vite hoje é sem dúvidas a melhor escolha para se iniciar um projeto frontent, além de moderno, sua principal característica é a velocidade de compilação, o que leva ao desenvolvedor uma produtividade incrível, Vite utiliza por de baixo dos panos o Rollup, que na minha opinião possui uma configuração muito simples.
 
 ### Typescript
