@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useTranslation } from '../../Hooks/UseTranslation';
-import { delay } from '../../Utils/Delay';
+import { useTranslation } from '~/Hooks/UseTranslation';
+import { delay } from '~/Utils/Delay';
+
 import styles from './index.module.css';
 
 export default function Home() {
