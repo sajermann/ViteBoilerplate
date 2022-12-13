@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import Home from '../Home';
-import { Test } from '../Test';
+import Home from '../../Pages/Home';
+import { Test } from '../../Pages/Test';
 
-export default function RoutesConfig() {
+export function RoutesConfig() {
 	return (
 		<Routes>
 			<Route path="/" element={<Home />} />
