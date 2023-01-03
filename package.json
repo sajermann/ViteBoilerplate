@@ -6,7 +6,7 @@
     "start": "vite --open",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest --coverage",
+    "test": "vitest run --coverage",
     "vitest": "vitest --coverage --ui --api.port=56789",
     "sonar": "npx sonar-scanner -D sonar.login=sqp_babce316746e8be62da0cd701a6199a04c7a238c"
   },
