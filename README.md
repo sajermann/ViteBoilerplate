@@ -1,9 +1,9 @@
 # ViteBoilerplate
 
 [![Quality Gate Status](https://sonar.sajermann.com/api/project_badges/measure?project=ViteBoilerplate&metric=alert_status&token=c20b031754297367f9ae878250ca398015d0b245)]()
+[![Coverage](https://sonar.sajermann.com/api/project_badges/measure?project=ViteBoilerplate&metric=coverage&token=c20b031754297367f9ae878250ca398015d0b245)]()
 [![Bugs](https://sonar.sajermann.com/api/project_badges/measure?project=ViteBoilerplate&metric=bugs&token=c20b031754297367f9ae878250ca398015d0b245)]()
 [![Code Smells](https://sonar.sajermann.com/api/project_badges/measure?project=ViteBoilerplate&metric=code_smells&token=c20b031754297367f9ae878250ca398015d0b245)]()
-[![Coverage](https://sonar.sajermann.com/api/project_badges/measure?project=ViteBoilerplate&metric=coverage&token=c20b031754297367f9ae878250ca398015d0b245)]()
 [![Duplicated Lines (%)](https://sonar.sajermann.com/api/project_badges/measure?project=ViteBoilerplate&metric=duplicated_lines_density&token=c20b031754297367f9ae878250ca398015d0b245)]()
 
 Esse Boilerplate tem como finalidade entregar os principais recursos necessários para se iniciar um projeto frontend com React e Typescript.
