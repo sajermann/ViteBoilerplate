@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RoutesConfig } from './Components/Routes';
 import { InjectorProviders } from './Components/InjectorProviders';
+import { RoutesConfig } from './Components/Routes';
 
 import './global.css';
 
@@ -10,5 +10,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 		<InjectorProviders>
 			<RoutesConfig />
 		</InjectorProviders>
-	</React.StrictMode>
+	</React.StrictMode>,
 );
