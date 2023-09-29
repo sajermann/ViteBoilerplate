@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 /* eslint-disable import/no-extraneous-dependencies */
-import react from '@vitejs/plugin-react';
 import * as path from 'path';
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
