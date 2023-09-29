@@ -18,7 +18,7 @@ function Mock() {
 }
 
 describe('Components/SelectLanguage', () => {
-	test(`should change language`, async () => {
+	it(`should change language`, async () => {
 		const { getByTestId, debug, findByText } = render(<Mock />);
 		const select = getByTestId('selectLanguage') as HTMLSelectElement;
 		await fireEvent.change(select, { target: { value: 'pt-BR' } });
