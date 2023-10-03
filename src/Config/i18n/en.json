@@ -1,12 +1,19 @@
 {
 	"translations": {
+		"FIELD_IS_REQUIRED": "Field is required",
+		"DOES_NOT_LOOK_LIKE_A_VALID_EMAIL": "Does not look like a valid email!",
+		"EMAIL_FIELD_REQUIRED": "Email field is required",
+		"TYPE_YOUR_EMAIL": "Type your Email",
+		"TYPE_YOUR_PASSWORD": "Type your password",
+		"PASSWORD": "Password",
+		"NAME": "Name",
 		"WELCOME_TO_VITE_BOILERPLATE": "Welcome to Vite Boilerplate",
 		"TODO_LIST": "TODO List",
 		"ADDED_ITEMS": "Added Items",
 		"ADD": "Add",
 		"ADDING...": "Adding...",
-		"NEW_ITEM":"New Item",
-		"REMOVE":"Remove",
+		"NEW_ITEM": "New Item",
+		"REMOVE": "Remove",
 		"REMOVING...": "Removing..."
 	}
 }

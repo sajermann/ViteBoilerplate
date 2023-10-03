@@ -18,7 +18,7 @@ const darkModeContextDefaultValues: DarkModeContextType =
 	{} as DarkModeContextType;
 
 const DarkModeContext = createContext<DarkModeContextType>(
-	darkModeContextDefaultValues
+	darkModeContextDefaultValues,
 );
 
 export function useDarkMode() {
@@ -65,7 +65,7 @@ export function DarkModeProvider({ children }: Props) {
 			darkMode,
 			toggleDarkMode,
 		}),
-		[darkMode]
+		[darkMode],
 	);
 
 	return (
