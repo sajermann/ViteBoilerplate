@@ -4,13 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { loginService } from '~/Services/Login';
-import { useToast } from '../UseToast';
 import { useTranslation } from '../UseTranslation';
+import { useToken } from '../UseToken';
 
-export function useLogin() {
+export function useAuth() {
 	const { translate } = useTranslation();
 	const navigate = useNavigate();
-	const { customToast } = useToast();
+	const { setAccessToken, setRefreshToken } = useToken();
 	const [isLoading, setIsLoading] = useState(false);
 
 	const formSchema = z.object({
@@ -38,11 +38,13 @@ export function useLogin() {
 		formSchema.parse({ ...data });
 		setIsLoading(true);
 
-		const hasCreated = await loginService.signup({
+		const result = await loginService.signup({
 			email: data.email,
 			password: data.password,
 		});
-		if (hasCreated) {
+		if (result) {
+			setAccessToken(result.access_token);
+			setRefreshToken(result.refresh_token);
 			navigate('/');
 		}
 		setIsLoading(false);

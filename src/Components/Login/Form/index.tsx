@@ -1,6 +1,6 @@
 import { Button } from '~/Components/Shared/Button';
 import { Input } from '~/Components/Shared/Input';
-import { useLogin } from '~/Hooks/UseLogin';
+import { useAuth } from '~/Hooks/UseAuth';
 import { useTranslation } from '~/Hooks/UseTranslation';
 
 export function LoginForm() {
@@ -12,7 +12,7 @@ export function LoginForm() {
 		errors,
 		setValue,
 		isLoading,
-	} = useLogin();
+	} = useAuth();
 	return (
 		<form
 			className="flex flex-col gap-4 w-full"
@@ -23,7 +23,7 @@ export function LoginForm() {
 					children: 'Email',
 				}}
 				inputProps={{
-					...register('email', { required: translate('EMAIL_FIELD_REQUIRED') }),
+					...register('email'),
 					id: 'email',
 					placeholder: translate('TYPE_YOUR_EMAIL'),
 					error: errors.email?.message,
@@ -35,7 +35,7 @@ export function LoginForm() {
 					children: translate('PASSWORD'),
 				}}
 				inputProps={{
-					...register('password', { required: true }),
+					...register('password'),
 					id: 'password',
 					placeholder: translate('TYPE_YOUR_PASSWORD'),
 					error: errors.password?.message,

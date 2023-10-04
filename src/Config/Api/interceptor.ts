@@ -5,32 +5,48 @@ import {
 	AxiosResponse,
 	InternalAxiosRequestConfig,
 } from 'axios';
-
-const APPLICATION_IDENTIFICATOR = import.meta.env
-	.VITE_APPLICATION_IDENTIFICATOR;
+import { useToken } from '~/Hooks/UseToken';
+import { customToast } from '~/Utils/CustomToast';
 
 interface CustomAxiosRequestHeaders extends AxiosRequestHeaders {
+	refresh_token: string;
 	Authorization: string;
 }
 
 export default function Interceptor(api: AxiosInstance) {
-	const onResponse = (response: AxiosResponse) => response;
+	const onResponse = (response: AxiosResponse) => {
+		if (response.headers.accesstoken && response.headers.refreshtoken) {
+			useToken.setState(rest => ({
+				...rest,
+				accessToken: response.headers.accesstoken,
+				refreshToken: response.headers.refreshtoken,
+			}));
+		}
+		return response;
+	};
 
 	const onResponseError = async (error: AxiosError) => {
 		if (!error.response) {
-			// customToast({ type: "error", msg: "Sem conexão com o servidor" });
+			customToast({ type: 'error', msg: 'Sem conexão com o servidor' });
 			return Promise.reject(error);
 		}
 
 		if (error.response?.status === 401) {
-			console.log('ops');
-			window.location.href = '/api/auth/logout';
-			// expiredSession();
+			useToken.getState().clear();
+			customToast({
+				msg: 'Seu Login Expirou',
+				type: 'error',
+				id: 'jwt_expired',
+			});
 			return null;
 		}
 
 		if (error.response?.status === 500) {
-			// internalServerError();
+			customToast({
+				msg: 'Ocorreu um erro no servidor',
+				type: 'error',
+				id: 'status_code_500',
+			});
 		}
 
 		return Promise.reject(error);
@@ -41,13 +57,16 @@ export default function Interceptor(api: AxiosInstance) {
 	const onRequest = (
 		config: InternalAxiosRequestConfig<CustomAxiosRequestHeaders>,
 	) => {
-		const token = localStorage.getItem(`${APPLICATION_IDENTIFICATOR}:token`);
+		const { accessToken, refreshToken } = useToken.getState();
+
 		const { headers } = config;
 		// eslint-disable-next-line no-param-reassign
 		config.headers = {
 			...headers,
-			Authorization: `Bearer ${token}`,
+			refresh_token: `${refreshToken}`,
+			Authorization: `Bearer ${accessToken}`,
 		} as CustomAxiosRequestHeaders;
+
 		return config;
 	};
 

@@ -7,13 +7,14 @@ const headers = {
 	'Access-Control-Origin': '*',
 	'Access-Control-Allow-Origin': '*',
 	'Content-Type': 'application/json;charset=utf-8',
-	'Access-Control-Allow-Method': 'POST,GET,DELETE',
+	'Access-Control-Allow-Method': 'POST,GET,DELETE,PUT',
 	Timezone: new Date().toTimeString().split(' ')[1] || '',
 };
 
-export const api = axios.create({
+const api = axios.create({
 	baseURL,
 	headers,
 });
 
 Interceptor(api);
+export { api };

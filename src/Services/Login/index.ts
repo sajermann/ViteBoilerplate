@@ -1,4 +1,6 @@
+import { AxiosError } from 'axios';
 import { api } from '~/Config/Api';
+import { managerErrors } from '~/Utils/ManagerErrors';
 
 const BASE_URL = 'v1/auth';
 
@@ -14,11 +16,10 @@ async function signup({
 			email,
 			password,
 		});
-		console.log({ data, status });
-		return status === 201;
+		if (status === 201) return data;
+		return false;
 	} catch (error) {
-		console.log({ error });
-		// managerErrors(error as AxiosError);
+		managerErrors(error as AxiosError);
 		return false;
 	}
 }

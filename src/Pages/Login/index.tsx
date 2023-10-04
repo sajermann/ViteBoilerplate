@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LoginForm } from '~/Components/Login/Form';
-import { useTranslation } from '~/Hooks/UseTranslation';
+import { CONSTANTS } from '~/Constants';
+import { useToken } from '~/Hooks/UseToken';
 
 export function Login() {
-	const { translate } = useTranslation();
+	const navigate = useNavigate();
+	const { accessToken } = useToken();
+
+	useEffect(() => {
+		if (accessToken) {
+			navigate(CONSTANTS.URL.ROOT);
+		}
+	}, [accessToken]);
+
+	if (accessToken) return null;
 
 	return (
 		<div className="flex items-center justify-center p-32 h-full">
