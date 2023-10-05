@@ -1,5 +1,12 @@
 {
 	"translations": {
+		"NO_DATA": "No Data",
+		"ANALYST": "Analyst",
+		"USER": "User",
+		"UPDATED_AT": "Updated At",
+		"CREATED_AT": "Created At",
+		"DESCRIPTION": "Description",
+		"TITLE": "Title",
 		"FIELD_IS_REQUIRED": "Field is required",
 		"DOES_NOT_LOOK_LIKE_A_VALID_EMAIL": "Does not look like a valid email!",
 		"EMAIL_FIELD_REQUIRED": "Email field is required",

@@ -1,5 +1,12 @@
 {
 	"translations": {
+		"NO_DATA": "Sem Dados",
+		"ANALYST": "Analista",
+		"USER": "Usuário",
+		"UPDATED_AT": "Atualizado em",
+		"CREATED_AT": "Criado em",
+		"DESCRIPTION": "Descrição",
+		"TITLE": "Título",
 		"FIELD_IS_REQUIRED": "Campo Obrigatório",
 		"DOES_NOT_LOOK_LIKE_A_VALID_EMAIL": "Não parece ser um email válido!",
 		"EMAIL_FIELD_REQUIRED": "Campo de email é obrigatório",

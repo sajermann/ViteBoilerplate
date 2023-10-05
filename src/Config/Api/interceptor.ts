@@ -5,8 +5,8 @@ import {
 	AxiosResponse,
 	InternalAxiosRequestConfig,
 } from 'axios';
-import { useToken } from '~/Hooks/UseToken';
-import { customToast } from '~/Utils/CustomToast';
+import { useToken } from '~/App/Shared/Hooks/UseToken';
+import { customToast } from '~/App/Shared/Utils/CustomToast';
 
 interface CustomAxiosRequestHeaders extends AxiosRequestHeaders {
 	refresh_token: string;
