@@ -33,7 +33,7 @@ function ButtonPagination({
 }: PropsButtonPagination) {
 	return (
 		<Button
-			style={{ width: 34, maxWidth: 34, minWidth: 34 }}
+			style={{ width: 40, maxWidth: 40, minWidth: 40, padding: 4 }}
 			onClick={onClick}
 			disabled={disabled}
 			{...rest}
@@ -44,6 +44,14 @@ function ButtonPagination({
 }
 
 const DEFAULT_OPTIONS = [
+	{
+		value: 1,
+		label: '1',
+	},
+	{
+		value: 5,
+		label: '5',
+	},
 	{
 		value: 10,
 		label: '10',

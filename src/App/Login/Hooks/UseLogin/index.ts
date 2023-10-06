@@ -1,18 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from '../../../Shared/Hooks/UseTranslation';
+import { useToken } from '../../../Shared/Hooks/UseToken';
+import { useAxios } from '../../../Shared/Hooks/UseAxios';
 
-import { loginService } from '~/App/Login/Services/Login';
-import { useTranslation } from '../UseTranslation';
-import { useToken } from '../UseToken';
-
-export function useAuth() {
+export function useLogin() {
+	const { fetchData, isLoading } = useAxios();
 	const { translate } = useTranslation();
 	const navigate = useNavigate();
 	const { setAccessToken, setRefreshToken } = useToken();
-	const [isLoading, setIsLoading] = useState(false);
 
 	const formSchema = z.object({
 		email: z
@@ -26,7 +25,7 @@ export function useAuth() {
 
 	const {
 		register,
-		handleSubmit: handleSubmitForm,
+		handleSubmit,
 		formState: { errors },
 		setValue,
 		getValues,
@@ -37,25 +36,26 @@ export function useAuth() {
 
 	const handleLogin: SubmitHandler<FormData> = async data => {
 		formSchema.parse({ ...data });
-		setIsLoading(true);
-
-		const result = await loginService.signup({
-			email: data.email,
-			password: data.password,
+		const result = await fetchData({
+			method: 'post',
+			url: 'v1/auth',
+			data: {
+				email: data.email,
+				password: data.password,
+			},
 		});
-		if (result) {
-			setAccessToken(result.access_token);
-			setRefreshToken(result.refresh_token);
+		if (result?.status === 201) {
+			setAccessToken(result.data.access_token);
+			setRefreshToken(result.data.refresh_token);
 			navigate('/');
 		}
-		setIsLoading(false);
 	};
 
 	const memoizedValue = useMemo(
 		() => ({
 			isLoading,
 			handleLogin,
-			handleSubmitForm,
+			handleSubmit: handleSubmit(handleLogin),
 			register,
 			errors,
 			setValue,

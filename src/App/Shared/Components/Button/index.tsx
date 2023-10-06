@@ -15,6 +15,7 @@ export function Button({ colorStyle, className, ...rest }: Props) {
 		<button
 			{...rest}
 			className={clsx({
+				'disabled:opacity-50 disabled:cursor-not-allowed': true,
 				'p-4 border hover:opacity-70 transition-all duration-500 rounded': true,
 				'bg-blue-500 text-white outline-blue-700': !colorStyle,
 				'bg-red-500 text-white outline-red-700': colorStyle === 'Secondary',

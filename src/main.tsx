@@ -5,9 +5,9 @@ import { RoutesConfig } from './App/Shared/Components/Routes';
 import './global.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<React.StrictMode>
-		<InjectorProviders>
-			<RoutesConfig />
-		</InjectorProviders>
-	</React.StrictMode>,
+	// <React.StrictMode>
+	<InjectorProviders>
+		<RoutesConfig />
+	</InjectorProviders>,
+	// </React.StrictMode>,
 );

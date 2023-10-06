@@ -1,13 +1,14 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { Table } from '~/App/Shared/Components/Table';
-import { useTicket } from '~/App/Shared/Hooks/UseTicket';
+import { useTicket } from '~/App/Ticket/Hook/UseTicket';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { TTicket } from '~/App/Shared/Types/TTicket';
 import { Search } from '~/App/Ticket/Components/Search';
 
 export function TicketHomePage() {
-	const { tickets, searchParams, handlePage } = useTicket();
+	const { tickets, isFetching, pageCount, pagination, setPagination } =
+		useTicket();
 	const { translate } = useTranslation();
 	const columns = useMemo<ColumnDef<TTicket>[]>(
 		() => [
@@ -73,7 +74,17 @@ export function TicketHomePage() {
 	return (
 		<div>
 			<Search />
-			<Table columns={columns} data={tickets?.data || []} />
+			<Table
+				columns={columns}
+				data={tickets || []}
+				pagination={{
+					pageCount,
+					pageIndex: pagination.pageIndex,
+					pageSize: pagination.pageSize,
+					setPagination,
+					disabledActions: isFetching,
+				}}
+			/>
 		</div>
 	);
 }
