@@ -54,7 +54,6 @@ export function useLogin() {
 	const memoizedValue = useMemo(
 		() => ({
 			isLoading,
-			handleLogin,
 			handleSubmit: handleSubmit(handleLogin),
 			register,
 			errors,

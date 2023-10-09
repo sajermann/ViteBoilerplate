@@ -2,23 +2,19 @@ import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
+import { objectToQuery } from '~/App/Shared/Utils/ObjectToQuery';
 import { useTranslation } from '../../../Shared/Hooks/UseTranslation';
-import { useToken } from '../../../Shared/Hooks/UseToken';
-import { useAxios } from '../../../Shared/Hooks/UseAxios';
 
-export function useLogin() {
-	const { fetchData, isLoading } = useAxios();
+type Props = {
+	onChange: (data: string) => void;
+};
+
+export function useSearch({ onChange }: Props) {
 	const { translate } = useTranslation();
-	const navigate = useNavigate();
-	const { setAccessToken, setRefreshToken } = useToken();
 
 	const formSchema = z.object({
-		email: z
-			.string()
-			.nonempty(translate('FIELD_IS_REQUIRED'))
-			.email(translate('DOES_NOT_LOOK_LIKE_A_VALID_EMAIL')),
-		password: z.string().nonempty(translate('FIELD_IS_REQUIRED')),
+		title: z.string(),
+		createdAt: z.string(),
 	});
 
 	type FormData = z.infer<typeof formSchema>;
@@ -34,35 +30,21 @@ export function useLogin() {
 		resolver: zodResolver(formSchema),
 	});
 
-	const handleLogin: SubmitHandler<FormData> = async data => {
+	const handleSearch: SubmitHandler<FormData> = async data => {
 		formSchema.parse({ ...data });
-		const result = await fetchData({
-			method: 'post',
-			url: 'v1/auth',
-			data: {
-				email: data.email,
-				password: data.password,
-			},
-		});
-		if (result?.status === 201) {
-			setAccessToken(result.data.access_token);
-			setRefreshToken(result.data.refresh_token);
-			navigate('/');
-		}
+		onChange(objectToQuery(data));
 	};
 
 	const memoizedValue = useMemo(
 		() => ({
-			isLoading,
-			handleLogin,
-			handleSubmit: handleSubmit(handleLogin),
+			handleSubmit: handleSubmit(handleSearch),
 			register,
 			errors,
 			setValue,
 			getValues,
 			reset,
 		}),
-		[isLoading, errors],
+		[errors],
 	);
 	return memoizedValue;
 }

@@ -73,6 +73,7 @@ const CustomInput = forwardRef(
 			props.dateFormat,
 		);
 		delete newProps.dateFormat;
+		console.log({ newProps });
 		return (
 			// <input {...newProps} />
 			<Input
@@ -199,6 +200,7 @@ export function Datepicker({
 				customInput={
 					<CustomInput
 						// label="test"
+						{...rest}
 						withoutDay={withoutDay}
 						dateFormat={dateFormat}
 						ref={ref}

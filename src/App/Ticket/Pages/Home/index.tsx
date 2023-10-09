@@ -1,10 +1,11 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { Table } from '~/App/Shared/Components/Table';
-import { useTicket } from '~/App/Ticket/Hook/UseTicket';
+
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { TTicket } from '~/App/Shared/Types/TTicket';
 import { Search } from '~/App/Ticket/Components/Search';
+import { useTicket } from '../../Hooks/UseTicket';
 
 export function TicketHomePage() {
 	const { tickets, isFetching, pageCount, pagination, setPagination } =
@@ -73,7 +74,7 @@ export function TicketHomePage() {
 	);
 	return (
 		<div>
-			<Search />
+			<Search onChange={console.log} />
 			<Table
 				columns={columns}
 				data={tickets || []}
