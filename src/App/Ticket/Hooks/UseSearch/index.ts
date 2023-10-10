@@ -3,18 +3,16 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { objectToQuery } from '~/App/Shared/Utils/ObjectToQuery';
-import { useTranslation } from '../../../Shared/Hooks/UseTranslation';
 
 type Props = {
-	onChange: (data: string) => void;
+	onSubmitForm: (data: string) => void;
 };
 
-export function useSearch({ onChange }: Props) {
-	const { translate } = useTranslation();
-
+export function useSearch({ onSubmitForm }: Props) {
 	const formSchema = z.object({
 		title: z.string(),
-		createdAt: z.string(),
+		createdAt: z.string().optional(),
+		status: z.string().optional(),
 	});
 
 	type FormData = z.infer<typeof formSchema>;
@@ -26,13 +24,14 @@ export function useSearch({ onChange }: Props) {
 		setValue,
 		getValues,
 		reset,
+		control,
 	} = useForm<FormData>({
 		resolver: zodResolver(formSchema),
 	});
 
 	const handleSearch: SubmitHandler<FormData> = async data => {
 		formSchema.parse({ ...data });
-		onChange(objectToQuery(data));
+		onSubmitForm(objectToQuery(data));
 	};
 
 	const memoizedValue = useMemo(
@@ -43,6 +42,7 @@ export function useSearch({ onChange }: Props) {
 			setValue,
 			getValues,
 			reset,
+			control,
 		}),
 		[errors],
 	);

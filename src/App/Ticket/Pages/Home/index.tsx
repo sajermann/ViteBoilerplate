@@ -8,8 +8,14 @@ import { Search } from '~/App/Ticket/Components/Search';
 import { useTicket } from '../../Hooks/UseTicket';
 
 export function TicketHomePage() {
-	const { tickets, isFetching, pageCount, pagination, setPagination } =
-		useTicket();
+	const {
+		tickets,
+		isFetching,
+		pageCount,
+		pagination,
+		setPagination,
+		setFilterQuery,
+	} = useTicket();
 	const { translate } = useTranslation();
 	const columns = useMemo<ColumnDef<TTicket>[]>(
 		() => [
@@ -20,6 +26,12 @@ export function TicketHomePage() {
 				size: 60,
 				align: 'left',
 				enableResizing: false,
+				// sortingFn: (e, a, b) => {
+				// 	console.log({ e, a, b });
+				// 	return 0;
+				// },
+
+				enableMultiSort: true,
 			},
 			{
 				accessorKey: 'description',
@@ -28,13 +40,14 @@ export function TicketHomePage() {
 				size: 60,
 				align: 'left',
 				enableResizing: false,
+				enableMultiSort: true,
 			},
 			{
 				accessorKey: 'status',
 				header: 'Status',
 				minSize: 60,
 				size: 60,
-				align: 'left',
+				align: 'center',
 				enableResizing: false,
 			},
 			{
@@ -74,7 +87,12 @@ export function TicketHomePage() {
 	);
 	return (
 		<div>
-			<Search onChange={console.log} />
+			<Search
+				onSubmitForm={e => {
+					console.log({ e });
+					setFilterQuery(e);
+				}}
+			/>
 			<Table
 				columns={columns}
 				data={tickets || []}

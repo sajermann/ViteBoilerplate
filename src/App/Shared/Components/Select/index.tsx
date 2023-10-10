@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactSelect, { OptionsOrGroups } from 'react-select';
 import { useTranslation } from '../../Hooks/UseTranslation';
+import { managerClassNames } from '../../Utils/ManagerClassNames';
 
 type Props = {
 	isClearable?: boolean;
@@ -105,11 +106,16 @@ export function Select({
 	}, [inputValue]);
 
 	return (
-		<div {...rest} className="w-full">
+		<div {...rest} className="w-full flex flex-col gap-1">
 			{label && (
-				<div className="mb-2">
-					<label htmlFor={id}>{label}</label>
-				</div>
+				<label
+					htmlFor={id}
+					className={managerClassNames({
+						'text-sm text-gray-500': true,
+					})}
+				>
+					{label}
+				</label>
 			)}
 
 			<ReactSelect
@@ -136,6 +142,8 @@ export function Select({
 					control: baseStyles => ({
 						...baseStyles,
 						width: '100%',
+						height: 58,
+						border: '1px solid #e5e7eb',
 					}),
 					menu: baseStyles => ({
 						...baseStyles,

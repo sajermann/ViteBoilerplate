@@ -90,7 +90,7 @@ export function Table<T, U = undefined>({
 	tools,
 }: Props<T, U>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
-
+	console.log({ sorting });
 	const { translate } = useTranslation();
 
 	function buildColumns() {
@@ -167,6 +167,14 @@ export function Table<T, U = undefined>({
 		meta,
 
 		globalFilterFn: globalFilter?.globalFilterFn || 'auto',
+		// sortingFns: {
+		// 	myCustomSorting: (rowA: any, rowB: any, columnId: any): number => {
+		// 		console.log({ rowA, rowB, columnId });
+		// 		return 0;
+		// 	},
+		// },
+		manualSorting: true,
+		enableMultiSort: true,
 	});
 
 	useEffect(() => {
