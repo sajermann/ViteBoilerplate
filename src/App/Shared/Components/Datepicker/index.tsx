@@ -73,9 +73,7 @@ const CustomInput = forwardRef(
 			props.dateFormat,
 		);
 		delete newProps.dateFormat;
-		console.log({ newProps });
 		return (
-			// <input {...newProps} />
 			<Input
 				inputProps={{
 					...newProps,

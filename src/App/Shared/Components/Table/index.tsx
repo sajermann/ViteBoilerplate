@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import {
 	CellContext,
@@ -27,11 +28,11 @@ import { RadioGroup } from '../Radio';
 import { Selector } from './Selector';
 import { Expander } from './Expander';
 import { TSelection } from '../../Types/Table/TSelection';
-import { useTranslation } from '../../Hooks/UseTranslation';
-import { TDefTools } from '../../Types/Table/TExport';
-import { tableUtils } from '../../Utils/Table';
-import { managerClassNames } from '../../Utils/ManagerClassNames';
 import { TPagination } from '../../Types/Table/TPagination';
+import { TDefTools } from '../../Types/Table/TExport';
+import { managerClassNames } from '../../Utils/ManagerClassNames';
+import { tableUtils } from '../../Utils/Table';
+import { useTranslation } from '../../Hooks/UseTranslation';
 
 type Props<T, U = undefined> = {
 	selection?: TSelection<T>;
@@ -67,6 +68,12 @@ type Props<T, U = undefined> = {
 	showFooter?: boolean;
 
 	tools?: TDefTools<T>;
+	sorting?: {
+		manualSorting?: {
+			fn: (data: Record<string, unknown>[]) => void;
+		};
+		disabled?: boolean;
+	};
 };
 
 export function Table<T, U = undefined>({
@@ -88,9 +95,9 @@ export function Table<T, U = undefined>({
 	maxHeight,
 	showFooter,
 	tools,
+	sorting,
 }: Props<T, U>) {
-	const [sorting, setSorting] = useState<SortingState>([]);
-	console.log({ sorting });
+	const [sortingInternal, setSortingInternal] = useState<SortingState>([]);
 	const { translate } = useTranslation();
 
 	function buildColumns() {
@@ -148,7 +155,7 @@ export function Table<T, U = undefined>({
 				pageIndex: pagination?.pageIndex || 0,
 				pageSize: pagination?.pageSize || 0,
 			},
-			sorting,
+			sorting: sorting?.disabled ? undefined : sortingInternal,
 			rowSelection: selection?.rowSelection,
 			globalFilter: globalFilter?.filter,
 			columnVisibility,
@@ -158,22 +165,27 @@ export function Table<T, U = undefined>({
 		onRowSelectionChange: selection?.setRowSelection,
 		enableRowSelection: selection !== undefined,
 		enableMultiRowSelection: selection?.type === 'multi',
-		onSortingChange: setSorting,
+		onSortingChange: sorting?.disabled
+			? undefined
+			: funcUpdater => {
+					if (sorting?.manualSorting) {
+						const resultSorts = (
+							funcUpdater as unknown as (
+								dataTempOldSort: SortingState,
+							) => Record<string, unknown>[]
+						)(sortingInternal);
+						sorting.manualSorting.fn(resultSorts);
+					}
+					return setSortingInternal(funcUpdater);
+			  },
 		getSortedRowModel: getSortedRowModel(),
 		getRowCanExpand: () => !!expandLine,
 		getExpandedRowModel: getExpandedRowModel(),
 		manualPagination: true,
 		onPaginationChange: pagination?.setPagination,
 		meta,
-
 		globalFilterFn: globalFilter?.globalFilterFn || 'auto',
-		// sortingFns: {
-		// 	myCustomSorting: (rowA: any, rowB: any, columnId: any): number => {
-		// 		console.log({ rowA, rowB, columnId });
-		// 		return 0;
-		// 	},
-		// },
-		manualSorting: true,
+		manualSorting: !!sorting?.manualSorting,
 		enableMultiSort: true,
 	});
 

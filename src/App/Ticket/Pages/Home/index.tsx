@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unstable-nested-components */
 import { ColumnDef } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Table } from '~/App/Shared/Components/Table';
-
+import { format } from 'date-fns';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { TTicket } from '~/App/Shared/Types/TTicket';
 import { Search } from '~/App/Ticket/Components/Search';
@@ -17,6 +18,9 @@ export function TicketHomePage() {
 		setFilterQuery,
 	} = useTicket();
 	const { translate } = useTranslation();
+	const [sortingInternal, setSortingInternal] = useState<
+		Record<string, unknown>[]
+	>([]);
 	const columns = useMemo<ColumnDef<TTicket>[]>(
 		() => [
 			{
@@ -26,11 +30,6 @@ export function TicketHomePage() {
 				size: 60,
 				align: 'left',
 				enableResizing: false,
-				// sortingFn: (e, a, b) => {
-				// 	console.log({ e, a, b });
-				// 	return 0;
-				// },
-
 				enableMultiSort: true,
 			},
 			{
@@ -57,6 +56,11 @@ export function TicketHomePage() {
 				size: 60,
 				align: 'center',
 				enableResizing: false,
+				cell: ({ getValue }) => (
+					<span>
+						{format(new Date(getValue() as string), 'dd/MM/yyyy, HH:mm')}
+					</span>
+				),
 			},
 			{
 				accessorKey: 'updatedAt',
@@ -65,6 +69,11 @@ export function TicketHomePage() {
 				size: 60,
 				align: 'center',
 				enableResizing: false,
+				cell: ({ getValue }) => (
+					<span>
+						{format(new Date(getValue() as string), 'dd/MM/yyyy, HH:mm')}
+					</span>
+				),
 			},
 			{
 				accessorKey: 'user.name',
@@ -85,15 +94,13 @@ export function TicketHomePage() {
 		],
 		[translate],
 	);
+
+	console.log({ sortingInternal });
 	return (
 		<div>
-			<Search
-				onSubmitForm={e => {
-					console.log({ e });
-					setFilterQuery(e);
-				}}
-			/>
+			<Search onSubmitForm={setFilterQuery} />
 			<Table
+				isLoading={isFetching}
 				columns={columns}
 				data={tickets || []}
 				pagination={{
@@ -102,6 +109,11 @@ export function TicketHomePage() {
 					pageSize: pagination.pageSize,
 					setPagination,
 					disabledActions: isFetching,
+				}}
+				sorting={{
+					manualSorting: {
+						fn: setSortingInternal,
+					},
 				}}
 			/>
 		</div>

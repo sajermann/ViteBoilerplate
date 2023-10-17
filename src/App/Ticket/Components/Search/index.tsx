@@ -5,6 +5,7 @@ import { Datepicker } from '~/App/Shared/Components/Datepicker';
 import { Controller } from 'react-hook-form';
 import { Select } from '~/App/Shared/Components/Select';
 import { useSearch } from '../../Hooks/UseSearch';
+import { CreateTicket } from '../CreateTicket';
 
 const DEFAULT_OPTIONS = [
 	{
@@ -27,15 +28,7 @@ type Props = {
 
 export function Search({ onSubmitForm }: Props) {
 	const { translate } = useTranslation();
-	const {
-		register,
-		handleSubmit,
-		errors,
-		setValue,
-		getValues,
-		reset,
-		control,
-	} = useSearch({
+	const { register, handleSubmit, reset, control } = useSearch({
 		onSubmitForm,
 	});
 
@@ -54,56 +47,48 @@ export function Search({ onSubmitForm }: Props) {
 				/>
 
 				<Controller
-					errors={errors}
 					control={control}
-					register={{ ...register('createdAt') }}
 					name="createdAt"
-					required
-					render={({ field: { onChange, onBlur, value, ref } }) => {
-						console.log({ onChange, onBlur, value, ref });
-						return (
-							<Datepicker
-								label={translate('CREATED_AT')}
-								placeholder="dd/mm/yyyy"
-								id="createdAt"
-								onChange={e => onChange(e)}
-								value={value}
-							/>
-						);
-					}}
+					render={({ field: { onChange, value } }) => (
+						<Datepicker
+							label={translate('CREATED_AT')}
+							placeholder="dd/mm/yyyy"
+							id="createdAt"
+							onChange={e => onChange(e)}
+							value={value}
+						/>
+					)}
 				/>
 
 				<Controller
-					errors={errors}
 					control={control}
-					register={{ ...register('status') }}
 					name="status"
-					required
-					render={({ field: { onChange, onBlur, value, ref } }) => {
-						console.log({ onChange, onBlur, value, ref });
-						return (
-							<Select
-								label="Status"
-								isSearchable={false}
-								value={
-									DEFAULT_OPTIONS.find(item => item.value === value)?.value
-								}
-								options={DEFAULT_OPTIONS}
-								onChange={e => {
-									onChange(e.target.value);
-								}}
-								id="status"
-							/>
-						);
-					}}
+					render={({ field: { onChange, value } }) => (
+						<Select
+							label="Status"
+							isSearchable={false}
+							value={DEFAULT_OPTIONS.find(item => item.value === value)?.value}
+							options={DEFAULT_OPTIONS}
+							onChange={e => {
+								onChange(e.target.value);
+							}}
+							id="status"
+						/>
+					)}
 				/>
 			</div>
 
-			<div className="flex w-full justify-end">
-				<Button variant="Outlined" onClick={() => reset()}>
-					Limpar
-				</Button>
-				<Button type="submit">Filtrar</Button>
+			<div className="flex w-full justify-between">
+				<div>
+					<CreateTicket />
+				</div>
+
+				<div className="flex w-full justify-end">
+					<Button variant="Outlined" onClick={() => reset()}>
+						{translate('CLEAR')}
+					</Button>
+					<Button type="submit">{translate('SEARCH')}</Button>
+				</div>
 			</div>
 		</form>
 	);

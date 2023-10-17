@@ -1,5 +1,13 @@
 {
 	"translations": {
+		"DESCRIPTION_OF_TICKET": "Description of ticket",
+		"TITLE_OF_TICKET": "Title of ticket",
+		"CANCEL": "Cancel",
+		"CREATE": "Create",
+		"CREATE_TICKET": "Create Ticket",
+		"NEW": "New",
+		"CLEAR": "Clear",
+		"SEARCH": "Search",
 		"NO_DATA": "No Data",
 		"ANALYST": "Analyst",
 		"USER": "User",

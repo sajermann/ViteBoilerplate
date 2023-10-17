@@ -224,6 +224,104 @@ const ICONS = {
 			</g>
 		</svg>
 	),
+	arrowsOutSimple: ({ width, height, color, ...rest }: IconProps) => (
+		<svg
+			{...rest}
+			width={width || '100%'}
+			height={height || '100%'}
+			fill={color || 'currentColor'}
+			viewBox="0 0 256 256"
+		>
+			<rect width="256" height="256" fill="none" />
+			<polyline
+				points="160 48 208 48 208 96"
+				fill="none"
+				stroke={color || 'currentColor'}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="16"
+			/>
+			<line
+				x1="152"
+				y1="104"
+				x2="208"
+				y2="48"
+				fill="none"
+				stroke={color || 'currentColor'}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="16"
+			/>
+			<polyline
+				points="96 208 48 208 48 160"
+				fill="none"
+				stroke={color || 'currentColor'}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="16"
+			/>
+			<line
+				x1="104"
+				y1="152"
+				x2="48"
+				y2="208"
+				fill="none"
+				stroke={color || 'currentColor'}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="16"
+			/>
+		</svg>
+	),
+	arrowsInSimple: ({ width, height, color, ...rest }: IconProps) => (
+		<svg
+			{...rest}
+			width={width || '100%'}
+			height={height || '100%'}
+			fill={color || 'currentColor'}
+			viewBox="0 0 256 256"
+		>
+			<rect width="256" height="256" fill="none" />
+			<polyline
+				points="152 56 152 104 200 104"
+				fill="none"
+				stroke={color || 'currentColor'}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="16"
+			/>
+			<line
+				x1="208"
+				y1="48"
+				x2="152"
+				y2="104"
+				fill="none"
+				stroke={color || 'currentColor'}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="16"
+			/>
+			<polyline
+				points="56 152 104 152 104 200"
+				fill="none"
+				stroke={color || 'currentColor'}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="16"
+			/>
+			<line
+				x1="48"
+				y1="208"
+				x2="104"
+				y2="152"
+				fill="none"
+				stroke={color || 'currentColor'}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="16"
+			/>
+		</svg>
+	),
 };
 
 export const keysIcons = Object.keys(ICONS);
