@@ -37,9 +37,9 @@ export function InjectorProviders({ children }: { children: ReactNode }) {
 					<Toaster position="top-right" />
 					<div className="flex flex-col w-full h-screen">
 						<Header />
-						<div className="w-full flex h-screen">
+						<div className="w-full flex">
 							<Sidebar />
-							<main className="flex-1 p-2 overflow-hidden">{children}</main>
+							<main className="flex-1 p-2">{children}</main>
 						</div>
 					</div>
 				</DarkModeProvider>

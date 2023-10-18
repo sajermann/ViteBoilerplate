@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { usePagination } from '~/App/Shared/Hooks/UsePagination';
-import { TTicket } from '../../../Shared/Types/TTicket';
-import { useAxios } from '../../../Shared/Hooks/UseAxios';
+import { TTicket } from '~/App/Shared/Types/TTicket';
+import { useAxios } from '~/App/Shared/Hooks/UseAxios';
 
 const KEY_TICKETS = 'tickets';
 
@@ -16,7 +16,7 @@ export function useTicket() {
 		backQuery,
 	} = usePagination();
 	const { fetchData } = useAxios();
-
+	const queryClient = useQueryClient();
 	const { data: tickets, isFetching } = useQuery<TTicket[]>({
 		queryKey: [KEY_TICKETS, JSON.stringify(backQuery)],
 		queryFn: async () => {
@@ -37,6 +37,19 @@ export function useTicket() {
 		// staleTime: 1000 * 60, // 1 minute
 	});
 
+	function insertTicket(ticket: TTicket) {
+		const oldData =
+			queryClient.getQueryData<TTicket[]>([
+				KEY_TICKETS,
+				JSON.stringify(backQuery),
+			]) || [];
+
+		queryClient.setQueryData(
+			[KEY_TICKETS, JSON.stringify(backQuery)],
+			[{ ...ticket }, ...oldData.slice(0, -1)],
+		);
+	}
+
 	const memoizedValue = useMemo(
 		() => ({
 			tickets,
@@ -45,6 +58,7 @@ export function useTicket() {
 			pagination,
 			setPagination,
 			setFilterQuery,
+			insertTicket,
 		}),
 		[tickets, isFetching, pageCount, pagination],
 	);

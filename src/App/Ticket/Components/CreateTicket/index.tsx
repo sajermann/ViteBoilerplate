@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button } from '~/App/Shared/Components/Button';
 import { Input } from '~/App/Shared/Components/Input';
 import { Modal } from '~/App/Shared/Components/Modal';
@@ -7,17 +6,17 @@ import { useTicketCreate } from '../../Hooks/UseTicketCreate';
 
 export function CreateTicket() {
 	const { translate } = useTranslation();
-	const [isOpen, setIsOpen] = useState(false);
-	const { register, handleSubmit, errors } = useTicketCreate();
+	const { register, handleSubmit, errors, modalIsOpen, closeModal, openModal } =
+		useTicketCreate();
 
 	return (
 		<>
-			<Button onClick={() => setIsOpen(true)}>{translate('NEW')}</Button>
+			<Button onClick={openModal}>{translate('NEW')}</Button>
 
 			<Modal
 				title={translate('CREATE_TICKET')}
-				isOpen={isOpen}
-				onClose={() => setIsOpen(false)}
+				isOpen={modalIsOpen}
+				onClose={closeModal}
 				closeButton
 			>
 				<form onSubmit={handleSubmit} className="p-4 flex flex-col gap-4 w-96">
@@ -45,7 +44,9 @@ export function CreateTicket() {
 					/>
 
 					<div className="flex gap-4 justify-end">
-						<Button variant="Outlined">{translate('CANCEL')}</Button>
+						<Button variant="Outlined" onClick={closeModal}>
+							{translate('CANCEL')}
+						</Button>
 						<Button type="submit">{translate('CREATE')}</Button>
 					</div>
 				</form>
