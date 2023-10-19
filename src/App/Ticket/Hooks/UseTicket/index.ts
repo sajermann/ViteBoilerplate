@@ -1,15 +1,40 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
 import { usePagination } from '~/App/Shared/Hooks/UsePagination';
 import { TTicket } from '~/App/Shared/Types/TTicket';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
 
+interface Props {
+	pageCountPersist: number;
+	setPageCountPersist: (data: number) => void;
+}
+
+const useStorage = create<Props>()(
+	persist(
+		set => ({
+			pageCountPersist: 0,
+			setPageCountPersist: (data: number) =>
+				set(state => ({
+					...state,
+					pageCountPersist: data,
+				})),
+		}),
+		{
+			name: `${import.meta.env.VITE_APPLICATION_IDENTIFICATOR}:ticket`, // name of the item in the storage (must be unique)
+		},
+	),
+);
+window.store = useStorage;
+
 const KEY_TICKETS = 'tickets';
 
 export function useTicket() {
+	const { pageCountPersist, setPageCountPersist } = useStorage();
 	const {
-		pageCount,
-		setPageCount,
+		setPageCount: setPageCountInternal,
 		pagination,
 		setPagination,
 		setFilterQuery,
@@ -17,6 +42,7 @@ export function useTicket() {
 	} = usePagination();
 	const { fetchData } = useAxios();
 	const queryClient = useQueryClient();
+
 	const { data: tickets, isFetching } = useQuery<TTicket[]>({
 		queryKey: [KEY_TICKETS, JSON.stringify(backQuery)],
 		queryFn: async () => {
@@ -26,41 +52,37 @@ export function useTicket() {
 				url: `v1/ticket?${backQuery}`,
 			});
 			if (result?.status === 200) {
-				setPageCount(
+				setPageCountInternal(
 					Math.ceil(result.data.pagination.total / pagination.pageSize),
 				);
+				// É preciso atualizar ambos, para que não ocorra o bug da pág 0
+				setPageCountPersist(
+					Math.ceil(result.data.pagination.total / pagination.pageSize),
+				);
+
 				return result.data.data;
 			}
 			return null;
 		},
-		keepPreviousData: true,
+		keepPreviousData: false,
 		// staleTime: 1000 * 60, // 1 minute
 	});
 
-	function insertTicket(ticket: TTicket) {
-		const oldData =
-			queryClient.getQueryData<TTicket[]>([
-				KEY_TICKETS,
-				JSON.stringify(backQuery),
-			]) || [];
-
-		queryClient.setQueryData(
-			[KEY_TICKETS, JSON.stringify(backQuery)],
-			[{ ...ticket }, ...oldData.slice(0, -1)],
-		);
+	function revalidateData() {
+		queryClient.invalidateQueries([KEY_TICKETS, JSON.stringify(backQuery)]);
 	}
 
 	const memoizedValue = useMemo(
 		() => ({
 			tickets,
 			isFetching,
-			pageCount,
+			pageCount: pageCountPersist,
 			pagination,
 			setPagination,
 			setFilterQuery,
-			insertTicket,
+			revalidateData,
 		}),
-		[tickets, isFetching, pageCount, pagination],
+		[tickets, isFetching, pageCountPersist, pagination],
 	);
 	return memoizedValue;
 }

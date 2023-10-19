@@ -4,13 +4,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
+import { customToast } from '~/App/Shared/Utils/CustomToast';
 import { useTicket } from '../UseTicket';
 
 export function useTicketCreate() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData, isLoading } = useAxios();
-	const { insertTicket } = useTicket();
+	const { revalidateData } = useTicket();
 
 	const formSchema = z.object({
 		title: z.string().nonempty(translate('FIELD_IS_REQUIRED')),
@@ -42,7 +43,7 @@ export function useTicketCreate() {
 		reset();
 	}
 
-	const handleSearch: SubmitHandler<FormData> = async data => {
+	const handleCreate: SubmitHandler<FormData> = async data => {
 		formSchema.parse({ ...data });
 		const result = await fetchData({
 			method: 'post',
@@ -54,13 +55,17 @@ export function useTicketCreate() {
 		});
 		if (result?.status === 201) {
 			closeModal();
-			insertTicket(result.data);
+			customToast({
+				msg: translate('TICKET_CREATED_SUCCESS'),
+				type: 'success',
+			});
+			revalidateData();
 		}
 	};
 
 	const memoizedValue = useMemo(
 		() => ({
-			handleSubmit: handleSubmit(handleSearch),
+			handleSubmit: handleSubmit(handleCreate),
 			register,
 			errors,
 			setValue,

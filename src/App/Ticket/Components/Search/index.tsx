@@ -65,6 +65,7 @@ export function Search({ onSubmitForm }: Props) {
 					name="status"
 					render={({ field: { onChange, value } }) => (
 						<Select
+							menuPosition="fixed"
 							label="Status"
 							isSearchable={false}
 							value={DEFAULT_OPTIONS.find(item => item.value === value)?.value}

@@ -17,10 +17,12 @@ export function TicketHomePage() {
 		setPagination,
 		setFilterQuery,
 	} = useTicket();
+
 	const { translate } = useTranslation();
 	const [sortingInternal, setSortingInternal] = useState<
 		Record<string, unknown>[]
 	>([]);
+
 	const columns = useMemo<ColumnDef<TTicket>[]>(
 		() => [
 			{
@@ -95,10 +97,16 @@ export function TicketHomePage() {
 		[translate],
 	);
 
-	console.log({ sortingInternal });
 	return (
 		<div>
 			<Search onSubmitForm={setFilterQuery} />
+			{JSON.stringify({
+				pageCount,
+				pageIndex: pagination.pageIndex,
+				pageSize: pagination.pageSize,
+				setPagination,
+				disabledActions: isFetching,
+			})}
 			<Table
 				isLoading={isFetching}
 				columns={columns}

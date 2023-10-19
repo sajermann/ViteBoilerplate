@@ -1,5 +1,6 @@
 {
 	"translations": {
+		"TICKET_CREATED_SUCCESS": "Ticket criado com sucesso",
 		"DESCRIPTION_OF_TICKET": "Descrição do ticket",
 		"TITLE_OF_TICKET": "Titulo do ticket",
 		"CANCEL": "Cancelar",

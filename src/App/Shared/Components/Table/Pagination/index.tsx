@@ -140,6 +140,9 @@ export function Pagination<T>({
 									const page = e.target.value ? Number(e.target.value) - 1 : 0;
 									table.setPageIndex(page);
 								},
+								// value: table.getState().pagination.pageIndex + 1,
+								min: 1,
+								max: table.getPageCount(),
 							}}
 						/>
 					</div>
@@ -152,6 +155,7 @@ export function Pagination<T>({
 						<div>Linhas</div>
 						<div>
 							<Select
+								menuPosition="fixed"
 								isSearchable={false}
 								isDisabled={pagination?.disabledActions}
 								value={
