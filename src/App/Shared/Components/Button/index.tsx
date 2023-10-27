@@ -1,32 +1,68 @@
 /* eslint-disable react/button-has-type */
 import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
-import { managerClassNames } from '../../Utils/ManagerClassNames';
+import { tv } from 'tailwind-variants';
+
+type TColor = 'primary' | 'error' | 'success' | 'warning';
+type TVariant = 'contained' | 'outlined' | 'option';
 
 type Props = DetailedHTMLProps<
 	ButtonHTMLAttributes<HTMLButtonElement>,
 	HTMLButtonElement
 > & {
-	variant?: 'Outlined' | 'Option';
-	colorStyle?: 'Secondary' | 'Success' | 'Warning';
+	variantType?: TVariant;
+	colorStyle?: TColor;
 };
 
-export function Button({ colorStyle, className, variant, ...rest }: Props) {
+const button = tv({
+	base: [
+		'disabled:opacity-50 disabled:cursor-not-allowed',
+		'p-4 border hover:opacity-70 transition-all duration-500 rounded',
+	],
+	variants: {
+		contained: {
+			primary: 'bg-blue-500 text-white outline-blue-700',
+			error: 'bg-red-500 text-white outline-red-700',
+			success: 'bg-green-500 text-white outline-green-700',
+			warning: 'bg-yellow-500 text-white outline-yellow-700',
+		},
+		outlined: {
+			primary: 'bg-transparent border-blue-500 text-blue-500 outline-blue-700',
+			error: 'bg-transparent border-red-500 text-red-500 outline-red-700',
+			success:
+				'bg-transparent border-green-500 text-green-500 outline-green-700',
+			warning:
+				'bg-transparent border-yellow-500 text-yellow-500 outline-yellow-700',
+		},
+		option: {
+			primary: 'bg-transparent text-blue-500 outline-blue-700',
+			error: 'bg-transparent text-red-500 outline-red-700',
+			success: 'bg-transparent text-green-500 outline-green-700',
+			warning: 'bg-transparent text-yellow-500 outline-yellow-700',
+		},
+		icon: {
+			square: '',
+			circle: '',
+		},
+		size: {
+			sm: 'text-sm',
+			md: 'text-base',
+			lg: 'px-4 py-3 text-lg',
+		},
+	},
+	defaultVariants: {
+		size: 'md',
+		contained: 'primary',
+	},
+});
+
+export function Button({ colorStyle, className, variantType, ...rest }: Props) {
 	return (
 		<button
 			{...rest}
-			className={managerClassNames({
-				'disabled:opacity-50 disabled:cursor-not-allowed': true,
-				'p-4 border hover:opacity-70 transition-all duration-500 rounded': true,
-				'bg-blue-500 text-white outline-blue-700': !colorStyle && !variant,
-				'bg-red-500 text-white outline-red-700': colorStyle === 'Secondary',
-				'bg-green-500 text-white outline-green-700': colorStyle === 'Success',
-				'bg-yellow-500 text-white outline-yellow-700': colorStyle === 'Warning',
-				'border-blue-500 text-blue-500 outline-blue-700':
-					variant === 'Outlined' && !colorStyle,
-				[className as string]: className,
-
-				'border-0 text-black outline-0': variant === 'Option' && !colorStyle,
-				[className as string]: className,
+			className={button({
+				className,
+				[variantType as TVariant]: colorStyle,
+				size: 'lg',
 			})}
 		/>
 	);

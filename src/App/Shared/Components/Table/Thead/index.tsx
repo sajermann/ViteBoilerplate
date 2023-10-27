@@ -27,8 +27,7 @@ export function Thead<T>({ table }: Props<T>) {
 							colSpan={header.colSpan}
 							style={{
 								width: header.getSize(),
-								// @ts-expect-error align exists
-								textAlign: header.getContext().column.columnDef.align,
+								textAlign: header.getContext().column.columnDef.meta?.align,
 							}}
 						>
 							{header.isPlaceholder ? null : (

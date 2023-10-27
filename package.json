@@ -40,6 +40,7 @@
     "react-i18next": "^13.2.2",
     "react-router-dom": "^6.16.0",
     "react-select": "^5.7.7",
+    "tailwind-variants": "^0.1.16",
     "xlsx-js-style": "^1.2.0",
     "zod": "^3.22.2",
     "zustand": "^4.4.2"

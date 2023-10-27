@@ -2,7 +2,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 module.exports = {
 	darkMode: 'class',
-	content: ['./src/**/*.tsx'],
+	content: ['./src/**/*.tsx', './src/**/*.ts', '.html'],
 	theme: {
 		extend: {
 			colors: {

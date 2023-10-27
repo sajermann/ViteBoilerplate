@@ -30,8 +30,7 @@ export function RowsWithoutVirtualization<T>({
 								key={cell.id}
 								{...{
 									style: {
-										// @ts-expect-error align exists
-										textAlign: cell.column.columnDef.align,
+										textAlign: cell.column.columnDef.meta?.align,
 										borderRight: cell.column.getIsResizing()
 											? '0.1px solid'
 											: 'none',

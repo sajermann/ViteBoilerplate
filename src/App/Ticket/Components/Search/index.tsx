@@ -66,6 +66,7 @@ export function Search({ onSubmitForm }: Props) {
 					render={({ field: { onChange, value } }) => (
 						<Select
 							menuPosition="fixed"
+							menuPortalTarget={document.body}
 							label="Status"
 							isSearchable={false}
 							value={DEFAULT_OPTIONS.find(item => item.value === value)?.value}
@@ -85,7 +86,11 @@ export function Search({ onSubmitForm }: Props) {
 				</div>
 
 				<div className="flex w-full justify-end">
-					<Button variant="Outlined" onClick={() => reset()}>
+					<Button
+						variantType="outlined"
+						colorStyle="primary"
+						onClick={() => reset()}
+					>
 						{translate('CLEAR')}
 					</Button>
 					<Button type="submit">{translate('SEARCH')}</Button>
