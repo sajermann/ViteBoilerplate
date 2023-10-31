@@ -2,7 +2,7 @@
 import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
 import { tv } from 'tailwind-variants';
 
-type TColor = 'primary' | 'error' | 'success' | 'warning';
+type TColor = 'primary' | 'error' | 'success' | 'warning' | 'normal';
 type TVariant = 'contained' | 'outlined' | 'option';
 
 type Props = DetailedHTMLProps<
@@ -15,7 +15,7 @@ type Props = DetailedHTMLProps<
 
 const button = tv({
 	base: [
-		'disabled:opacity-50 disabled:cursor-not-allowed',
+		'disabled:opacity-50 disabled:cursor-not-allowed h-14',
 		'p-4 border hover:opacity-70 transition-all duration-500 rounded',
 	],
 	variants: {
@@ -24,6 +24,7 @@ const button = tv({
 			error: 'bg-red-500 text-white outline-red-700',
 			success: 'bg-green-500 text-white outline-green-700',
 			warning: 'bg-yellow-500 text-white outline-yellow-700',
+			normal: 'bg-transparent text-current outline-current hover:bg-slate-200',
 		},
 		outlined: {
 			primary: 'bg-transparent border-blue-500 text-blue-500 outline-blue-700',
@@ -32,12 +33,19 @@ const button = tv({
 				'bg-transparent border-green-500 text-green-500 outline-green-700',
 			warning:
 				'bg-transparent border-yellow-500 text-yellow-500 outline-yellow-700',
+			normal: 'bg-transparent text-current outline-current hover:bg-slate-200',
 		},
 		option: {
-			primary: 'bg-transparent text-blue-500 outline-blue-700',
-			error: 'bg-transparent text-red-500 outline-red-700',
-			success: 'bg-transparent text-green-500 outline-green-700',
-			warning: 'bg-transparent text-yellow-500 outline-yellow-700',
+			primary:
+				'bg-transparent border-0 text-blue-500 outline-blue-700 hover:bg-slate-200',
+			error:
+				'bg-transparent border-0 text-red-500 outline-red-700 hover:bg-slate-200',
+			success:
+				'bg-transparent border-0 text-green-500 outline-green-700 hover:bg-slate-200',
+			warning:
+				'bg-transparent border-0 text-yellow-500 outline-yellow-700 hover:bg-slate-200',
+			normal:
+				'bg-transparent border-0 text-current outline-current hover:bg-slate-200',
 		},
 		icon: {
 			square: '',

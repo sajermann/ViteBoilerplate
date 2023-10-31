@@ -85,7 +85,7 @@ export function Search({ onSubmitForm }: Props) {
 					<CreateTicket />
 				</div>
 
-				<div className="flex w-full justify-end">
+				<div className="flex w-full justify-end gap-2">
 					<Button
 						variantType="outlined"
 						colorStyle="primary"

@@ -44,7 +44,12 @@ export function CreateTicket() {
 					/>
 
 					<div className="flex gap-4 justify-end">
-						<Button variant="Outlined" onClick={closeModal}>
+						<Button
+							variantType="outlined"
+							colorStyle="error"
+							onClick={closeModal}
+							type="button"
+						>
 							{translate('CANCEL')}
 						</Button>
 						<Button type="submit">{translate('CREATE')}</Button>

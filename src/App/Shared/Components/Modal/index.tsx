@@ -80,11 +80,11 @@ export function Modal({
 					])}
 				>
 					{title && (
-						<Dialog.Title className="h-12 px-6 py-3 text-primary-500 font-bold flex items-center dark:bg-slate-900 border-b-[#dee2e6] border-b-2">
+						<Dialog.Title className="h-12 px-6 py-3 font-bold text-2xl flex items-center dark:bg-slate-900 border-b-[#dee2e6] border-b-2">
 							{title}
 							{expand && (
 								<Button
-									className="absolute top-2 right-16 text-primary-500 hover:text-primary-300 transition-colors duration-500"
+									className="absolute top-2 right-16 transition-colors duration-500"
 									onClick={() => setIsExpanded(prev => !prev)}
 								>
 									{!isExpanded ? (
@@ -97,12 +97,13 @@ export function Modal({
 
 							{closeButton && (
 								<Button
-									variant="Option"
+									variantType="option"
+									colorStyle="normal"
 									className={managerClassNames({
 										'absolute top-2 right-6 transition-colors': true,
-										'duration-500 rounded-full w-8 h-w-8': true,
+										'duration-500 rounded-full w-9 h-9': true,
 										'!p-2 flex items-center justify-center': true,
-										'hover:bg-slate-200 text-slate-600': true,
+										'hover:bg-slate-200': true,
 									})}
 									onClick={onClose}
 									data-testid="closeButtonModal"
