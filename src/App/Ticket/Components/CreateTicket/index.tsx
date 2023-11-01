@@ -11,7 +11,9 @@ export function CreateTicket() {
 
 	return (
 		<>
-			<Button onClick={openModal}>{translate('NEW')}</Button>
+			<Button onClick={openModal} type="button">
+				{translate('NEW')}
+			</Button>
 
 			<Modal
 				title={translate('CREATE_TICKET')}
@@ -46,7 +48,7 @@ export function CreateTicket() {
 					<div className="flex gap-4 justify-end">
 						<Button
 							variantType="outlined"
-							colorStyle="error"
+							colorStyle="primary"
 							onClick={closeModal}
 							type="button"
 						>

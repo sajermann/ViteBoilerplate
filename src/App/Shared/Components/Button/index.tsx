@@ -17,6 +17,7 @@ const button = tv({
 	base: [
 		'disabled:opacity-50 disabled:cursor-not-allowed h-14',
 		'p-4 border hover:opacity-70 transition-all duration-500 rounded',
+		'active:opacity-50',
 	],
 	variants: {
 		contained: {
