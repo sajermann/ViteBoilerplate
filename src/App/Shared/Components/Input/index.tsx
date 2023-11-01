@@ -44,9 +44,8 @@ const input = tv({
 				inputPropsInternal: 'outline-blue-700 group-hover:border-blue-500',
 			},
 			error: {
-				labelPropsInternal:
-					'group-hover:text-red-500 group-focus-within:text-red-500',
-				inputPropsInternal: 'outline-red-700 group-hover:border-red-500',
+				labelPropsInternal: 'text-red-500',
+				inputPropsInternal: 'outline-red-700 border-red-500',
 			},
 
 			normal: {
@@ -65,7 +64,7 @@ const input = tv({
 export function Input({ inputProps, labelProps, containerProps }: Props) {
 	const { labelPropsInternal, inputPropsInternal, containerPropsInternal } =
 		input({
-			color: 'primary',
+			color: inputProps?.error ? 'error' : 'primary',
 		});
 
 	return (
