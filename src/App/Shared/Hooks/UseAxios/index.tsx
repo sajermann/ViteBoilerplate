@@ -58,6 +58,7 @@ export function useAxios(axiosParams?: AxiosRequestConfig) {
 	useEffect(() => {
 		fetchData(axiosParams);
 		return () => {
+			if (import.meta.env.DEV) return;
 			cancel();
 		};
 	}, [axiosParams?.url]);

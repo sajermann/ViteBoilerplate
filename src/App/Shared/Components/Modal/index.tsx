@@ -7,9 +7,10 @@ import {
 	useEffect,
 	useState,
 } from 'react';
-import { Icons } from '../Icons';
-import { managerClassNames } from '../../Utils/ManagerClassNames';
+import { managerClassNames } from '~/App/Shared/Utils/ManagerClassNames';
+
 import { Button } from '../Button';
+import { Icons } from '../Icons';
 
 type Props = {
 	children: React.ReactNode;
@@ -80,37 +81,34 @@ export function Modal({
 					])}
 				>
 					{title && (
-						<Dialog.Title className="h-12 px-6 py-3 font-bold text-2xl flex items-center dark:bg-slate-900 border-b-[#dee2e6] border-b-2">
-							{title}
-							{expand && (
-								<Button
-									className="absolute top-2 right-16 transition-colors duration-500"
-									onClick={() => setIsExpanded(prev => !prev)}
-								>
-									{!isExpanded ? (
-										<Icons nameIcon="arrowsOutSimple" />
-									) : (
-										<Icons nameIcon="arrowsInSimple" />
-									)}
-								</Button>
-							)}
+						<Dialog.Title className="h-14 px-6 py-3 text-primary-500 font-bold flex items-center dark:bg-slate-900 border-b-[#dee2e6] border-b-2">
+							<h1 className="flex-1">{title}</h1>
+							<div className="flex gap-4 items-center">
+								{expand && (
+									<Button
+										iconButton="rounded"
+										variant="option"
+										onClick={() => setIsExpanded(prev => !prev)}
+									>
+										{!isExpanded ? (
+											<Icons nameIcon="arrowsOutSimple" />
+										) : (
+											<Icons nameIcon="arrowsInSimple" />
+										)}
+									</Button>
+								)}
 
-							{closeButton && (
-								<Button
-									variantType="option"
-									colorStyle="normal"
-									className={managerClassNames({
-										'absolute top-2 right-6 transition-colors': true,
-										'duration-500 rounded-full w-9 h-9': true,
-										'!p-2 flex items-center justify-center': true,
-										'hover:bg-slate-200': true,
-									})}
-									onClick={onClose}
-									data-testid="closeButtonModal"
-								>
-									<Icons nameIcon="close" />
-								</Button>
-							)}
+								{closeButton && (
+									<Button
+										iconButton="rounded"
+										variant="option"
+										onClick={onClose}
+										data-testid="closeButtonModal"
+									>
+										<Icons nameIcon="close" width="1rem" />
+									</Button>
+								)}
+							</div>
 						</Dialog.Title>
 					)}
 					<main className="h-[calc(100%_-_48px)] dark:bg-gray-800 py-2">

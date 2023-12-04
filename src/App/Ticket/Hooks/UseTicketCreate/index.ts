@@ -5,13 +5,13 @@ import { z } from 'zod';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
 import { customToast } from '~/App/Shared/Utils/CustomToast';
-import { useTicket } from '../UseTicket';
+import { useTickets } from '../UseTickets';
 
 export function useTicketCreate() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData, isLoading } = useAxios();
-	const { revalidateData } = useTicket();
+	const { revalidateData } = useTickets();
 
 	const formSchema = z.object({
 		title: z.string().nonempty(translate('FIELD_IS_REQUIRED')),

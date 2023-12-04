@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import ReactSelect, { OptionsOrGroups } from 'react-select';
-import { useTranslation } from '../../Hooks/UseTranslation';
-import { managerClassNames } from '../../Utils/ManagerClassNames';
+
+import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
+import { format } from './Utils';
 
 type Props = {
 	isClearable?: boolean;
@@ -9,7 +10,6 @@ type Props = {
 	isLoading?: boolean;
 	isSearchable?: boolean;
 	id?: string;
-	label?: string;
 	placeholder?: string;
 	value?: unknown;
 	defaultValue?: string;
@@ -27,108 +27,105 @@ type Props = {
 		debounce: number;
 		minLength?: number;
 	};
+	iserror?: boolean;
 };
 
-export function Select({
-	isClearable,
-	isDisabled,
-	isLoading,
-	isSearchable,
-	options,
-	id,
-	placeholder,
-	label,
-	value,
-	defaultValue,
-	onChange,
-	isMulti,
-	menuPosition,
-	menuPortalTarget,
-	async,
-	...rest
-}: Props) {
-	const [inputValue, setInputValue] = useState('');
-	const { translate } = useTranslation();
+export const Select = forwardRef<HTMLSelectElement, Props>(
+	(
+		{
+			isClearable,
+			isDisabled,
+			isLoading,
+			isSearchable,
+			options,
+			id,
+			placeholder,
+			value,
+			defaultValue,
+			onChange,
+			isMulti,
+			menuPosition,
+			menuPortalTarget,
+			async,
+			iserror,
+			...rest
+		},
+		ref,
+	) => {
+		const [inputValue, setInputValue] = useState('');
+		const { translate } = useTranslation();
 
-	function handleOnChange(e: unknown) {
-		if (!e && onChange) {
-			onChange({ target: { value: '', id } });
-			return;
-		}
-
-		if (isMulti) {
-			const dataArray = e as { value: string }[];
-			const onlyValue = dataArray.map(item => item.value);
-			isMulti.onChange({ target: { value: onlyValue, id } });
-			return;
-		}
-
-		const { value: valueNow } = e as { value: string };
-		if (onChange) {
-			onChange({ target: { value: valueNow, id } });
-		}
-	}
-
-	function getValue() {
-		if (!options) return undefined;
-		if (isMulti && isMulti.value) {
-			const optionsTemp: { value: string; label: string }[] = [];
-			for (const valueTemp of isMulti.value) {
-				const result = options.find(opt => opt.value === valueTemp);
-				if (result) {
-					optionsTemp.push(result);
-				}
+		function handleOnChange(e: unknown) {
+			if (!e && onChange) {
+				onChange({ target: { value: '', id } });
+				return;
 			}
 
-			return optionsTemp;
-		}
-		return options.find(item => item.value === value);
-	}
+			if (isMulti) {
+				const dataArray = e as { value: string }[];
+				const onlyValue = dataArray.map(item => item.value);
+				isMulti.onChange({ target: { value: onlyValue, id } });
+				return;
+			}
 
-	function preInputChange(e: string) {
-		if (async && async.minLength && async.minLength > e.length) {
-			return;
+			const { value: valueNow } = e as { value: string };
+			if (onChange) {
+				onChange({ target: { value: valueNow, id } });
+			}
 		}
-		setInputValue(e);
-	}
 
-	useEffect(() => {
-		const timer = setTimeout(
-			() => {
-				if (async) {
-					async.callback(inputValue);
+		function getValue() {
+			if (!options) {
+				return undefined;
+			}
+
+			if (isMulti && isMulti.value) {
+				const optionsTemp: { value: string; label: string }[] = [];
+				for (const valueTemp of isMulti.value) {
+					const result = options.find(opt => opt.value === valueTemp);
+					if (result) {
+						optionsTemp.push(result);
+					}
 				}
-			},
-			async?.debounce,
-		);
 
-		return () => clearTimeout(timer);
-	}, [inputValue]);
+				return optionsTemp;
+			}
 
-	return (
-		<div {...rest} className="w-full flex flex-col gap-1">
-			{label && (
-				<label
-					htmlFor={id}
-					className={managerClassNames({
-						'text-sm text-gray-500': true,
-					})}
-				>
-					{label}
-				</label>
-			)}
+			return options.find(item => item.value === value);
+		}
 
+		function preInputChange(e: string) {
+			if (async && async.minLength && async.minLength > e.length) {
+				return;
+			}
+			setInputValue(e);
+		}
+
+		useEffect(() => {
+			const timer = setTimeout(
+				() => {
+					if (async) {
+						async.callback(inputValue);
+					}
+				},
+				async?.debounce,
+			);
+
+			return () => clearTimeout(timer);
+		}, [inputValue]);
+
+		return (
 			<ReactSelect
+				{...rest}
+				ref={ref as any}
 				onInputChange={preInputChange}
 				isMulti={!!isMulti}
 				menuPosition={menuPosition}
 				menuPortalTarget={menuPortalTarget}
 				loadingMessage={() => translate('LOADING...')}
 				noOptionsMessage={() => translate('NO_DATA')}
-				key={`react-select-${value}-${label}`}
-				id={id}
-				className="basic-single"
-				classNamePrefix="select"
+				key={`react-select-${value}`}
+				inputId={id}
 				defaultValue={options?.find(item => item.value === defaultValue)}
 				isDisabled={isDisabled}
 				isLoading={isLoading}
@@ -139,11 +136,12 @@ export function Select({
 				onChange={handleOnChange}
 				value={getValue()}
 				styles={{
-					control: baseStyles => ({
+					control: (baseStyles, state) => ({
 						...baseStyles,
-						width: '100%',
-						height: 58,
-						border: '1px solid #e5e7eb',
+						boxShadow: format.stylesControl({
+							isFocused: state.isFocused,
+							iserror,
+						}),
 					}),
 					menu: baseStyles => ({
 						...baseStyles,
@@ -156,15 +154,17 @@ export function Select({
 					}),
 					singleValue: baseStyles => ({
 						...baseStyles,
-						color: '#6C757D',
 						width: '100%',
 					}),
 					input: baseStyles => ({
 						...baseStyles,
-						color: '#6C757D',
 					}),
 				}}
+				classNames={{
+					control: state =>
+						format.classNamesControl({ isFocused: state.isFocused, iserror }),
+				}}
 			/>
-		</div>
-	);
-}
+		);
+	},
+);

@@ -1,10 +1,13 @@
 /* eslint-disable react/button-has-type */
 
 import { Table } from '@tanstack/react-table';
+import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { Button } from '../../Button';
 import { Icons } from '../../Icons';
 import { Input } from '../../Input';
 import { Select } from '../../Select';
+import { ContainerInput } from '../../ContainerInput';
+import { Label } from '../../Label';
 
 type Props<T> = {
 	table: Table<T>;
@@ -89,6 +92,7 @@ export function Pagination<T>({
 	propsButtonLastPage,
 	propsInput,
 }: Props<T>) {
+	const { translate } = useTranslation();
 	if (!pagination) return null;
 	return (
 		<div>
@@ -127,50 +131,47 @@ export function Pagination<T>({
 					<strong>{table.getState().pagination.pageIndex + 1}</strong>
 					de <strong>{table.getPageCount()}</strong>
 				</span>
-				<span className="flex items-center gap-1">
-					| Ir para pág.:
-					<div className="w-20">
-						<Input
-							inputProps={{
-								...propsInput,
-								disabled: pagination?.disabledActions,
-								type: 'number',
-								defaultValue: table.getState().pagination.pageIndex + 1,
-								onBlur: e => {
-									const page = e.target.value ? Number(e.target.value) - 1 : 0;
-									table.setPageIndex(page);
-								},
-								// value: table.getState().pagination.pageIndex + 1,
-								min: 1,
-								max: table.getPageCount(),
-							}}
-						/>
-					</div>
-				</span>
+				<ContainerInput className="w-max flex-row items-center">
+					<Label className="whitespace-nowrap" htmlFor="pageNumber">
+						{translate('GO_TO_PAGE')}
+					</Label>
+					<Input
+						{...propsInput}
+						disabled={pagination?.disabledActions}
+						type="number"
+						id="pageNumber"
+						defaultValue={table.getState().pagination.pageIndex + 1}
+						onBlur={e => {
+							const page = e.target.value ? Number(e.target.value) - 1 : 0;
+							table.setPageIndex(page);
+						}}
+						min={1}
+						max={table.getPageCount()}
+					/>
+				</ContainerInput>
+
 				{pagination?.disabledPageSize && (
 					<div>| {table.getRowModel().rows.length} Linhas</div>
 				)}
 				{!pagination?.disabledPageSize && (
-					<>
-						<div>Linhas</div>
-						<div>
-							<Select
-								menuPosition="fixed"
-								isSearchable={false}
-								isDisabled={pagination?.disabledActions}
-								value={
-									DEFAULT_OPTIONS.find(
-										item => item.value === table.getState().pagination.pageSize,
-									)?.value
-								}
-								options={DEFAULT_OPTIONS}
-								onChange={e => {
-									table.setPageSize(Number(e.target.value));
-								}}
-								id="isActive"
-							/>
-						</div>
-					</>
+					<ContainerInput className="w-max flex-row items-center">
+						<Label htmlFor="isActive">{translate('ROWS')}</Label>
+						<Select
+							menuPosition="fixed"
+							isSearchable={false}
+							isDisabled={pagination?.disabledActions}
+							value={
+								DEFAULT_OPTIONS.find(
+									item => item.value === table.getState().pagination.pageSize,
+								)?.value
+							}
+							options={DEFAULT_OPTIONS}
+							onChange={e => {
+								table.setPageSize(Number(e.target.value));
+							}}
+							id="isActive"
+						/>
+					</ContainerInput>
 				)}
 			</div>
 		</div>

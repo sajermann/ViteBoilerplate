@@ -1,5 +1,15 @@
 {
 	"translations": {
+		"ATTACHMENTS": "Attachments",
+		"SEND_MESSAGE": "Send Message",
+		"MESSAGE_ADDED_SUCCESS": "Message added success",
+		"ROWS": "Rows",
+		"BACK": "Back",
+		"SAVE": "Save",
+		"MESSAGES": "Messages",
+		"MESSAGE": "Message",
+		"GO_TO_PAGE": "Go to page",
+		"SEARCH_BY_TITLE": "Search by title",
 		"TICKET_CREATED_SUCCESS": "Ticket created success",
 		"DESCRIPTION_OF_TICKET": "Description of ticket",
 		"TITLE_OF_TICKET": "Title of ticket",

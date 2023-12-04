@@ -1,78 +1,200 @@
 /* eslint-disable react/button-has-type */
-import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, AllHTMLAttributes } from 'react';
 import { tv } from 'tailwind-variants';
+import { TFeedbackProps } from '~/App/Shared/Types/TFeedbackProps';
+import { showInDevelopment } from '~/App/Shared/Utils/ShowInDevelopment';
+import { Children } from './Children';
+import { EndIcon } from './EndIcon';
+import { FeedbackIcon } from './FeedbackIcon';
+import { LoadingIcon } from './LoadingIcon';
+import { MainFeedback } from './MainFeedback';
+import { StartIcon } from './StartIcon';
 
-type TColor = 'primary' | 'error' | 'success' | 'warning' | 'normal';
-type TVariant = 'contained' | 'outlined' | 'option';
-
-type Props = DetailedHTMLProps<
-	ButtonHTMLAttributes<HTMLButtonElement>,
-	HTMLButtonElement
-> & {
-	variantType?: TVariant;
-	colorStyle?: TColor;
-};
-
-const button = tv({
-	base: [
-		'disabled:opacity-50 disabled:cursor-not-allowed h-14',
-		'p-4 border hover:opacity-70 transition-all duration-500 rounded',
-		'active:opacity-50',
-	],
+const buttonVariants = tv({
+	slots: {
+		buttonPropsInternal: [
+			'py-1 px-4 w-52 h-11 border-0 font-bold flex items-center justify-center text-lg',
+			'relative overflow-hidden cursor-pointer disabled:cursor-not-allowed rounded-lg',
+			'outline-none',
+			'active:opacity-50 focus:ring-2 hover:opacity-70',
+			'disabled:opacity-50 disabled:active:opacity-50 disabled:hover:opacity-50',
+			'transition-all duration-500',
+		],
+		containerInsideInternal: [
+			'flex items-center justify-center w-full h-full gap-1',
+		],
+		containerIconInternal: ['h-full'],
+		containerChildrenInternal: [
+			'w-full overflow-hidden whitespace-nowrap text-ellipsis flex-1',
+		],
+	},
 	variants: {
-		contained: {
-			primary: 'bg-blue-500 text-white outline-blue-700',
-			error: 'bg-red-500 text-white outline-red-700',
-			success: 'bg-green-500 text-white outline-green-700',
-			warning: 'bg-yellow-500 text-white outline-yellow-700',
-			normal: 'bg-transparent text-current outline-current hover:bg-slate-200',
+		color: {
+			primary: {
+				buttonPropsInternal: [
+					'bg-blue-500 border border-blue-700 focus:ring-blue-700 text-white',
+				],
+			},
+			secondary: {
+				buttonPropsInternal: [
+					'bg-red-500 border border-red-700 focus:ring-red-700 text-white',
+				],
+			},
+			success: {
+				buttonPropsInternal: [
+					'bg-green-500 border border-green-700 focus:ring-green-700 text-white',
+				],
+			},
+			warning: {
+				buttonPropsInternal: [
+					'bg-yellow-500 border border-yellow-700 focus:ring-yellow-700 text-white',
+				],
+			},
 		},
-		outlined: {
-			primary: 'bg-transparent border-blue-500 text-blue-500 outline-blue-700',
-			error: 'bg-transparent border-red-500 text-red-500 outline-red-700',
-			success:
-				'bg-transparent border-green-500 text-green-500 outline-green-700',
-			warning:
-				'bg-transparent border-yellow-500 text-yellow-500 outline-yellow-700',
-			normal: 'bg-transparent text-current outline-current hover:bg-slate-200',
+		variant: {
+			default: {
+				buttonPropsInternal: [''],
+			},
+			outlined: {
+				buttonPropsInternal: ['bg-transparent'],
+			},
+			option: {
+				buttonPropsInternal: [
+					'bg-transparent border-0 ring-0 focus:ring-0 hover:bg-slate-500',
+				],
+			},
 		},
-		option: {
-			primary:
-				'bg-transparent border-0 text-blue-500 outline-blue-700 hover:bg-slate-200',
-			error:
-				'bg-transparent border-0 text-red-500 outline-red-700 hover:bg-slate-200',
-			success:
-				'bg-transparent border-0 text-green-500 outline-green-700 hover:bg-slate-200',
-			warning:
-				'bg-transparent border-0 text-yellow-500 outline-yellow-700 hover:bg-slate-200',
-			normal:
-				'bg-transparent border-0 text-current outline-current hover:bg-slate-200',
-		},
-		icon: {
-			square: '',
-			circle: '',
-		},
-		size: {
-			sm: 'text-sm',
-			md: 'text-base',
-			lg: 'px-4 py-3 text-lg',
+		iconButton: {
+			rounded: {
+				buttonPropsInternal: ['w-11 h-11 p-2 rounded-full'],
+			},
+			squared: {
+				buttonPropsInternal: ['w-11 h-11 p-2'],
+			},
 		},
 	},
+	compoundSlots: [
+		{
+			slots: ['buttonPropsInternal'],
+			color: 'primary',
+			variant: ['outlined', 'option'],
+			className: 'text-blue-500',
+		},
+		{
+			slots: ['buttonPropsInternal'],
+			color: 'secondary',
+			variant: ['outlined', 'option'],
+			className: 'text-red-500',
+		},
+		{
+			slots: ['buttonPropsInternal'],
+			color: 'success',
+			variant: ['outlined', 'option'],
+			className: 'text-green-500',
+		},
+		{
+			slots: ['buttonPropsInternal'],
+			color: 'warning',
+			variant: ['outlined', 'option'],
+			className: 'text-yellow-500',
+		},
+	],
+
 	defaultVariants: {
-		size: 'md',
-		contained: 'primary',
+		color: 'primary',
+		variant: 'default',
 	},
 });
 
-export function Button({ colorStyle, className, variantType, ...rest }: Props) {
+interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
+	startIcon?: JSX.Element;
+	endIcon?: JSX.Element;
+	containerIconsProps?: AllHTMLAttributes<HTMLDivElement>;
+	containerInsideProps?: AllHTMLAttributes<HTMLDivElement>;
+	containerChildrenProps?: AllHTMLAttributes<HTMLDivElement>;
+	withFeedback?: TFeedbackProps;
+	variant?: 'default' | 'outlined' | 'option';
+	colorStyle?: 'primary' | 'secondary' | 'success' | 'warning';
+	iconButton?: 'rounded' | 'squared';
+	type?: 'submit' | 'reset' | 'button';
+}
+
+function Button({
+	withFeedback,
+	children,
+	startIcon,
+	endIcon,
+	containerIconsProps,
+	containerInsideProps,
+	containerChildrenProps,
+	colorStyle,
+	variant,
+	iconButton,
+	...rest
+}: IButton) {
+	const {
+		buttonPropsInternal,
+		containerInsideInternal,
+		containerIconInternal,
+		containerChildrenInternal,
+	} = buttonVariants({
+		color: colorStyle,
+		variant,
+		iconButton,
+	});
+
 	return (
 		<button
 			{...rest}
-			className={button({
-				className,
-				[variantType as TVariant]: colorStyle,
-				size: 'lg',
+			className={buttonPropsInternal({
+				className: rest.className,
 			})}
-		/>
+		>
+			<div
+				{...showInDevelopment({ 'data-content': 'containerInsideButton' })}
+				{...containerInsideProps}
+				className={containerInsideInternal({
+					className: containerInsideProps?.className,
+				})}
+			>
+				<StartIcon
+					className={containerIconInternal({
+						className: containerIconsProps?.className,
+					})}
+				>
+					{startIcon}
+				</StartIcon>
+				<Children
+					withFeedback={withFeedback}
+					className={containerChildrenInternal({
+						className: [
+							containerChildrenProps?.className,
+							iconButton ? 'flex justify-center' : '',
+						],
+					})}
+				>
+					{children}
+				</Children>
+				<MainFeedback
+					withFeedback={withFeedback}
+					className={containerIconInternal({
+						className: containerIconsProps?.className,
+					})}
+				>
+					<LoadingIcon withFeedback={withFeedback} />
+					<FeedbackIcon withFeedback={withFeedback} />
+				</MainFeedback>
+				<EndIcon
+					withFeedback={withFeedback}
+					className={containerIconInternal({
+						className: containerIconsProps?.className,
+					})}
+				>
+					{endIcon}
+				</EndIcon>
+			</div>
+		</button>
 	);
 }
+
+export { Button };

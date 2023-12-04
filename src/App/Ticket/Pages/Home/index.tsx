@@ -8,7 +8,7 @@ import { Search } from '~/App/Ticket/Components/Search';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '~/App/Shared/Components/Button';
 import { Eye } from 'lucide-react';
-import { useTicket } from '../../Hooks/UseTicket';
+import { useTickets } from '../../Hooks/UseTickets';
 
 function buildColumns({
 	navigate,
@@ -28,9 +28,14 @@ function buildColumns({
 			enableResizing: false,
 			enableSorting: false,
 			cell: ({ getValue }) => (
-				<Button onClick={() => navigate(`/ticket/${getValue()}`)}>
-					<Eye />
-				</Button>
+				<div className="w-full flex justify-center">
+					<Button
+						iconButton="squared"
+						onClick={() => navigate(`/ticket/${getValue()}`)}
+					>
+						<Eye />
+					</Button>
+				</div>
 			),
 		},
 		{
@@ -118,7 +123,7 @@ function buildColumns({
 	];
 }
 
-export function TicketHomePage() {
+export function TicketsPage() {
 	const {
 		tickets,
 		isFetching,
@@ -126,7 +131,7 @@ export function TicketHomePage() {
 		pagination,
 		setPagination,
 		setFilterQuery,
-	} = useTicket();
+	} = useTickets();
 	const navigate = useNavigate();
 	const { translate } = useTranslation();
 	const [sortingInternal, setSortingInternal] = useState<
@@ -136,7 +141,7 @@ export function TicketHomePage() {
 	const columns = buildColumns({ navigate, translate });
 
 	return (
-		<div>
+		<div className="w-full flex flex-col gap-4">
 			<Search onSubmitForm={setFilterQuery} />
 			<Table
 				isLoading={isFetching}

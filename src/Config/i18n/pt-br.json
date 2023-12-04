@@ -1,5 +1,15 @@
 {
 	"translations": {
+		"ATTACHMENTS": "Anexos",
+		"SEND_MESSAGE": "Enviar Mensagem",
+		"MESSAGE_ADDED_SUCCESS": "Mensagem adicionada com sucesso",
+		"ROWS": "Linhas",
+		"BACK": "Voltar",
+		"SAVE": "Salvar",
+		"MESSAGES": "Mensagens",
+		"MESSAGE": "Mensagem",
+		"GO_TO_PAGE": "Ir para pág.",
+		"SEARCH_BY_TITLE": "Pesquisa por título",
 		"TICKET_CREATED_SUCCESS": "Ticket criado com sucesso",
 		"DESCRIPTION_OF_TICKET": "Descrição do ticket",
 		"TITLE_OF_TICKET": "Titulo do ticket",
