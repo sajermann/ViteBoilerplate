@@ -1,16 +1,37 @@
 import { Button } from '~/App/Shared/Components/Button';
-import { Input } from '~/App/Shared/Components/Input';
 import { Modal } from '~/App/Shared/Components/Modal';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
-import { ContainerInput } from '~/App/Shared/Components/ContainerInput';
-import { Label } from '~/App/Shared/Components/Label';
-import { ErrorsInput } from '~/App/Shared/Components/ErrorsInput';
-import { useTicketCreate } from '../../Hooks/UseTicketCreate';
+import { useDropzone, FileWithPath } from 'react-dropzone';
+import { useCallback } from 'react';
+import { delay } from '~/App/Shared/Utils/Delay';
+import { useMessage } from '../../Hooks/UseMessage';
+import { AttachmentsList } from '../AttachmentsList';
+import { useAttachments } from '../../Hooks/UseAttachments';
 
-export function UploadAttachments() {
+type TProps = {
+	onSaveFiles: (data: FileWithPath[]) => void;
+};
+
+export function UploadAttachments({ onSaveFiles }: TProps) {
 	const { translate } = useTranslation();
-	const { register, handleSubmit, errors, modalIsOpen, closeModal, openModal } =
-		useTicketCreate();
+	const { files, setFiles, handleRemoveFile } = useAttachments();
+	const { modalAttachmentsIsOpen, closeModal, openModal } = useMessage();
+
+	const onDrop = useCallback(
+		(acceptedFiles: FileWithPath[]) => {
+			setFiles([...files, ...acceptedFiles]);
+		},
+		[files],
+	);
+
+	const { getRootProps, getInputProps } = useDropzone({
+		accept: {
+			'image/jpeg': [],
+			'image/png': [],
+			'application/pdf': [],
+		},
+		onDrop,
+	});
 
 	return (
 		<>
@@ -19,50 +40,22 @@ export function UploadAttachments() {
 			</Button>
 
 			<Modal
-				title={translate('CREATE_TICKET')}
-				isOpen={modalIsOpen}
+				title={translate('ATTACHMENTS')}
+				isOpen={modalAttachmentsIsOpen}
 				onClose={closeModal}
 				closeButton
 			>
-				<form onSubmit={handleSubmit} className="p-4 flex flex-col gap-4 w-96">
-					<ContainerInput>
-						<Label htmlFor="title_create" isError={!!errors.title?.message}>
-							{translate('TITLE_OF_TICKET')}
-						</Label>
-						<Input
-							{...register('title')}
-							placeholder={translate('TITLE_OF_TICKET')}
-							id="title_create"
-							iserror={!!errors.title?.message}
-						/>
-						<ErrorsInput
-							errors={
-								errors.title?.message ? [errors.title?.message] : undefined
-							}
-						/>
-					</ContainerInput>
+				<div className="p-4 flex flex-col gap-4 max-w-[30rem]">
+					<div
+						{...getRootProps({ className: 'border' })}
+						className="border border-dashed p-4 rounded-xl hover:border-blue-500 hover:text-blue-500 transition-colors duration-500"
+					>
+						<input {...getInputProps()} />
+						<p>{translate('MESSAGE_DRAG_AND_DROP')}</p>
+						<em>{translate('FILES_ACCEPTED')}</em>
+					</div>
 
-					<ContainerInput>
-						<Label
-							htmlFor="description"
-							isError={!!errors.description?.message}
-						>
-							{translate('DESCRIPTION_OF_TICKET')}
-						</Label>
-						<Input
-							{...register('description')}
-							placeholder={translate('DESCRIPTION_OF_TICKET')}
-							id="description"
-							iserror={!!errors.description?.message}
-						/>
-						<ErrorsInput
-							errors={
-								errors.description?.message
-									? [errors.description?.message]
-									: undefined
-							}
-						/>
-					</ContainerInput>
+					<AttachmentsList files={files} onRemove={handleRemoveFile} />
 
 					<div className="flex gap-4 justify-end">
 						<Button
@@ -73,9 +66,20 @@ export function UploadAttachments() {
 						>
 							{translate('CANCEL')}
 						</Button>
-						<Button type="submit">{translate('CREATE')}</Button>
+						<Button
+							type="button"
+							disabled={files.length === 0}
+							onClick={async () => {
+								onSaveFiles(files);
+								closeModal();
+								await delay(300);
+								setFiles([]);
+							}}
+						>
+							{translate('SAVE')}
+						</Button>
 					</div>
-				</form>
+				</div>
 			</Modal>
 		</>
 	);

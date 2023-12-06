@@ -1,5 +1,7 @@
 {
 	"translations": {
+		"FILES_ACCEPTED": "Apenas imagens *.jpeg e *.png e pdf serão aceitos",
+		"MESSAGE_DRAG_AND_DROP": "Arraste e solte os arquivos aqui, ou clique para selecionar os arquivos",
 		"ATTACHMENTS": "Anexos",
 		"SEND_MESSAGE": "Enviar Mensagem",
 		"MESSAGE_ADDED_SUCCESS": "Mensagem adicionada com sucesso",

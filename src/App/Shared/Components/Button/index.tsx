@@ -60,7 +60,7 @@ const buttonVariants = tv({
 			},
 			option: {
 				buttonPropsInternal: [
-					'bg-transparent border-0 ring-0 focus:ring-0 hover:bg-slate-500',
+					'bg-transparent border-0 ring-0 focus:ring-0 hover:bg-slate-100',
 				],
 			},
 		},

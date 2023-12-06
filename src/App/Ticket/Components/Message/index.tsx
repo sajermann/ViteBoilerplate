@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { Textarea } from '~/App/Shared/Components/Textarea';
 import { ContainerInput } from '~/App/Shared/Components/ContainerInput';
@@ -6,17 +7,24 @@ import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { Button } from '~/App/Shared/Components/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CONSTANTS } from '~/App/Shared/Constants';
-import { useEffect, useRef } from 'react';
-
+import { ErrorsInput } from '~/App/Shared/Components/ErrorsInput';
 import { useMessage } from '../../Hooks/UseMessage';
 import { UploadAttachments } from '../UploadAttachments';
+import { AttachmentsList } from '../AttachmentsList';
+import { useAttachments } from '../../Hooks/UseAttachments';
 
 export function Message() {
 	const { id: ticketId } = useParams<{ id: string }>();
 	const { translate } = useTranslation();
 	const navigate = useNavigate();
 	const refContainerMessages = useRef<HTMLDivElement>(null);
-	const { messages = [], handleSubmit, register } = useMessage(ticketId);
+	const {
+		messages = [],
+		handleSubmit,
+		register,
+		errors,
+	} = useMessage(ticketId);
+	const { files, setFiles, handleRemoveFile } = useAttachments();
 
 	async function scrollContainerMessatesToBottom() {
 		refContainerMessages?.current?.scrollBy({
@@ -51,11 +59,25 @@ export function Message() {
 
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 				<ContainerInput>
-					<Label htmlFor="message">{translate('MESSAGE')}</Label>
-					<Textarea id="message" {...register('message')} />
+					<Label htmlFor="message" isError={!!errors.message?.message}>
+						{translate('MESSAGE')}
+					</Label>
+					<Textarea
+						id="message"
+						{...register('message')}
+						iserror={!!errors.message?.message}
+					/>
+					<ErrorsInput
+						errors={
+							errors.message?.message ? [errors.message?.message] : undefined
+						}
+					/>
 				</ContainerInput>
+				<AttachmentsList files={files} onRemove={handleRemoveFile} />
 				<div className="flex gap-4">
-					<UploadAttachments />
+					<UploadAttachments
+						onSaveFiles={e => setFiles(prev => [...prev, ...e])}
+					/>
 					<Button>{translate('SEND_MESSAGE')}</Button>
 					<Button
 						variant="outlined"
