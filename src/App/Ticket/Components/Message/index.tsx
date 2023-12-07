@@ -40,22 +40,30 @@ export function Message() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			{messages.length > 0 && <h2>{translate('MESSAGES')}</h2>}
-			<div ref={refContainerMessages} className="border h-96 overflow-y-auto ">
-				<div className="w-full flex flex-col-reverse gap-4">
-					{messages.map(item => (
-						<div key={item.createdAt} className="border rounded-lg h-10">
-							<span>
-								{format(
-									new Date(item.createdAt as string),
-									'dd/MM/yyyy, HH:mm',
-								)}
-							</span>
-							<span>{item.description}</span>
+			{messages.length > 0 && (
+				<>
+					<h2>{translate('MESSAGES')}</h2>
+
+					<div
+						ref={refContainerMessages}
+						className="border h-96 overflow-y-auto "
+					>
+						<div className="w-full flex flex-col-reverse gap-4">
+							{messages.map(item => (
+								<div key={item.createdAt} className="border rounded-lg h-10">
+									<span>
+										{format(
+											new Date(item.createdAt as string),
+											'dd/MM/yyyy, HH:mm',
+										)}
+									</span>
+									<span>{item.description}</span>
+								</div>
+							))}
 						</div>
-					))}
-				</div>
-			</div>
+					</div>
+				</>
+			)}
 
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 				<ContainerInput>

@@ -36,17 +36,11 @@ export const useToken = create<Props>()(
 				})),
 			getUserInfo: async () => {
 				try {
-					const secret = new TextEncoder().encode(
-						import.meta.env.VITE_ACCESS_TOKEN_SECRET,
-					);
-					const { payload } = await jose.jwtVerify(
-						get().accessToken || '',
-						secret,
-						{
-							clockTolerance: '2h',
-						},
-					);
-					return payload as TUser;
+					// const secret = new TextEncoder().encode(
+					// 	import.meta.env.VITE_ACCESS_TOKEN_SECRET,
+					// );
+					const result = await jose.decodeJwt(get().accessToken || '');
+					return result as TUser;
 				} catch (e) {
 					console.log({ e });
 					customToast({

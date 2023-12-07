@@ -7,6 +7,7 @@ import {
 } from 'axios';
 import { useToken } from '~/App/Shared/Hooks/UseToken';
 import { customToast } from '~/App/Shared/Utils/CustomToast';
+import * as jose from 'jose';
 
 interface CustomAxiosRequestHeaders extends AxiosRequestHeaders {
 	refresh_token: string;
@@ -16,6 +17,9 @@ interface CustomAxiosRequestHeaders extends AxiosRequestHeaders {
 export default function Interceptor(api: AxiosInstance) {
 	const onResponse = (response: AxiosResponse) => {
 		if (response.headers.accesstoken && response.headers.refreshtoken) {
+			const accesstoken = jose.decodeJwt(response.headers.accesstoken);
+			const refreshtoken = jose.decodeJwt(response.headers.refreshtoken);
+			console.log('Veio na resposta', { accesstoken }, { refreshtoken });
 			useToken.setState(rest => ({
 				...rest,
 				accessToken: response.headers.accesstoken,
