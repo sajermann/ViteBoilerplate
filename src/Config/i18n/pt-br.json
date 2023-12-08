@@ -1,5 +1,9 @@
 {
 	"translations": {
+		"ATTACHMENT": "Anexo",
+		"BY": "por",
+		"PLEASE_FILL_THIS_FIELD": "Por favor preencha esse campo.",
+		"PLEASE_ENTER_A_MINIMUM_OF_5_CHARACTERS_IN_THIS_FIELD": "Por favor preencha esse campo com pelo menos 5 caractéres.",
 		"FILES_ACCEPTED": "Apenas imagens *.jpeg e *.png e pdf serão aceitos",
 		"MESSAGE_DRAG_AND_DROP": "Arraste e solte os arquivos aqui, ou clique para selecionar os arquivos",
 		"ATTACHMENTS": "Anexos",

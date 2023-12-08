@@ -1,5 +1,9 @@
 {
 	"translations": {
+		"ATTACHMENT": "Attachment",
+		"BY": "by",
+		"PLEASE_FILL_THIS_FIELD": "Please fill this field.",
+		"PLEASE_ENTER_A_MINIMUM_OF_5_CHARACTERS_IN_THIS_FIELD": "Please enter a minimum of 5 characters in this field.",
 		"FILES_ACCEPTED": "Only *.jpeg and *.png images and pdf will be accepted",
 		"MESSAGE_DRAG_AND_DROP": "Drag and drop some files here, or click to select files",
 		"ATTACHMENTS": "Attachments",

@@ -1,5 +1,8 @@
+import { TAttachment } from '../Attachment';
+
 export type TMessage = {
-	attachments: [];
+	id: string;
+	attachments: TAttachment[];
 	description: string;
 	createdAt: string;
 	author: {

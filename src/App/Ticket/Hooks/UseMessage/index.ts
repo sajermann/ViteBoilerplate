@@ -7,13 +7,21 @@ import { useAxios } from '~/App/Shared/Hooks/UseAxios';
 import { customToast } from '~/App/Shared/Utils/CustomToast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { TMessage } from '../../Types/Message';
+import { useAttachments } from '../UseAttachments';
 
 const KEY_TICKETS = 'messages';
+const ACCEPTED_IMAGE_TYPES = [
+	'image/jpeg',
+	'image/jpg',
+	'image/png',
+	'application/pdf',
+];
 
 export function useMessage(ticketId?: string) {
 	const [modalAttachmentsIsOpen, setModalAttachmentsIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData, isLoading } = useAxios();
+	const { files, setFiles, handleRemoveFile } = useAttachments();
 	const { data: messages } = useQuery<TMessage[]>({
 		queryKey: [KEY_TICKETS, ticketId],
 		queryFn: async () => {
@@ -31,8 +39,22 @@ export function useMessage(ticketId?: string) {
 	});
 	const queryClient = useQueryClient();
 
+	const filesSchema = z
+		.any()
+		.refine(
+			file => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+			'Only .jpg, .jpeg, .png and .pdf formats are supported.',
+		)
+		.optional();
+
 	const formSchema = z.object({
-		message: z.string().nonempty(translate('FIELD_IS_REQUIRED')),
+		message: z
+			.string()
+			.min(
+				5,
+				translate('PLEASE_ENTER_A_MINIMUM_OF_5_CHARACTERS_IN_THIS_FIELD'),
+			),
+		attachments: z.array(filesSchema).optional(),
 	});
 
 	type FormData = z.infer<typeof formSchema>;
@@ -63,14 +85,22 @@ export function useMessage(ticketId?: string) {
 		queryClient.invalidateQueries([KEY_TICKETS, ticketId]);
 	}
 
+	function afterPostMessageSuccess() {
+		reset();
+		revalidateData();
+		setFiles([]);
+	}
+
 	const handleCreate: SubmitHandler<FormData> = async data => {
 		formSchema.parse({ ...data });
 		const form = new FormData();
 		form.append('description', data.message);
 		form.append('ticketId', ticketId || '');
-		// form.append('my_file', fileInput.files[0]);
-
-		console.log({ form });
+		if (data.attachments && data.attachments.length > 0) {
+			for (const item of data.attachments) {
+				form.append('files', item);
+			}
+		}
 
 		const result = await fetchData({
 			method: 'post',
@@ -78,12 +108,11 @@ export function useMessage(ticketId?: string) {
 			data: form,
 		});
 		if (result?.status === 201) {
-			closeModal();
 			customToast({
 				msg: translate('MESSAGE_ADDED_SUCCESS'),
 				type: 'success',
 			});
-			revalidateData();
+			afterPostMessageSuccess();
 		}
 	};
 
@@ -101,8 +130,11 @@ export function useMessage(ticketId?: string) {
 			openModal,
 			isLoading,
 			messages,
+			files,
+			setFiles,
+			handleRemoveFile,
 		}),
-		[errors, modalAttachmentsIsOpen, isLoading, messages],
+		[errors, modalAttachmentsIsOpen, isLoading, messages, files],
 	);
 	return memoizedValue;
 }

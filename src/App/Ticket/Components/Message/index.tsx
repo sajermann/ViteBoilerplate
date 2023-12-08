@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { format } from 'date-fns';
 import { Textarea } from '~/App/Shared/Components/Textarea';
 import { ContainerInput } from '~/App/Shared/Components/ContainerInput';
 import { Label } from '~/App/Shared/Components/Label';
@@ -8,10 +7,11 @@ import { Button } from '~/App/Shared/Components/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CONSTANTS } from '~/App/Shared/Constants';
 import { ErrorsInput } from '~/App/Shared/Components/ErrorsInput';
+
 import { useMessage } from '../../Hooks/UseMessage';
 import { UploadAttachments } from '../UploadAttachments';
 import { AttachmentsList } from '../AttachmentsList';
-import { useAttachments } from '../../Hooks/UseAttachments';
+import { MessageItem } from '../MessageItem';
 
 export function Message() {
 	const { id: ticketId } = useParams<{ id: string }>();
@@ -23,19 +23,19 @@ export function Message() {
 		handleSubmit,
 		register,
 		errors,
+		setValue,
+		getValues,
+		files,
+		setFiles,
+		handleRemoveFile,
 	} = useMessage(ticketId);
-	const { files, setFiles, handleRemoveFile } = useAttachments();
 
-	async function scrollContainerMessatesToBottom() {
+	useEffect(() => {
 		refContainerMessages?.current?.scrollBy({
 			top: 9e9,
 			left: 0,
 			behavior: 'smooth',
 		});
-	}
-
-	useEffect(() => {
-		scrollContainerMessatesToBottom();
 	}, [messages]);
 
 	return (
@@ -46,19 +46,11 @@ export function Message() {
 
 					<div
 						ref={refContainerMessages}
-						className="border h-96 overflow-y-auto "
+						className="border h-96 overflow-y-auto p-4"
 					>
 						<div className="w-full flex flex-col-reverse gap-4">
 							{messages.map(item => (
-								<div key={item.createdAt} className="border rounded-lg h-10">
-									<span>
-										{format(
-											new Date(item.createdAt as string),
-											'dd/MM/yyyy, HH:mm',
-										)}
-									</span>
-									<span>{item.description}</span>
-								</div>
+								<MessageItem key={item.id} item={item} />
 							))}
 						</div>
 					</div>
@@ -80,19 +72,38 @@ export function Message() {
 							errors.message?.message ? [errors.message?.message] : undefined
 						}
 					/>
-				</ContainerInput>
-				<AttachmentsList files={files} onRemove={handleRemoveFile} />
-				<div className="flex gap-4">
-					<UploadAttachments
-						onSaveFiles={e => setFiles(prev => [...prev, ...e])}
+					<ErrorsInput
+						errors={
+							errors.attachments?.message
+								? [errors.attachments?.message]
+								: undefined
+						}
 					/>
-					<Button>{translate('SEND_MESSAGE')}</Button>
+				</ContainerInput>
+				<AttachmentsList
+					files={files}
+					onRemove={e => {
+						const filesUpdateds = handleRemoveFile(e);
+						setValue('attachments', [...filesUpdateds]);
+					}}
+				/>
+				<div className="flex gap-4">
 					<Button
 						variant="outlined"
 						onClick={() => navigate(CONSTANTS.URL.TICKET_ROOT)}
 					>
 						{translate('BACK')}
 					</Button>
+					<div className="flex gap-4 w-full justify-end">
+						<UploadAttachments
+							onSaveFiles={e => {
+								setFiles(prev => [...prev, ...e]);
+								const oldValues = getValues('attachments');
+								setValue('attachments', [...(oldValues || []), ...e]);
+							}}
+						/>
+						<Button>{translate('SEND_MESSAGE')}</Button>
+					</div>
 				</div>
 			</form>
 		</div>

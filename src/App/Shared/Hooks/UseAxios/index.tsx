@@ -5,6 +5,10 @@ import { managerErrors } from '../../Utils/ManagerErrors';
 
 axios.defaults.baseURL = import.meta.env.VITE_URL_API;
 axios.defaults.headers.common.Authorization = '';
+axios.defaults.headers.common['Cache-Control'] = 'no-cache';
+axios.defaults.headers.common.Pragma = 'no-cache';
+axios.defaults.headers.common.Expires = '0';
+
 axios.defaults.headers.common.Timezone =
 	new Date().toTimeString().split(' ')[1] || '';
 

@@ -55,7 +55,7 @@ export function Sidebar() {
 						className={clsx([
 							{ 'flex items-center gap-2 border-b p-2 w-full': true },
 							{ 'transition-all duration-500': true },
-							{ 'hover:bg-red-400 hover:text-white': true },
+							{ 'hover:bg-blue-400 hover:text-white': true },
 							{ 'justify-center': isCollapsed },
 						])}
 						onClick={() => setIsCollapsed()}
@@ -79,7 +79,7 @@ export function Sidebar() {
 									className={clsx([
 										{ 'flex gap-2 border-b p-2': true },
 										{ 'transition-all duration-500': true },
-										{ 'hover:bg-red-400 hover:text-white': true },
+										{ 'hover:bg-blue-400 hover:text-white': true },
 										{ 'justify-center': isCollapsed },
 									])}
 								>
