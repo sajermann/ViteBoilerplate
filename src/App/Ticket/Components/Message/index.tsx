@@ -28,7 +28,43 @@ export function Message() {
 		files,
 		setFiles,
 		handleRemoveFile,
+		setPagination,
+		pagination,
 	} = useMessage(ticketId);
+
+	const handleScroll = () => {
+		if (!refContainerMessages || !refContainerMessages.current) return;
+		// Verificar se o usuário está no topo da div
+		const isAtTop = refContainerMessages.current.scrollTop === 0;
+
+		// Se estiver no topo, execute a função desejada
+		if (isAtTop) {
+			alert('Usuário chegou ao topo da div!');
+			// Ou chame sua função personalizada aqui
+			// suaFuncaoPersonalizada();
+			setPagination(prev => ({ ...prev, pageIndex: pagination.pageIndex + 1 }));
+		}
+	};
+
+	function removeEvent() {
+		if (!refContainerMessages || !refContainerMessages.current) return;
+		refContainerMessages.current.removeEventListener('scroll', handleScroll);
+	}
+
+	useEffect(() => {
+		if (!refContainerMessages || !refContainerMessages.current) {
+			console.log('Deu ruim');
+
+			return undefined;
+		}
+		// Adicionar um listener de evento de scroll à div
+		refContainerMessages.current.addEventListener('scroll', handleScroll);
+
+		// Remover o listener ao desmontar o componente para evitar vazamentos de memória
+		return () => {
+			removeEvent();
+		};
+	}, []);
 
 	useEffect(() => {
 		refContainerMessages?.current?.scrollBy({
@@ -40,22 +76,21 @@ export function Message() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			{messages.length > 0 && (
-				<>
-					<h2>{translate('MESSAGES')}</h2>
+			{messages.length > 0 && <h2>{translate('MESSAGES')}</h2>}
 
-					<div
-						ref={refContainerMessages}
-						className="border h-96 overflow-y-auto p-4"
-					>
-						<div className="w-full flex flex-col-reverse gap-4">
-							{messages.map(item => (
-								<MessageItem key={item.id} item={item} />
-							))}
-						</div>
-					</div>
-				</>
-			)}
+			<div
+				ref={refContainerMessages}
+				className="border h-96 overflow-y-auto p-4"
+			>
+				{messages.length < 1 && (
+					<h2>{translate('ADD_YOUR_FIRST_MESSAGE_TO_TICKET')}</h2>
+				)}
+				<div className="w-full flex flex-col-reverse gap-4">
+					{messages.map(item => (
+						<MessageItem key={item.id} item={item} />
+					))}
+				</div>
+			</div>
 
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 				<ContainerInput>

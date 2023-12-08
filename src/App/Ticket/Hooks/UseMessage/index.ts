@@ -6,6 +6,7 @@ import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
 import { customToast } from '~/App/Shared/Utils/CustomToast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePagination } from '~/App/Shared/Hooks/UsePagination';
 import { TMessage } from '../../Types/Message';
 import { useAttachments } from '../UseAttachments';
 
@@ -22,8 +23,10 @@ export function useMessage(ticketId?: string) {
 	const { translate } = useTranslation();
 	const { fetchData, isLoading } = useAxios();
 	const { files, setFiles, handleRemoveFile } = useAttachments();
+	const { setPageCount, pagination, setPagination, backQuery } =
+		usePagination();
 	const { data: messages } = useQuery<TMessage[]>({
-		queryKey: [KEY_TICKETS, ticketId],
+		queryKey: [KEY_TICKETS, ticketId, backQuery],
 		queryFn: async () => {
 			if (!ticketId) return [];
 			const result = await fetchData({
@@ -31,6 +34,9 @@ export function useMessage(ticketId?: string) {
 				url: `v1/message/getByTicketId/${ticketId}?pageSize=10&pageIndex=0`,
 			});
 			if (result?.status === 200) {
+				setPageCount(
+					Math.ceil(result.data.pagination.total / pagination.pageSize),
+				);
 				return result.data.data;
 			}
 			return [];
@@ -133,8 +139,10 @@ export function useMessage(ticketId?: string) {
 			files,
 			setFiles,
 			handleRemoveFile,
+			setPagination,
+			pagination,
 		}),
-		[errors, modalAttachmentsIsOpen, isLoading, messages, files],
+		[errors, modalAttachmentsIsOpen, isLoading, messages, files, pagination],
 	);
 	return memoizedValue;
 }
