@@ -28,9 +28,9 @@ export function Message() {
 		files,
 		setFiles,
 		handleRemoveFile,
-		setPagination,
-		pagination,
+		fetchNextPage,
 	} = useMessage(ticketId);
+	console.log({ ticketId });
 
 	const handleScroll = () => {
 		if (!refContainerMessages || !refContainerMessages.current) return;
@@ -41,8 +41,7 @@ export function Message() {
 		if (isAtTop) {
 			alert('Usuário chegou ao topo da div!');
 			// Ou chame sua função personalizada aqui
-			// suaFuncaoPersonalizada();
-			setPagination(prev => ({ ...prev, pageIndex: pagination.pageIndex + 1 }));
+			fetchNextPage();
 		}
 	};
 
@@ -76,7 +75,8 @@ export function Message() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			{messages.length > 0 && <h2>{translate('MESSAGES')}</h2>}
+			<pre className="">{JSON.stringify({ messages }, null, 1)}</pre>
+			{/* {messages.length > 0 && <h2>{translate('MESSAGES')}</h2>}
 
 			<div
 				ref={refContainerMessages}
@@ -91,7 +91,10 @@ export function Message() {
 					))}
 				</div>
 			</div>
-
+			<span>
+				{translate('COUNT_MESSAGES')}: {messages.length}
+			</span> */}
+			<button onClick={fetchNextPage}>Click</button>
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 				<ContainerInput>
 					<Label htmlFor="message" isError={!!errors.message?.message}>

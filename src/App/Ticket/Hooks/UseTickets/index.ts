@@ -64,8 +64,6 @@ export function useTickets() {
 			}
 			return null;
 		},
-		keepPreviousData: false,
-		// staleTime: 1000 * 60, // 1 minute
 	});
 
 	function revalidateData() {

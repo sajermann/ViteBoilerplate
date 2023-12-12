@@ -26,7 +26,7 @@ export function InjectorProviders({ children }: { children: ReactNode }) {
 							queries: {
 								refetchOnWindowFocus: false,
 								retry: false,
-								cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+								// cacheTime: 1000 * 60 * 60 * 24, // 24 hours
 							},
 						},
 					})

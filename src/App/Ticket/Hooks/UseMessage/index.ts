@@ -5,12 +5,12 @@ import { z } from 'zod';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
 import { customToast } from '~/App/Shared/Utils/CustomToast';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { usePagination } from '~/App/Shared/Hooks/UsePagination';
 import { TMessage } from '../../Types/Message';
 import { useAttachments } from '../UseAttachments';
 
-const KEY_TICKETS = 'messages';
+const KEY_MESSAGE = 'useMessage';
 const ACCEPTED_IMAGE_TYPES = [
 	'image/jpeg',
 	'image/jpg',
@@ -18,32 +18,58 @@ const ACCEPTED_IMAGE_TYPES = [
 	'application/pdf',
 ];
 
+const pageSize = 5;
+
+type TInfinitePagination<T> = {
+	data: T;
+	nextPage: number;
+};
+
 export function useMessage(ticketId?: string) {
 	const [modalAttachmentsIsOpen, setModalAttachmentsIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData, isLoading } = useAxios();
 	const { files, setFiles, handleRemoveFile } = useAttachments();
-	const { setPageCount, pagination, setPagination, backQuery } =
-		usePagination();
-	const { data: messages } = useQuery<TMessage[]>({
-		queryKey: [KEY_TICKETS, ticketId, backQuery],
-		queryFn: async () => {
-			if (!ticketId) return [];
+
+	const {
+		data: messages,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+	} = useInfiniteQuery<TInfinitePagination<TMessage[]>>({
+		queryKey: [KEY_MESSAGE, ticketId],
+		queryFn: async ({ pageParam = 0 }) => {
+			if (!ticketId) {
+				return {
+					data: [],
+					nextPage: 0,
+				};
+			}
+			console.log({ pageParam }, pageParam ?? 0);
 			const result = await fetchData({
 				method: 'get',
-				url: `v1/message/getByTicketId/${ticketId}?pageSize=10&pageIndex=0`,
+				url: `v1/message/getByTicketId/${ticketId}?pageIndex=${
+					pageParam || 0
+				}&pageSize=${pageSize}`,
 			});
 			if (result?.status === 200) {
-				setPageCount(
-					Math.ceil(result.data.pagination.total / pagination.pageSize),
-				);
-				return result.data.data;
+				const dataResult = [...result.data.data];
+				return {
+					data: dataResult,
+					nextPage:
+						dataResult.length === pageSize ? (pageParam as number) + 1 : null,
+				};
 			}
-			return [];
+			return {
+				data: [],
+				nextPage: 0,
+			};
 		},
-		keepPreviousData: false,
+		initialPageParam: 0,
+		getNextPageParam: lastPage => lastPage.nextPage ?? undefined,
+		staleTime: 0,
+		refetchOnMount: false,
 	});
-	const queryClient = useQueryClient();
 
 	const filesSchema = z
 		.any()
@@ -87,13 +113,10 @@ export function useMessage(ticketId?: string) {
 		setModalAttachmentsIsOpen(false);
 		reset();
 	}
-	function revalidateData() {
-		queryClient.invalidateQueries([KEY_TICKETS, ticketId]);
-	}
 
 	function afterPostMessageSuccess() {
 		reset();
-		revalidateData();
+
 		setFiles([]);
 	}
 
@@ -139,10 +162,9 @@ export function useMessage(ticketId?: string) {
 			files,
 			setFiles,
 			handleRemoveFile,
-			setPagination,
-			pagination,
+			fetchNextPage,
 		}),
-		[errors, modalAttachmentsIsOpen, isLoading, messages, files, pagination],
+		[errors, modalAttachmentsIsOpen, isLoading, messages, files],
 	);
 	return memoizedValue;
 }

@@ -6,8 +6,6 @@ import { Message } from '../../Components/Message';
 export function TicketPage() {
 	const { id } = useParams<{ id: string }>();
 	const { ticket } = useTicket(id);
-
-	console.log({ ticket });
 	return (
 		<div className="flex flex-col ga-4">
 			<h1>
