@@ -5,10 +5,10 @@ import { z } from 'zod';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
 import { customToast } from '~/App/Shared/Utils/CustomToast';
-import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
-import { usePagination } from '~/App/Shared/Hooks/UsePagination';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { TMessage } from '../../Types/Message';
 import { useAttachments } from '../UseAttachments';
+import { TInfinitePagination } from '../../Types/InfinitePagination';
 
 const KEY_MESSAGE = 'useMessage';
 const ACCEPTED_IMAGE_TYPES = [
@@ -20,29 +20,21 @@ const ACCEPTED_IMAGE_TYPES = [
 
 const pageSize = 5;
 
-type TInfinitePagination<T> = {
-	data: T;
-	nextPage: number;
-};
-
 export function useMessage(ticketId?: string) {
 	const [modalAttachmentsIsOpen, setModalAttachmentsIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData, isLoading } = useAxios();
 	const { files, setFiles, handleRemoveFile } = useAttachments();
 
-	const {
-		data: messages,
-		fetchNextPage,
-		hasNextPage,
-		isFetchingNextPage,
-	} = useInfiniteQuery<TInfinitePagination<TMessage[]>>({
+	const { data, fetchNextPage } = useInfiniteQuery<
+		TInfinitePagination<TMessage[]>
+	>({
 		queryKey: [KEY_MESSAGE, ticketId],
 		queryFn: async ({ pageParam = 0 }) => {
 			if (!ticketId) {
 				return {
 					data: [],
-					nextPage: 0,
+					nextPage: null,
 				};
 			}
 			console.log({ pageParam }, pageParam ?? 0);
@@ -62,14 +54,23 @@ export function useMessage(ticketId?: string) {
 			}
 			return {
 				data: [],
-				nextPage: 0,
+				nextPage: null,
 			};
 		},
 		initialPageParam: 0,
 		getNextPageParam: lastPage => lastPage.nextPage ?? undefined,
 		staleTime: 0,
-		refetchOnMount: false,
 	});
+
+	const messages = useMemo(() => {
+		const result: TMessage[] = [];
+		if (data) {
+			for (const item of data.pages) {
+				result.push(...(item as { data: TMessage[] }).data);
+			}
+		}
+		return [...result];
+	}, [data]);
 
 	const filesSchema = z
 		.any()
@@ -120,13 +121,13 @@ export function useMessage(ticketId?: string) {
 		setFiles([]);
 	}
 
-	const handleCreate: SubmitHandler<FormData> = async data => {
-		formSchema.parse({ ...data });
+	const handleCreate: SubmitHandler<FormData> = async messageToCreate => {
+		formSchema.parse({ ...messageToCreate });
 		const form = new FormData();
-		form.append('description', data.message);
+		form.append('description', messageToCreate.message);
 		form.append('ticketId', ticketId || '');
-		if (data.attachments && data.attachments.length > 0) {
-			for (const item of data.attachments) {
+		if (messageToCreate.attachments && messageToCreate.attachments.length > 0) {
+			for (const item of messageToCreate.attachments) {
 				form.append('files', item);
 			}
 		}

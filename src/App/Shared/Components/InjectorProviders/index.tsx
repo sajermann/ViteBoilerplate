@@ -1,9 +1,7 @@
 import { ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Header } from '../Header';
 import { DarkModeProvider } from '../../Hooks/UseDarkMode';
@@ -14,12 +12,7 @@ import '~/Config/i18n';
 export function InjectorProviders({ children }: { children: ReactNode }) {
 	return (
 		<BrowserRouter>
-			<PersistQueryClientProvider
-				persistOptions={{
-					persister: createSyncStoragePersister({
-						storage: window.localStorage,
-					}),
-				}}
+			<QueryClientProvider
 				client={
 					new QueryClient({
 						defaultOptions: {
@@ -43,7 +36,7 @@ export function InjectorProviders({ children }: { children: ReactNode }) {
 						</div>
 					</div>
 				</DarkModeProvider>
-			</PersistQueryClientProvider>
+			</QueryClientProvider>
 		</BrowserRouter>
 	);
 }

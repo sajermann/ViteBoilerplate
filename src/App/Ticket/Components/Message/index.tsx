@@ -30,24 +30,14 @@ export function Message() {
 		handleRemoveFile,
 		fetchNextPage,
 	} = useMessage(ticketId);
-	console.log({ ticketId });
 
-	const handleScroll = () => {
+	function handleScroll() {
 		if (!refContainerMessages || !refContainerMessages.current) return;
-		// Verificar se o usuário está no topo da div
+		// Verify user reach div top
 		const isAtTop = refContainerMessages.current.scrollTop === 0;
 
-		// Se estiver no topo, execute a função desejada
-		if (isAtTop) {
-			alert('Usuário chegou ao topo da div!');
-			// Ou chame sua função personalizada aqui
-			fetchNextPage();
-		}
-	};
-
-	function removeEvent() {
-		if (!refContainerMessages || !refContainerMessages.current) return;
-		refContainerMessages.current.removeEventListener('scroll', handleScroll);
+		// if is at top, fire fetch next page
+		if (isAtTop) fetchNextPage();
 	}
 
 	useEffect(() => {
@@ -56,12 +46,13 @@ export function Message() {
 
 			return undefined;
 		}
-		// Adicionar um listener de evento de scroll à div
+		// Add listener scrollevent to div
 		refContainerMessages.current.addEventListener('scroll', handleScroll);
 
-		// Remover o listener ao desmontar o componente para evitar vazamentos de memória
+		// Remove listener in desmont component
 		return () => {
-			removeEvent();
+			if (!refContainerMessages || !refContainerMessages.current) return;
+			refContainerMessages.current.removeEventListener('scroll', handleScroll);
 		};
 	}, []);
 
@@ -76,7 +67,7 @@ export function Message() {
 	return (
 		<div className="flex flex-col gap-4">
 			<pre className="">{JSON.stringify({ messages }, null, 1)}</pre>
-			{/* {messages.length > 0 && <h2>{translate('MESSAGES')}</h2>}
+			{messages.length > 0 && <h2>{translate('MESSAGES')}</h2>}
 
 			<div
 				ref={refContainerMessages}
@@ -93,8 +84,7 @@ export function Message() {
 			</div>
 			<span>
 				{translate('COUNT_MESSAGES')}: {messages.length}
-			</span> */}
-			<button onClick={fetchNextPage}>Click</button>
+			</span>
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 				<ContainerInput>
 					<Label htmlFor="message" isError={!!errors.message?.message}>
