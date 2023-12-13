@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -25,8 +25,11 @@ export function useMessage(ticketId?: string) {
 	const { translate } = useTranslation();
 	const { fetchData, isLoading } = useAxios();
 	const { files, setFiles, handleRemoveFile } = useAttachments();
+	// const refContainerMessages = useRef<HTMLDivElement>(null);
 
-	const { data, fetchNextPage } = useInfiniteQuery<
+	const refContainerMessages = useRef<HTMLDivElement>(null);
+
+	const { data, fetchNextPage, refetch } = useInfiniteQuery<
 		TInfinitePagination<TMessage[]>
 	>({
 		queryKey: [KEY_MESSAGE, ticketId],
@@ -37,7 +40,7 @@ export function useMessage(ticketId?: string) {
 					nextPage: null,
 				};
 			}
-			console.log({ pageParam }, pageParam ?? 0);
+
 			const result = await fetchData({
 				method: 'get',
 				url: `v1/message/getByTicketId/${ticketId}?pageIndex=${
@@ -46,6 +49,7 @@ export function useMessage(ticketId?: string) {
 			});
 			if (result?.status === 200) {
 				const dataResult = [...result.data.data];
+
 				return {
 					data: dataResult,
 					nextPage:
@@ -59,8 +63,32 @@ export function useMessage(ticketId?: string) {
 		},
 		initialPageParam: 0,
 		getNextPageParam: lastPage => lastPage.nextPage ?? undefined,
-		staleTime: 0,
+
+		// staleTime: 0,
+		// refetchOnMount: true,
 	});
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			entries => {
+				console.log(entries);
+				if (entries[0].isIntersecting) {
+					fetchNextPage();
+				}
+			},
+			{ threshold: 1 },
+		);
+
+		if (refContainerMessages.current) {
+			observer.observe(refContainerMessages.current);
+		}
+
+		return () => {
+			if (refContainerMessages.current) {
+				observer.unobserve(refContainerMessages.current);
+			}
+		};
+	}, [refContainerMessages]);
 
 	const messages = useMemo(() => {
 		const result: TMessage[] = [];
@@ -71,6 +99,21 @@ export function useMessage(ticketId?: string) {
 		}
 		return [...result];
 	}, [data]);
+
+	function scrollToBottomContainerMessages() {
+		console.log('Scrolling');
+		refContainerMessages?.current?.scrollBy({
+			top: 9e9,
+			left: 0,
+			behavior: 'smooth',
+		});
+	}
+
+	useEffect(() => {
+		if (data?.pages.length === 1) {
+			scrollToBottomContainerMessages();
+		}
+	}, [messages]);
 
 	const filesSchema = z
 		.any()
@@ -117,8 +160,9 @@ export function useMessage(ticketId?: string) {
 
 	function afterPostMessageSuccess() {
 		reset();
-
+		refetch();
 		setFiles([]);
+		scrollToBottomContainerMessages();
 	}
 
 	const handleCreate: SubmitHandler<FormData> = async messageToCreate => {
@@ -164,8 +208,16 @@ export function useMessage(ticketId?: string) {
 			setFiles,
 			handleRemoveFile,
 			fetchNextPage,
+			refContainerMessages,
 		}),
-		[errors, modalAttachmentsIsOpen, isLoading, messages, files],
+		[
+			errors,
+			modalAttachmentsIsOpen,
+			isLoading,
+			messages,
+			files,
+			refContainerMessages,
+		],
 	);
 	return memoizedValue;
 }

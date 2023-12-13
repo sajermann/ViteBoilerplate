@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Textarea } from '~/App/Shared/Components/Textarea';
 import { ContainerInput } from '~/App/Shared/Components/ContainerInput';
 import { Label } from '~/App/Shared/Components/Label';
@@ -17,7 +17,7 @@ export function Message() {
 	const { id: ticketId } = useParams<{ id: string }>();
 	const { translate } = useTranslation();
 	const navigate = useNavigate();
-	const refContainerMessages = useRef<HTMLDivElement>(null);
+
 	const {
 		messages = [],
 		handleSubmit,
@@ -29,44 +29,37 @@ export function Message() {
 		setFiles,
 		handleRemoveFile,
 		fetchNextPage,
+		refContainerMessages,
 	} = useMessage(ticketId);
 
-	function handleScroll() {
-		if (!refContainerMessages || !refContainerMessages.current) return;
-		// Verify user reach div top
-		const isAtTop = refContainerMessages.current.scrollTop === 0;
+	// function handleScroll() {
+	// 	if (!refContainerMessages || !refContainerMessages.current) return;
+	// 	// Verify user reach div top
+	// 	const isAtTop = refContainerMessages.current.scrollTop === 10;
 
-		// if is at top, fire fetch next page
-		if (isAtTop) fetchNextPage();
-	}
+	// 	// if is at top, fire fetch next page
+	// 	if (isAtTop) fetchNextPage();
+	// }
 
-	useEffect(() => {
-		if (!refContainerMessages || !refContainerMessages.current) {
-			console.log('Deu ruim');
+	// useEffect(() => {
+	// 	if (!refContainerMessages || !refContainerMessages.current) {
+	// 		console.log('Deu ruim');
 
-			return undefined;
-		}
-		// Add listener scrollevent to div
-		refContainerMessages.current.addEventListener('scroll', handleScroll);
+	// 		return undefined;
+	// 	}
+	// 	// Add listener scrollevent to div
+	// 	refContainerMessages.current.addEventListener('scroll', handleScroll);
 
-		// Remove listener in desmont component
-		return () => {
-			if (!refContainerMessages || !refContainerMessages.current) return;
-			refContainerMessages.current.removeEventListener('scroll', handleScroll);
-		};
-	}, []);
-
-	useEffect(() => {
-		refContainerMessages?.current?.scrollBy({
-			top: 9e9,
-			left: 0,
-			behavior: 'smooth',
-		});
-	}, [messages]);
+	// 	// Remove listener in desmont component
+	// 	return () => {
+	// 		if (!refContainerMessages || !refContainerMessages.current) return;
+	// 		refContainerMessages.current.removeEventListener('scroll', handleScroll);
+	// 	};
+	// }, []);
 
 	return (
 		<div className="flex flex-col gap-4">
-			<pre className="">{JSON.stringify({ messages }, null, 1)}</pre>
+			{/* <pre className="">{JSON.stringify({ messages }, null, 1)}</pre> */}
 			{messages.length > 0 && <h2>{translate('MESSAGES')}</h2>}
 
 			<div
