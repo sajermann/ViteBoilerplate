@@ -32,30 +32,30 @@ export function Message() {
 		refContainerMessages,
 	} = useMessage(ticketId);
 
-	// function handleScroll() {
-	// 	if (!refContainerMessages || !refContainerMessages.current) return;
-	// 	// Verify user reach div top
-	// 	const isAtTop = refContainerMessages.current.scrollTop === 10;
+	function handleScroll() {
+		if (!refContainerMessages || !refContainerMessages.current) return;
+		// Verify user reach div top
+		const isAtTop = refContainerMessages.current.scrollTop === 10;
 
-	// 	// if is at top, fire fetch next page
-	// 	if (isAtTop) fetchNextPage();
-	// }
+		// if is at top, fire fetch next page
+		if (isAtTop) fetchNextPage();
+	}
 
-	// useEffect(() => {
-	// 	if (!refContainerMessages || !refContainerMessages.current) {
-	// 		console.log('Deu ruim');
+	useEffect(() => {
+		if (!refContainerMessages || !refContainerMessages.current) {
+			console.log('Deu ruim');
 
-	// 		return undefined;
-	// 	}
-	// 	// Add listener scrollevent to div
-	// 	refContainerMessages.current.addEventListener('scroll', handleScroll);
+			return undefined;
+		}
+		// Add listener scrollevent to div
+		refContainerMessages.current.addEventListener('scroll', handleScroll);
 
-	// 	// Remove listener in desmont component
-	// 	return () => {
-	// 		if (!refContainerMessages || !refContainerMessages.current) return;
-	// 		refContainerMessages.current.removeEventListener('scroll', handleScroll);
-	// 	};
-	// }, []);
+		// Remove listener in desmont component
+		return () => {
+			if (!refContainerMessages || !refContainerMessages.current) return;
+			refContainerMessages.current.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
 
 	return (
 		<div className="flex flex-col gap-4">

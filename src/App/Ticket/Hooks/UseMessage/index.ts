@@ -18,16 +18,15 @@ const ACCEPTED_IMAGE_TYPES = [
 	'application/pdf',
 ];
 
-const pageSize = 5;
+const pageSize = 10;
 
 export function useMessage(ticketId?: string) {
 	const [modalAttachmentsIsOpen, setModalAttachmentsIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData, isLoading } = useAxios();
 	const { files, setFiles, handleRemoveFile } = useAttachments();
-	// const refContainerMessages = useRef<HTMLDivElement>(null);
-
 	const refContainerMessages = useRef<HTMLDivElement>(null);
+	// const refDivisorFetch = useRef<HTMLDivElement>(null);
 
 	const { data, fetchNextPage, refetch } = useInfiniteQuery<
 		TInfinitePagination<TMessage[]>
@@ -68,27 +67,27 @@ export function useMessage(ticketId?: string) {
 		// refetchOnMount: true,
 	});
 
-	useEffect(() => {
-		const observer = new IntersectionObserver(
-			entries => {
-				console.log(entries);
-				if (entries[0].isIntersecting) {
-					fetchNextPage();
-				}
-			},
-			{ threshold: 1 },
-		);
+	// useEffect(() => {
+	// 	const observer = new IntersectionObserver(
+	// 		entries => {
+	// 			console.log(entries);
+	// 			if (entries[0].isIntersecting) {
+	// 				fetchNextPage();
+	// 			}
+	// 		},
+	// 		{ threshold: 1 },
+	// 	);
 
-		if (refContainerMessages.current) {
-			observer.observe(refContainerMessages.current);
-		}
+	// 	if (refDivisorFetch.current) {
+	// 		observer.observe(refDivisorFetch.current);
+	// 	}
 
-		return () => {
-			if (refContainerMessages.current) {
-				observer.unobserve(refContainerMessages.current);
-			}
-		};
-	}, [refContainerMessages]);
+	// 	return () => {
+	// 		if (refDivisorFetch.current) {
+	// 			observer.unobserve(refDivisorFetch.current);
+	// 		}
+	// 	};
+	// }, [refDivisorFetch]);
 
 	const messages = useMemo(() => {
 		const result: TMessage[] = [];
@@ -209,6 +208,7 @@ export function useMessage(ticketId?: string) {
 			handleRemoveFile,
 			fetchNextPage,
 			refContainerMessages,
+			pageSize,
 		}),
 		[
 			errors,
