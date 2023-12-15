@@ -30,7 +30,7 @@ export function InjectorProviders({ children }: { children: ReactNode }) {
 					<Toaster position="top-right" />
 					<div className="flex flex-col w-full h-screen">
 						<Header />
-						<div className="w-full flex">
+						<div className="w-full flex flex-1">
 							<Sidebar />
 							<main className="flex-1 p-2">{children}</main>
 						</div>
