@@ -2,6 +2,7 @@
 	"translations": {
 		"CLOSED": "Closed",
 		"OPENED": "Opened",
+		"ANALYZE": "Analyze",
 		"COUNT_MESSAGES": "Count Messages",
 		"LOADING...": "Loading...",
 		"ADD_YOUR_FIRST_MESSAGE_TO_TICKET": "Add your first message to ticket",
