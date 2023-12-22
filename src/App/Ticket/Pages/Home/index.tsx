@@ -8,6 +8,7 @@ import { Search } from '~/App/Ticket/Components/Search';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '~/App/Shared/Components/Button';
 import { Eye } from 'lucide-react';
+import { Status } from '~/App/Shared/Components/Status';
 import { useTickets } from '../../Hooks/UseTickets';
 
 function buildColumns({
@@ -69,6 +70,7 @@ function buildColumns({
 				align: 'center',
 			},
 			enableResizing: false,
+			cell: ({ getValue }) => <Status status={getValue() as string} />,
 		},
 		{
 			accessorKey: 'createdAt',

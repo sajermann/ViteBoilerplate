@@ -18,8 +18,6 @@ export function useTicket(id?: string) {
 			}
 			return null;
 		},
-		keepPreviousData: false,
-		// staleTime: 1000 * 60, // 1 minute
 	});
 
 	const memoizedValue = useMemo(

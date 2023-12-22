@@ -1,5 +1,7 @@
 {
 	"translations": {
+		"CLOSED": "Fechado",
+		"OPENED": "Aberto",
 		"COUNT_MESSAGES": "Contagem de Mensagens",
 		"LOADING...": "Carregando...",
 		"ADD_YOUR_FIRST_MESSAGE_TO_TICKET": "Adicione sua primeira mensagem ao ticket",

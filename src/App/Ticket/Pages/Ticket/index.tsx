@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
+import { Status } from '~/App/Shared/Components/Status';
 import { useTicket } from '../../Hooks/UseTicket';
 import { Message } from '../../Components/Message';
 
@@ -11,7 +12,9 @@ export function TicketPage() {
 			<h1>
 				Ticket: <span className="italic">{ticket?.title}</span>
 			</h1>
-			<span>Status: {ticket?.status}</span>
+			<span>
+				Status: <Status status={ticket?.status} />
+			</span>
 			<span>
 				Criado em:{' '}
 				{ticket
