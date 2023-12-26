@@ -1,5 +1,7 @@
 {
 	"translations": {
+		"FAILED_TO_SIGN_TICKET_FOR_YOU": "Failed to sign ticket for you.",
+		"THIS_TICKET_IS_YOUR_NOW": "This ticket is your now!",
 		"CLOSED": "Closed",
 		"OPENED": "Opened",
 		"ANALYZE": "Analyze",

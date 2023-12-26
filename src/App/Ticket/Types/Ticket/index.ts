@@ -7,7 +7,9 @@ export type TTicket = {
 	status: string;
 	createdAt: string;
 	updatedAt: string;
-	analyst: string;
+	analyst: {
+		name: string;
+	};
 	messages: TMessage[];
 	user: {
 		name: string;

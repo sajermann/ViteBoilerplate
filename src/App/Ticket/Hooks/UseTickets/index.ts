@@ -67,7 +67,9 @@ export function useTickets() {
 	});
 
 	function revalidateData() {
-		queryClient.invalidateQueries([KEY_TICKETS, JSON.stringify(backQuery)]);
+		queryClient.invalidateQueries({
+			queryKey: [KEY_TICKETS, JSON.stringify(backQuery)],
+		});
 	}
 
 	const memoizedValue = useMemo(

@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { Status } from '~/App/Shared/Components/Status';
 import { useTicket } from '../../Hooks/UseTicket';
 import { Message } from '../../Components/Message';
+import { AnalystInfo } from '../../Components/AnalystInfo';
 
 export function TicketPage() {
 	const { id } = useParams<{ id: string }>();
@@ -27,7 +28,9 @@ export function TicketPage() {
 					? format(new Date(ticket?.updatedAt as string), 'dd/MM/yyyy, HH:mm')
 					: ''}
 			</span>
-			<span>Analista: {ticket?.analyst}</span>
+			<span>
+				Analista: <AnalystInfo analystName={ticket?.analyst?.name} id={id} />
+			</span>
 
 			<Message />
 		</div>
