@@ -6,8 +6,8 @@ import { Message } from '../../Components/Message';
 import { AnalystInfo } from '../../Components/AnalystInfo';
 
 export function TicketPage() {
-	const { id } = useParams<{ id: string }>();
-	const { ticket } = useTicket(id);
+	const { id: ticketId } = useParams<{ id: string }>();
+	const { ticket } = useTicket(ticketId);
 	return (
 		<div className="flex flex-col ga-4">
 			<h1>
@@ -29,7 +29,7 @@ export function TicketPage() {
 					: ''}
 			</span>
 			<span>
-				Analista: <AnalystInfo analystName={ticket?.analyst?.name} id={id} />
+				Analista: <AnalystInfo />
 			</span>
 
 			<Message />

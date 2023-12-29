@@ -1,5 +1,13 @@
 {
 	"translations": {
+		"CONFIRM": "Confirm",
+		"REOPEN_TICKET_AGAIN": "Reopen ticket again",
+		"ADD_MESSAGE": "Add Message",
+		"AFTER_CLOSED_IS_NOT_POSSIBLE": "After closed is not possible",
+		"FAILED_TO_CLOSE_TICKET": "Failed to close ticket",
+		"SUCCESS_TO_CLOSE_TICKET": "Success to close ticket",
+		"SURE_YOU_CLOSE_THIS_TICKET": "Sure you close this ticket",
+		"CLOSE_TICKET": "Close Ticket",
 		"FAILED_TO_SIGN_TICKET_FOR_YOU": "Failed to sign ticket for you.",
 		"THIS_TICKET_IS_YOUR_NOW": "This ticket is your now!",
 		"CLOSED": "Closed",

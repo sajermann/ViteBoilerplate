@@ -9,6 +9,7 @@ export type TTicket = {
 	updatedAt: string;
 	analyst: {
 		name: string;
+		id: string;
 	};
 	messages: TMessage[];
 	user: {

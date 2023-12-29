@@ -12,6 +12,7 @@ import { useMessage } from '../../Hooks/UseMessage';
 import { UploadAttachments } from '../UploadAttachments';
 import { AttachmentsList } from '../AttachmentsList';
 import { MessageItem } from '../MessageItem';
+import { CloseTicket } from '../CloseTicket';
 
 export function Message() {
 	const { id: ticketId } = useParams<{ id: string }>();
@@ -116,6 +117,7 @@ export function Message() {
 						{translate('BACK')}
 					</Button>
 					<div className="flex gap-4 w-full justify-end">
+						<CloseTicket />
 						<UploadAttachments
 							onSaveFiles={e => {
 								setFiles(prev => [...prev, ...e]);
