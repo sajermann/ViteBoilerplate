@@ -36,7 +36,8 @@ export function CloseTicket() {
 		load();
 	}, [ticket, isFetching]);
 
-	// Colocar validacao, so aparecer botao fechar se o ticket for do usuario ou se for analista e ja tiver delegado e colocar loading no botao de close e no delegar pra mim
+	// TODO: Funcao pra fechar o ticket
+
 	if (!showButton) return null;
 	return (
 		<>
