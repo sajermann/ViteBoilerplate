@@ -10,7 +10,7 @@ interface Props {
 	refreshToken: string | null;
 	setRefreshToken: (data: string | null) => void;
 	clear: () => void;
-	getUserInfo: () => Promise<TUser | null>;
+	extractUserInfoFromJwt: () => Promise<TUser | null>;
 }
 
 export const useToken = create<Props>()(
@@ -34,11 +34,13 @@ export const useToken = create<Props>()(
 					accessToken: null,
 					refreshToken: null,
 				})),
-			getUserInfo: async () => {
+			extractUserInfoFromJwt: async () => {
 				try {
 					// const secret = new TextEncoder().encode(
 					// 	import.meta.env.VITE_ACCESS_TOKEN_SECRET,
 					// );
+
+					if (!get().accessToken) return null;
 					const result = await jose.decodeJwt(get().accessToken || '');
 					return result as TUser;
 				} catch (e) {

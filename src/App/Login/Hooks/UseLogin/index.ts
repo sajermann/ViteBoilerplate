@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
+import { useUserLogged } from '~/App/Shared/Hooks/useUserLogged';
 import { useTranslation } from '../../../Shared/Hooks/UseTranslation';
 import { useToken } from '../../../Shared/Hooks/UseToken';
 import { useAxios } from '../../../Shared/Hooks/UseAxios';
@@ -11,7 +12,9 @@ export function useLogin() {
 	const { fetchData, isLoading } = useAxios();
 	const { translate } = useTranslation();
 	const navigate = useNavigate();
-	const { setAccessToken, setRefreshToken } = useToken();
+	const { setAccessToken, setRefreshToken, extractUserInfoFromJwt } =
+		useToken();
+	const { setUserLogged } = useUserLogged();
 
 	const formSchema = z.object({
 		email: z
@@ -47,6 +50,7 @@ export function useLogin() {
 		if (result?.status === 201) {
 			setAccessToken(result.data.access_token);
 			setRefreshToken(result.data.refresh_token);
+			setUserLogged(await extractUserInfoFromJwt());
 			navigate('/');
 		}
 	};

@@ -5,7 +5,7 @@ import { customToast } from '~/App/Shared/Utils/CustomToast';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { TTicket } from '../../Types/Ticket';
 
-export function useTicket(id?: string) {
+export function useTicket(id?: string, type?: string) {
 	const [isOpenModalCloseTicket, setIsOpenModalCloseTicket] = useState(false);
 	const { fetchData } = useAxios();
 	const { translate } = useTranslation();
@@ -14,6 +14,7 @@ export function useTicket(id?: string) {
 	const { data: ticket, isFetching } = useQuery<TTicket>({
 		queryKey: ['ticket', JSON.stringify(id)],
 		queryFn: async () => {
+			console.log('Vou chamar', { id, type });
 			if (!id) return null;
 			const result = await fetchData({
 				method: 'get',
@@ -56,7 +57,7 @@ export function useTicket(id?: string) {
 				method: 'put',
 				url: `v1/ticket/close/${id}`,
 			});
-			if (result?.status === 200) {
+			if (result?.status === 204) {
 				customToast({
 					type: 'success',
 					msg: translate('SUCCESS_TO_CLOSE_TICKET'),
@@ -64,35 +65,10 @@ export function useTicket(id?: string) {
 				queryClient.invalidateQueries({
 					queryKey: ['ticket', JSON.stringify(id)],
 				});
-				return;
+				setIsOpenModalCloseTicket(false);
 			}
-			customToast({
-				type: 'error',
-				msg: translate('FAILED_TO_CLOSE_TICKET'),
-			});
 		},
 	});
-
-	// async function closeTicket() {
-	// 	const result = await fetchData({
-	// 		method: 'put',
-	// 		url: `v1/ticket/close/${id}`,
-	// 	});
-	// 	if (result?.status === 200) {
-	// 		customToast({
-	// 			type: 'success',
-	// 			msg: translate('SUCCESS_TO_CLOSE_TICKET'),
-	// 		});
-	// 		queryClient.invalidateQueries({
-	// 			queryKey: ['ticket', JSON.stringify(id)],
-	// 		});
-	// 		return;
-	// 	}
-	// 	customToast({
-	// 		type: 'error',
-	// 		msg: translate('FAILED_TO_CLOSE_TICKET'),
-	// 	});
-	// }
 
 	const memoizedValue = useMemo(
 		() => ({
@@ -104,7 +80,7 @@ export function useTicket(id?: string) {
 			isOpenModalCloseTicket,
 			setIsOpenModalCloseTicket,
 		}),
-		[ticket, isFetching, isOpenModalCloseTicket, isLoadingCloseTicket],
+		[ticket, isFetching, isOpenModalCloseTicket, isLoadingCloseTicket, id],
 	);
 	return memoizedValue;
 }

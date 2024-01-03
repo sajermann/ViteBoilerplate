@@ -136,6 +136,7 @@ export function TicketsPage() {
 	} = useTickets();
 	const navigate = useNavigate();
 	const { translate } = useTranslation();
+	// TODO: Colocar o sorting no backend e usar do usequery
 	const [sortingInternal, setSortingInternal] = useState<
 		Record<string, unknown>[]
 	>([]);
@@ -144,7 +145,7 @@ export function TicketsPage() {
 
 	return (
 		<div className="w-full flex flex-col gap-4">
-			<Search onSubmitForm={setFilterQuery} />
+			<Search disabledButtons={isFetching} onSubmitForm={setFilterQuery} />
 			<Table
 				isLoading={isFetching}
 				columns={columns}

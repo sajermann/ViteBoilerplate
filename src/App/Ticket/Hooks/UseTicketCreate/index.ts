@@ -5,21 +5,19 @@ import { z } from 'zod';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
 import { customToast } from '~/App/Shared/Utils/CustomToast';
+import { useMutation } from '@tanstack/react-query';
 import { useTickets } from '../UseTickets';
 
 export function useTicketCreate() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { translate } = useTranslation();
-	const { fetchData, isLoading } = useAxios();
+	const { fetchData } = useAxios();
 	const { revalidateData } = useTickets();
-
 	const formSchema = z.object({
 		title: z.string().nonempty(translate('FIELD_IS_REQUIRED')),
 		description: z.string().nonempty(translate('FIELD_IS_REQUIRED')),
 	});
-
 	type FormData = z.infer<typeof formSchema>;
-
 	const {
 		register,
 		handleSubmit,
@@ -32,35 +30,39 @@ export function useTicketCreate() {
 	} = useForm<FormData>({
 		resolver: zodResolver(formSchema),
 	});
+	function closeModal() {
+		setModalIsOpen(false);
+		reset();
+	}
+	const { mutate: saveTicket, isPending: isLoadingCreateTicket } = useMutation({
+		mutationFn: async (data: FormData) => {
+			const result = await fetchData({
+				method: 'post',
+				url: 'v1/ticket',
+				data: {
+					title: data.title,
+					description: data.description,
+				},
+			});
+			if (result?.status === 201) {
+				closeModal();
+				customToast({
+					msg: translate('TICKET_CREATED_SUCCESS'),
+					type: 'success',
+				});
+				revalidateData();
+			}
+		},
+	});
 
 	function openModal() {
 		setModalIsOpen(true);
 		clearErrors();
 	}
 
-	function closeModal() {
-		setModalIsOpen(false);
-		reset();
-	}
-
 	const handleCreate: SubmitHandler<FormData> = async data => {
 		formSchema.parse({ ...data });
-		const result = await fetchData({
-			method: 'post',
-			url: 'v1/ticket',
-			data: {
-				title: data.title,
-				description: data.description,
-			},
-		});
-		if (result?.status === 201) {
-			closeModal();
-			customToast({
-				msg: translate('TICKET_CREATED_SUCCESS'),
-				type: 'success',
-			});
-			revalidateData();
-		}
+		saveTicket(data);
 	};
 
 	const memoizedValue = useMemo(
@@ -75,9 +77,9 @@ export function useTicketCreate() {
 			modalIsOpen,
 			closeModal,
 			openModal,
-			isLoading,
+			isLoadingCreateTicket,
 		}),
-		[errors, modalIsOpen, isLoading],
+		[errors, modalIsOpen, isLoadingCreateTicket],
 	);
 	return memoizedValue;
 }

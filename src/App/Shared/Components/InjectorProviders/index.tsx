@@ -19,6 +19,7 @@ export function InjectorProviders({ children }: { children: ReactNode }) {
 								refetchOnWindowFocus: false,
 								retry: false,
 								// cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+								staleTime: 1000, // 1 Second to void multiples call api
 							},
 						},
 					})

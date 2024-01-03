@@ -9,8 +9,15 @@ import { useTicketCreate } from '../../Hooks/UseTicketCreate';
 
 export function CreateTicket() {
 	const { translate } = useTranslation();
-	const { register, handleSubmit, errors, modalIsOpen, closeModal, openModal } =
-		useTicketCreate();
+	const {
+		register,
+		handleSubmit,
+		errors,
+		modalIsOpen,
+		closeModal,
+		openModal,
+		isLoadingCreateTicket,
+	} = useTicketCreate();
 
 	return (
 		<>
@@ -22,7 +29,6 @@ export function CreateTicket() {
 				title={translate('CREATE_TICKET')}
 				isOpen={modalIsOpen}
 				onClose={closeModal}
-				closeButton
 			>
 				<form onSubmit={handleSubmit} className="p-4 flex flex-col gap-4 w-96">
 					<ContainerInput>
@@ -69,11 +75,23 @@ export function CreateTicket() {
 							variant="outlined"
 							colorStyle="primary"
 							onClick={closeModal}
+							disabled={isLoadingCreateTicket}
 							type="button"
 						>
 							{translate('CANCEL')}
 						</Button>
-						<Button type="submit">{translate('CREATE')}</Button>
+						<Button
+							type="submit"
+							disabled={isLoadingCreateTicket}
+							withFeedback={{
+								loadingOptions: {
+									isLoading: isLoadingCreateTicket,
+									typeLoadingIcon: 'Points',
+								},
+							}}
+						>
+							{translate('CREATE')}
+						</Button>
 					</div>
 				</form>
 			</Modal>

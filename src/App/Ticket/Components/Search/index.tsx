@@ -24,11 +24,12 @@ const DEFAULT_OPTIONS = [
 	},
 ];
 
-type Props = {
+type TProps = {
 	onSubmitForm: (data: string) => void;
+	disabledButtons?: boolean;
 };
 
-export function Search({ onSubmitForm }: Props) {
+export function Search({ onSubmitForm, disabledButtons }: TProps) {
 	const { translate } = useTranslation();
 	const { register, handleSubmit, reset, control } = useSearch({
 		onSubmitForm,
@@ -93,13 +94,16 @@ export function Search({ onSubmitForm }: Props) {
 
 				<div className="flex w-full justify-end gap-2">
 					<Button
+						disabled={disabledButtons}
 						variant="outlined"
 						colorStyle="primary"
 						onClick={() => reset()}
 					>
 						{translate('CLEAR')}
 					</Button>
-					<Button type="submit">{translate('SEARCH')}</Button>
+					<Button disabled={disabledButtons} type="submit">
+						{translate('SEARCH')}
+					</Button>
 				</div>
 			</div>
 		</form>

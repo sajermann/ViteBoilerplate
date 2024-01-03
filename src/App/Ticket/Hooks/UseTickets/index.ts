@@ -43,6 +43,8 @@ export function useTickets() {
 	const { fetchData } = useAxios();
 	const queryClient = useQueryClient();
 
+	// TODO: Colocar a paginação do useQuery para ver como fica, se é mais fácil mexer do que a minha
+
 	const { data: tickets, isFetching } = useQuery<TTicket[]>({
 		queryKey: [KEY_TICKETS, JSON.stringify(backQuery)],
 		queryFn: async () => {

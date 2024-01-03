@@ -1,10 +1,10 @@
-import clsx from 'clsx';
-import { ChevronLeft, ChevronRight, Home, Users } from 'lucide-react';
-import { useLayoutEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Home, Users } from 'lucide-react';
+import clsx from 'clsx';
+
 import { useCollapsedSidebar } from '../../Hooks/UseCollapsedSidebar';
-import { useToken } from '../../Hooks/UseToken';
 import { verifyRoles } from '../../Utils/VerifyRoles';
+import { useUserLogged } from '../../Hooks/useUserLogged';
 
 const OPTIONS = [
 	{ description: 'Tickets', path: '/tickets', icon: <Home /> },
@@ -18,26 +18,10 @@ const OPTIONS = [
 
 export function Sidebar() {
 	const { isCollapsed, setIsCollapsed } = useCollapsedSidebar();
+	const { userLogged } = useUserLogged();
 	const location = useLocation();
-	const { getUserInfo } = useToken();
-	const [showHeader, setShowHeader] = useState(false);
-	const [rolesUser, setRolesUser] = useState<string[]>([]);
 
-	async function loadRoles() {
-		const result = await getUserInfo();
-		setRolesUser(result?.roles || []);
-	}
-
-	useLayoutEffect(() => {
-		if (location.pathname !== '/login') {
-			loadRoles();
-			setShowHeader(true);
-			return;
-		}
-		setShowHeader(false);
-	}, [location.pathname]);
-
-	if (!showHeader) return null;
+	if (location.pathname === '/login') return null;
 
 	return (
 		<aside
@@ -71,7 +55,7 @@ export function Sidebar() {
 					item =>
 						verifyRoles({
 							allowRoles: item.roles || [],
-							rolesForVerify: rolesUser,
+							rolesForVerify: userLogged?.roles || [],
 						}) && (
 							<li key={item.description} title={item.description}>
 								<Link

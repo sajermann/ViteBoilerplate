@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
-import { customToast } from '~/App/Shared/Utils/CustomToast';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { TMessage } from '../../Types/Message';
 import { useAttachments } from '../UseAttachments';
@@ -23,14 +22,19 @@ const pageSize = 10;
 export function useMessage(ticketId?: string) {
 	const [modalAttachmentsIsOpen, setModalAttachmentsIsOpen] = useState(false);
 	const { translate } = useTranslation();
-	const { fetchData, isLoading } = useAxios();
+	const { fetchData } = useAxios();
 	const { files, setFiles, handleRemoveFile } = useAttachments();
 	const refContainerMessages = useRef<HTMLDivElement>(null);
 	// const refDivisorFetch = useRef<HTMLDivElement>(null);
 
-	const { data, fetchNextPage, refetch } = useInfiniteQuery<
-		TInfinitePagination<TMessage[]>
-	>({
+	// TODO: Add useMutation to add message
+
+	const {
+		data,
+		fetchNextPage,
+		refetch,
+		isFetching: isLoading,
+	} = useInfiniteQuery<TInfinitePagination<TMessage[]>>({
 		queryKey: [KEY_MESSAGE, ticketId],
 		queryFn: async ({ pageParam = 0 }) => {
 			if (!ticketId) {
@@ -181,10 +185,6 @@ export function useMessage(ticketId?: string) {
 			data: form,
 		});
 		if (result?.status === 201) {
-			customToast({
-				msg: translate('MESSAGE_ADDED_SUCCESS'),
-				type: 'success',
-			});
 			afterPostMessageSuccess();
 		}
 	};

@@ -2,8 +2,8 @@ import { Button } from '~/App/Shared/Components/Button';
 import { Modal } from '~/App/Shared/Components/Modal';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useParams } from 'react-router-dom';
-import { useToken } from '~/App/Shared/Hooks/UseToken';
 import { useEffect, useState } from 'react';
+import { useUserLogged } from '~/App/Shared/Hooks/useUserLogged';
 import { useTicket } from '../../Hooks/UseTicket';
 
 export function CloseTicket() {
@@ -11,7 +11,7 @@ export function CloseTicket() {
 	const { id: ticketId } = useParams<{ id: string }>();
 	const { ticket, isFetching } = useTicket(ticketId);
 	const { translate } = useTranslation();
-	const { getUserInfo } = useToken();
+	const { userLogged } = useUserLogged();
 
 	const {
 		closeTicket,
@@ -19,11 +19,11 @@ export function CloseTicket() {
 		isOpenModalCloseTicket,
 		setIsOpenModalCloseTicket,
 	} = useTicket(ticketId);
-	console.log('Ticket no close', ticket);
+	console.log('CloseTicket', { userLogged });
 
 	async function load() {
 		if (isFetching || !ticket) return;
-		const userLogged = await getUserInfo();
+
 		if (
 			userLogged?.sub === ticket?.user.id ||
 			(userLogged?.sub === ticket?.analyst?.id && ticket?.status !== 'closed')
@@ -49,7 +49,6 @@ export function CloseTicket() {
 			>
 				{translate('CLOSE_TICKET')}
 			</Button>
-
 			<Modal
 				title={translate('CLOSE_TICKET')}
 				isOpen={isOpenModalCloseTicket}
@@ -72,7 +71,7 @@ export function CloseTicket() {
 							{translate('CANCEL')}
 						</Button>
 
-						<Button onClick={() => setIsOpenModalCloseTicket(true)}>
+						<Button onClick={() => closeTicket()}>
 							{translate('CONFIRM')}
 						</Button>
 					</div>

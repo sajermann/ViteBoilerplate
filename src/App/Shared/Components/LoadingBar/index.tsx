@@ -16,9 +16,9 @@ export function LoadingBar() {
 		return () => clearInterval(id);
 	}, []);
 	return (
-		<div className="bg-gray-300 rounded-bl-sm rounded-br-sm">
+		<div className="bg-blue-300 rounded-bl-sm rounded-br-sm">
 			<div
-				className="w3-container bg-gray-500 text-center h-1 rounded-bl-sm rounded-br-sm test"
+				className="w3-container bg-blue-500 text-center h-1 rounded-bl-sm rounded-br-sm test"
 				style={{ width: `${customWidth}%` }}
 			/>
 		</div>

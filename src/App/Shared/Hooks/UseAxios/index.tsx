@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import Interceptor from '~/Config/Api/interceptor';
 import { managerErrors } from '../../Utils/ManagerErrors';
+import { delay } from '../../Utils/Delay';
 
 axios.defaults.baseURL = import.meta.env.VITE_URL_API;
 axios.defaults.headers.common.Authorization = '';
@@ -40,6 +41,7 @@ export function useAxios(axiosParams?: AxiosRequestConfig) {
 				error: undefined,
 				isLoading: true,
 			});
+			await delay(4000);
 			const result = await axios.request({
 				...axiosParamsInternal,
 				signal: controllerRef.current.signal,

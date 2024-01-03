@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CONSTANTS } from '~/App/Shared/Constants';
 import { ErrorsInput } from '~/App/Shared/Components/ErrorsInput';
 
+import Skeleton from 'react-loading-skeleton';
 import { useMessage } from '../../Hooks/UseMessage';
 import { UploadAttachments } from '../UploadAttachments';
 import { AttachmentsList } from '../AttachmentsList';
@@ -31,6 +32,7 @@ export function Message() {
 		handleRemoveFile,
 		fetchNextPage,
 		refContainerMessages,
+		isLoading,
 	} = useMessage(ticketId);
 
 	function handleScroll() {
@@ -58,9 +60,10 @@ export function Message() {
 		};
 	}, []);
 
+	// if (isLoading) return <Skeleton height={568} />;
+
 	return (
 		<div className="flex flex-col gap-4">
-			{/* <pre className="">{JSON.stringify({ messages }, null, 1)}</pre> */}
 			{messages.length > 0 && <h2>{translate('MESSAGES')}</h2>}
 
 			<div
@@ -76,9 +79,7 @@ export function Message() {
 					))}
 				</div>
 			</div>
-			<span>
-				{translate('COUNT_MESSAGES')}: {messages.length}
-			</span>
+
 			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 				<ContainerInput>
 					<Label htmlFor="message" isError={!!errors.message?.message}>
