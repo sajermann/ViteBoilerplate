@@ -6,7 +6,11 @@ import { useEffect, useState } from 'react';
 import { useUserLogged } from '~/App/Shared/Hooks/useUserLogged';
 import { useTicket } from '../../Hooks/UseTicket';
 
-export function CloseTicket() {
+type TProps = {
+	isDisabled?: boolean;
+};
+
+export function CloseTicket({ isDisabled }: TProps) {
 	const [showButton, setShowButton] = useState(false);
 	const { id: ticketId } = useParams<{ id: string }>();
 	const { ticket, isFetching } = useTicket(ticketId);
@@ -42,6 +46,7 @@ export function CloseTicket() {
 	return (
 		<>
 			<Button
+				disabled={isDisabled}
 				onClick={() => setIsOpenModalCloseTicket(true)}
 				type="button"
 				variant="option"

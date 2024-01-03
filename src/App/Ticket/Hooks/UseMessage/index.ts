@@ -4,7 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { useAxios } from '~/App/Shared/Hooks/UseAxios';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+	useInfiniteQuery,
+	useMutation,
+	useQueryClient,
+} from '@tanstack/react-query';
 import { TMessage } from '../../Types/Message';
 import { useAttachments } from '../UseAttachments';
 import { TInfinitePagination } from '../../Types/InfinitePagination';
@@ -23,6 +27,7 @@ export function useMessage(ticketId?: string) {
 	const [modalAttachmentsIsOpen, setModalAttachmentsIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData } = useAxios();
+	const queryClient = useQueryClient();
 	const { files, setFiles, handleRemoveFile } = useAttachments();
 	const refContainerMessages = useRef<HTMLDivElement>(null);
 	// const refDivisorFetch = useRef<HTMLDivElement>(null);
@@ -66,11 +71,8 @@ export function useMessage(ticketId?: string) {
 		},
 		initialPageParam: 0,
 		getNextPageParam: lastPage => lastPage.nextPage ?? undefined,
-
-		// staleTime: 0,
-		// refetchOnMount: true,
 	});
-
+	console.log({ data });
 	// useEffect(() => {
 	// 	const observer = new IntersectionObserver(
 	// 		entries => {
@@ -166,7 +168,25 @@ export function useMessage(ticketId?: string) {
 		refetch();
 		setFiles([]);
 		scrollToBottomContainerMessages();
+		queryClient.invalidateQueries({
+			queryKey: ['ticket', JSON.stringify(ticketId)],
+		});
 	}
+
+	const { mutate: saveCreate, isPending: isLoadingCreateMessage } = useMutation(
+		{
+			mutationFn: async (form: globalThis.FormData) => {
+				const result = await fetchData({
+					method: 'post',
+					url: 'v1/message',
+					data: form,
+				});
+				if (result?.status === 201) {
+					afterPostMessageSuccess();
+				}
+			},
+		},
+	);
 
 	const handleCreate: SubmitHandler<FormData> = async messageToCreate => {
 		formSchema.parse({ ...messageToCreate });
@@ -178,15 +198,7 @@ export function useMessage(ticketId?: string) {
 				form.append('files', item);
 			}
 		}
-
-		const result = await fetchData({
-			method: 'post',
-			url: 'v1/message',
-			data: form,
-		});
-		if (result?.status === 201) {
-			afterPostMessageSuccess();
-		}
+		saveCreate(form);
 	};
 
 	const memoizedValue = useMemo(
@@ -209,6 +221,7 @@ export function useMessage(ticketId?: string) {
 			fetchNextPage,
 			refContainerMessages,
 			pageSize,
+			isLoadingCreateMessage,
 		}),
 		[
 			errors,
@@ -217,6 +230,7 @@ export function useMessage(ticketId?: string) {
 			messages,
 			files,
 			refContainerMessages,
+			isLoadingCreateMessage,
 		],
 	);
 	return memoizedValue;

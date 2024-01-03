@@ -36,7 +36,7 @@ export function IsLoading<T>({
 					})}
 					style={{ padding: 0 }}
 				>
-					<LoadingBar />
+					<LoadingBar show />
 				</Td>
 			</Tr>
 			{data.length === 0 && (

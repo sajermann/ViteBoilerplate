@@ -12,9 +12,11 @@ export function useTicketCreate() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData } = useAxios();
-	const { revalidateData } = useTickets();
+	const { revalidateData } = useTickets(); // TODO: Não está funcionando, pois a instancia é diferente da chamada pelo home dos tickets, ver se quando arrumar a paginacao isso melhora ou devemos mudar como revalidar
 	const formSchema = z.object({
-		title: z.string().nonempty(translate('FIELD_IS_REQUIRED')),
+		title: z
+			.string()
+			.min(5, translate('TITLE_TICKET_MUST_CONTAIN_AT_LEAST_5_CHARACTERS')),
 		description: z.string().nonempty(translate('FIELD_IS_REQUIRED')),
 	});
 	type FormData = z.infer<typeof formSchema>;
@@ -50,7 +52,7 @@ export function useTicketCreate() {
 					msg: translate('TICKET_CREATED_SUCCESS'),
 					type: 'success',
 				});
-				revalidateData();
+				revalidateData(); // Não funcionanao
 			}
 		},
 	});

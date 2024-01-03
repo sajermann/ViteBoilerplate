@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
 import { FormatedDate } from '~/App/Shared/Components/FormatedDate';
 import { useTicket } from '../../Hooks/UseTicket';
-import { Message } from '../../Components/Message';
+import { MessagesContainer } from '../../Components/MessagesContainer';
 import { AnalystInfo } from '../../Components/AnalystInfo';
 
 function ContentOrSkeleton({
@@ -25,7 +25,7 @@ export function TicketPage() {
 	return (
 		<div className="flex flex-col gap-4">
 			<h1 className="italic">
-				<ContentOrSkeleton isLoading={isFetching}>
+				<ContentOrSkeleton isLoading={isFetching && !ticket}>
 					{ticket?.title}
 				</ContentOrSkeleton>
 			</h1>
@@ -33,34 +33,34 @@ export function TicketPage() {
 			<div className="grid grid-cols-12 gap-6 flex-wrap">
 				<div className="flex flex-col col-span-3">
 					<span className="font-bold">Status</span>
-					<ContentOrSkeleton isLoading={isFetching}>
+					<ContentOrSkeleton isLoading={isFetching && !ticket}>
 						<Status status={ticket?.status} />
 					</ContentOrSkeleton>
 				</div>
 
 				<div className="flex flex-col col-span-3">
 					<span className="font-bold">{translate('CREATED_AT')}</span>
-					<ContentOrSkeleton isLoading={isFetching}>
+					<ContentOrSkeleton isLoading={isFetching && !ticket}>
 						<FormatedDate date={ticket?.createdAt} />
 					</ContentOrSkeleton>
 				</div>
 
 				<div className="flex flex-col col-span-3">
 					<span className="font-bold">{translate('UPDATED_AT')}</span>
-					<ContentOrSkeleton isLoading={isFetching}>
+					<ContentOrSkeleton isLoading={isFetching && !ticket}>
 						<FormatedDate date={ticket?.updatedAt} />
 					</ContentOrSkeleton>
 				</div>
 
 				<div className="flex flex-col col-span-3">
 					<span className="font-bold">{translate('ANALYST')}</span>
-					<ContentOrSkeleton isLoading={isFetching}>
+					<ContentOrSkeleton isLoading={isFetching && !ticket}>
 						<AnalystInfo />
 					</ContentOrSkeleton>
 				</div>
 			</div>
 
-			<Message />
+			<MessagesContainer />
 		</div>
 	);
 }

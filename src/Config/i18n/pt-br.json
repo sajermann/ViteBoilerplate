@@ -1,5 +1,6 @@
 {
 	"translations": {
+		"TITLE_TICKET_MUST_CONTAIN_AT_LEAST_5_CHARACTERS": "Título do Ticket deve ter no mínimo 5 caracteres",
 		"CONFIRM": "Confirmar",
 		"REOPEN_TICKET_AGAIN": "Reabrir o ticket novamente",
 		"ADD_MESSAGE": "Adicionar Mensagem",

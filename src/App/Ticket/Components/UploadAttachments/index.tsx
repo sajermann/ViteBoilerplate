@@ -10,9 +10,10 @@ import { useAttachments } from '../../Hooks/UseAttachments';
 
 type TProps = {
 	onSaveFiles: (data: FileWithPath[]) => void;
+	isDisabled?: boolean;
 };
 
-export function UploadAttachments({ onSaveFiles }: TProps) {
+export function UploadAttachments({ onSaveFiles, isDisabled }: TProps) {
 	const { translate } = useTranslation();
 	const { files, setFiles, handleRemoveFile } = useAttachments();
 	const { modalAttachmentsIsOpen, closeModal, openModal } = useMessage();
@@ -35,7 +36,12 @@ export function UploadAttachments({ onSaveFiles }: TProps) {
 
 	return (
 		<>
-			<Button onClick={openModal} type="button" variant="option">
+			<Button
+				onClick={openModal}
+				disabled={isDisabled}
+				type="button"
+				variant="option"
+			>
 				{translate('ATTACHMENTS')}
 			</Button>
 

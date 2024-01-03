@@ -41,7 +41,7 @@ export function useAxios(axiosParams?: AxiosRequestConfig) {
 				error: undefined,
 				isLoading: true,
 			});
-			await delay(4000);
+			await delay(1000);
 			const result = await axios.request({
 				...axiosParamsInternal,
 				signal: controllerRef.current.signal,

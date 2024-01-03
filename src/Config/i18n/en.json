@@ -1,5 +1,6 @@
 {
 	"translations": {
+		"TITLE_TICKET_MUST_CONTAIN_AT_LEAST_5_CHARACTERS": "Title Ticket must contain at least 5 characters",
 		"CONFIRM": "Confirm",
 		"REOPEN_TICKET_AGAIN": "Reopen ticket again",
 		"ADD_MESSAGE": "Add Message",
