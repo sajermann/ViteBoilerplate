@@ -1,5 +1,6 @@
 {
 	"translations": {
+		"ACTION": "Action",
 		"IS_LOADING": "Is Loading...",
 		"SIGN_TICKET_TO_ME": "Sign to me",
 		"PROGRESS": "Progress",

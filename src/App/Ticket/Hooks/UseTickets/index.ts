@@ -1,5 +1,9 @@
 import { useMemo } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+	useQuery,
+	useQueryClient,
+	keepPreviousData,
+} from '@tanstack/react-query';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -66,6 +70,7 @@ export function useTickets() {
 			}
 			return null;
 		},
+		placeholderData: keepPreviousData,
 	});
 
 	function revalidateData() {

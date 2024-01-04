@@ -20,6 +20,7 @@ function buildColumns({
 	return [
 		{
 			accessorKey: 'id',
+			header: translate('ACTION'),
 			minSize: 60,
 			size: 60,
 			meta: {
@@ -110,6 +111,7 @@ function buildColumns({
 				align: 'center',
 			},
 			enableResizing: false,
+			enableSorting: false,
 		},
 		{
 			accessorKey: 'analyst.name',
@@ -120,6 +122,7 @@ function buildColumns({
 				align: 'center',
 			},
 			enableResizing: false,
+			enableSorting: false,
 		},
 	];
 }

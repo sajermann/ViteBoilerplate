@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_PAG } from '../../Constants/Others';
 import { objectToQuery } from '../../Utils/ObjectToQuery';
+import { mapperSorting } from '../../Utils/MapperSorting';
 
 export function usePagination() {
 	const [backQuery, setBackQuery] = useState('');
@@ -14,7 +15,8 @@ export function usePagination() {
 	}
 
 	function mountQueryPagination() {
-		const queryPag = objectToQuery({ ...pagination });
+		const sortingMapped = mapperSorting(sorting);
+		const queryPag = objectToQuery({ ...pagination, ...sortingMapped });
 		setBackQuery(`${filterQuery}&${queryPag}`);
 	}
 
@@ -24,7 +26,7 @@ export function usePagination() {
 
 	useEffect(() => {
 		mountQueryPagination();
-	}, [pagination]);
+	}, [pagination, sorting]);
 
 	return {
 		pagination,
