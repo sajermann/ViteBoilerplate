@@ -32,8 +32,6 @@ export function useMessage(ticketId?: string) {
 	const refContainerMessages = useRef<HTMLDivElement>(null);
 	// const refDivisorFetch = useRef<HTMLDivElement>(null);
 
-	// TODO: Add useMutation to add message
-
 	const {
 		data,
 		fetchNextPage,
@@ -72,7 +70,6 @@ export function useMessage(ticketId?: string) {
 		initialPageParam: 0,
 		getNextPageParam: lastPage => lastPage.nextPage ?? undefined,
 	});
-	console.log({ data });
 	// useEffect(() => {
 	// 	const observer = new IntersectionObserver(
 	// 		entries => {

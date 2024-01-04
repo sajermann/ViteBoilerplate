@@ -1,5 +1,8 @@
 {
 	"translations": {
+		"IS_LOADING": "Is Loading...",
+		"SIGN_TICKET_TO_ME": "Sign to me",
+		"PROGRESS": "Progress",
 		"TITLE_TICKET_MUST_CONTAIN_AT_LEAST_5_CHARACTERS": "Title Ticket must contain at least 5 characters",
 		"CONFIRM": "Confirm",
 		"REOPEN_TICKET_AGAIN": "Reopen ticket again",

@@ -11,19 +11,17 @@ type TProps = {
 };
 
 export function CloseTicket({ isDisabled }: TProps) {
-	const [showButton, setShowButton] = useState(false);
 	const { id: ticketId } = useParams<{ id: string }>();
+	const [showButton, setShowButton] = useState(false);
 	const { ticket, isFetching } = useTicket(ticketId);
 	const { translate } = useTranslation();
 	const { userLogged } = useUserLogged();
-
 	const {
 		closeTicket,
 		isLoadingCloseTicket,
 		isOpenModalCloseTicket,
 		setIsOpenModalCloseTicket,
 	} = useTicket(ticketId);
-	console.log('CloseTicket', { userLogged });
 
 	async function load() {
 		if (isFetching || !ticket) return;
@@ -39,8 +37,6 @@ export function CloseTicket({ isDisabled }: TProps) {
 	useEffect(() => {
 		load();
 	}, [ticket, isFetching]);
-
-	// TODO: Funcao pra fechar o ticket
 
 	if (!showButton) return null;
 	return (
@@ -58,7 +54,6 @@ export function CloseTicket({ isDisabled }: TProps) {
 				title={translate('CLOSE_TICKET')}
 				isOpen={isOpenModalCloseTicket}
 				onClose={() => setIsOpenModalCloseTicket(false)}
-				closeButton
 			>
 				<div className="p-4 flex flex-col gap-4 max-w-[30rem]">
 					<span>{translate('SURE_YOU_CLOSE_THIS_TICKET')}?</span>
@@ -70,13 +65,23 @@ export function CloseTicket({ isDisabled }: TProps) {
 
 					<div className="flex w-full gap-2">
 						<Button
+							disabled={isLoadingCloseTicket}
 							onClick={() => setIsOpenModalCloseTicket(false)}
 							variant="option"
 						>
 							{translate('CANCEL')}
 						</Button>
 
-						<Button onClick={() => closeTicket()}>
+						<Button
+							disabled={isLoadingCloseTicket}
+							onClick={() => closeTicket()}
+							withFeedback={{
+								loadingOptions: {
+									isLoading: isLoadingCloseTicket,
+									typeLoadingIcon: 'Points',
+								},
+							}}
+						>
 							{translate('CONFIRM')}
 						</Button>
 					</div>

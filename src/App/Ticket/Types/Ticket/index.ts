@@ -4,7 +4,7 @@ export type TTicket = {
 	id: string;
 	title: string;
 	description: string;
-	status: string;
+	status: 'closed' | 'opened' | 'progress';
 	createdAt: string;
 	updatedAt: string;
 	analyst: {

@@ -19,8 +19,8 @@ const DEFAULT_OPTIONS = [
 		label: 'Closed',
 	},
 	{
-		value: 'Analysi',
-		label: 'Analysi',
+		value: 'progress',
+		label: 'Progress',
 	},
 ];
 
@@ -76,7 +76,10 @@ export function Search({ onSubmitForm, disabledButtons }: TProps) {
 								value={
 									DEFAULT_OPTIONS.find(item => item.value === value)?.value
 								}
-								options={DEFAULT_OPTIONS}
+								options={DEFAULT_OPTIONS.map(item => ({
+									...item,
+									label: translate(item.label.toUpperCase()),
+								}))}
 								onChange={e => {
 									onChange(e.target.value);
 								}}

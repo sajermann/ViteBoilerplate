@@ -39,11 +39,11 @@ export function useTickets() {
 		setPagination,
 		setFilterQuery,
 		backQuery,
+		sorting,
+		setSorting,
 	} = usePagination();
 	const { fetchData } = useAxios();
 	const queryClient = useQueryClient();
-
-	// TODO: Colocar a paginação do useQuery para ver como fica, se é mais fácil mexer do que a minha
 
 	const { data: tickets, isFetching } = useQuery<TTicket[]>({
 		queryKey: [KEY_TICKETS, JSON.stringify(backQuery)],
@@ -70,7 +70,7 @@ export function useTickets() {
 
 	function revalidateData() {
 		queryClient.invalidateQueries({
-			queryKey: [KEY_TICKETS, JSON.stringify(backQuery)],
+			queryKey: [KEY_TICKETS],
 		});
 	}
 
@@ -83,8 +83,10 @@ export function useTickets() {
 			setPagination,
 			setFilterQuery,
 			revalidateData,
+			sorting,
+			setSorting,
 		}),
-		[tickets, isFetching, pageCountPersist, pagination],
+		[tickets, isFetching, pageCountPersist, pagination, sorting],
 	);
 	return memoizedValue;
 }

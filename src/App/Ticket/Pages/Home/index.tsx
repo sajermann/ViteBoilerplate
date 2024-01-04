@@ -1,5 +1,4 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { useState } from 'react';
 import { Table } from '~/App/Shared/Components/Table';
 import { format } from 'date-fns';
 import { useTranslation } from '~/App/Shared/Hooks/UseTranslation';
@@ -133,14 +132,14 @@ export function TicketsPage() {
 		pagination,
 		setPagination,
 		setFilterQuery,
+		sorting,
+		setSorting,
 	} = useTickets();
 	const navigate = useNavigate();
 	const { translate } = useTranslation();
 	// TODO: Colocar o sorting no backend e usar do usequery
-	const [sortingInternal, setSortingInternal] = useState<
-		Record<string, unknown>[]
-	>([]);
 
+	console.log({ sorting });
 	const columns = buildColumns({ navigate, translate });
 
 	return (
@@ -159,7 +158,7 @@ export function TicketsPage() {
 				}}
 				sorting={{
 					manualSorting: {
-						fn: setSortingInternal,
+						fn: setSorting,
 					},
 				}}
 			/>

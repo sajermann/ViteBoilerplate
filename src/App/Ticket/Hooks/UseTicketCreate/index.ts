@@ -12,7 +12,7 @@ export function useTicketCreate() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { translate } = useTranslation();
 	const { fetchData } = useAxios();
-	const { revalidateData } = useTickets(); // TODO: Não está funcionando, pois a instancia é diferente da chamada pelo home dos tickets, ver se quando arrumar a paginacao isso melhora ou devemos mudar como revalidar
+	const { revalidateData } = useTickets();
 	const formSchema = z.object({
 		title: z
 			.string()

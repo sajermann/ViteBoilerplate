@@ -7,6 +7,7 @@ export function RoutesConfig() {
 	return (
 		<Routes>
 			<Route path="/login" element={<LoginHomePage />} />
+			<Route path="/" element={<TicketsPage />} />
 			<Route path="/tickets" element={<TicketsPage />} />
 			<Route path="/ticket/:id" element={<TicketPage />} />
 		</Routes>

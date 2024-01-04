@@ -27,29 +27,27 @@ export function useTicket(id?: string, type?: string) {
 		},
 	});
 
-	async function signTicketToMe() {
-		const result = await fetchData({
-			method: 'put',
-			url: `v1/ticket/signTicketToMe`,
-			data: {
-				ticketId: id,
+	const { mutate: signTicketToMe, isPending: isLoadingSignTicketToMe } =
+		useMutation({
+			mutationFn: async () => {
+				const result = await fetchData({
+					method: 'put',
+					url: `v1/ticket/signTicketToMe`,
+					data: {
+						ticketId: id,
+					},
+				});
+				if (result?.status === 200) {
+					customToast({
+						type: 'success',
+						msg: translate('THIS_TICKET_IS_YOUR_NOW'),
+					});
+					queryClient.invalidateQueries({
+						queryKey: ['ticket', JSON.stringify(id)],
+					});
+				}
 			},
 		});
-		if (result?.status === 200) {
-			customToast({
-				type: 'success',
-				msg: translate('THIS_TICKET_IS_YOUR_NOW'),
-			});
-			queryClient.invalidateQueries({
-				queryKey: ['ticket', JSON.stringify(id)],
-			});
-			return;
-		}
-		customToast({
-			type: 'error',
-			msg: translate('FAILED_TO_SIGN_TICKET_FOR_YOU'),
-		});
-	}
 
 	const { mutate: closeTicket, isPending: isLoadingCloseTicket } = useMutation({
 		mutationFn: async () => {
@@ -79,8 +77,16 @@ export function useTicket(id?: string, type?: string) {
 			isLoadingCloseTicket,
 			isOpenModalCloseTicket,
 			setIsOpenModalCloseTicket,
+			isLoadingSignTicketToMe,
 		}),
-		[ticket, isFetching, isOpenModalCloseTicket, isLoadingCloseTicket, id],
+		[
+			ticket,
+			isFetching,
+			isOpenModalCloseTicket,
+			isLoadingCloseTicket,
+			id,
+			isLoadingSignTicketToMe,
+		],
 	);
 	return memoizedValue;
 }
