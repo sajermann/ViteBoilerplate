@@ -1,0 +1,69 @@
+.container {
+	@apply flex flex-col;
+	@apply max-w-xl;
+	@apply m-auto;
+	@apply my-3;
+	@apply p-3;
+	@apply rounded;
+	@apply bg-slate-900;
+}
+
+.heading {
+	@apply text-3xl;
+	@apply text-white;
+}
+
+.subHeading {
+	@apply text-2xl;
+	@apply text-white;
+}
+
+.form {
+	@apply flex;
+	@apply gap-2;
+	@apply my-5;
+}
+
+.input {
+	@apply text-gray-900 p-1 rounded;
+	@apply p-1;
+	@apply rounded;
+}
+
+.buttonSubmit {
+	@apply !bg-green-600;
+	@apply rounded;
+	@apply p-2;
+	@apply hover:!bg-green-900;
+	@apply transition-colors;
+	@apply duration-500;
+	@apply disabled:cursor-not-allowed;
+	@apply text-white;
+}
+
+.buttonRemove {
+	@apply !bg-red-600;
+	@apply rounded;
+	@apply p-2;
+	@apply hover:!bg-red-900;
+	@apply transition-colors;
+	@apply duration-500;
+	@apply disabled:cursor-not-allowed;
+	@apply text-white;
+}
+
+.containerList {
+	@apply flex;
+	@apply flex-col;
+	@apply my-3;
+	@apply gap-2;
+}
+
+.containerList li {
+	@apply flex;
+	@apply text-white;
+}
+
+.containerList li span {
+	@apply flex-1;
+}

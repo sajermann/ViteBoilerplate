@@ -1,12 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import 'react-loading-skeleton/dist/skeleton.css';
 
 body {
 	@apply dark:bg-[#09090a] dark:text-zinc-100;
-}
-
-h1 {
-	@apply font-bold text-4xl;
 }
