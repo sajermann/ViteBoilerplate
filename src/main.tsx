@@ -5,10 +5,10 @@ import { RoutesConfig } from './Components/Routes';
 
 import './global.css';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-	<React.StrictMode>
-		<InjectorProviders>
-			<RoutesConfig />
-		</InjectorProviders>
-	</React.StrictMode>,
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <InjectorProviders>
+      <RoutesConfig />
+    </InjectorProviders>
+  </React.StrictMode>,
 );
