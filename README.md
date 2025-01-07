@@ -24,10 +24,13 @@ Tailwind CSS é um framework CSS que me lembra muito o Bootstrap, porém melhora
 ### React Router Dom
 React Router Dom é uma lib que gerencia o roteamento da aplicação e que dificilmente fica de fora de qualquer projeto que tenha mais de uma rota.
 
-### EsLint
+### BiomeJs
+Nova ferramenta que une o melhor do Eslint e do Prettier, reescrita em rust, sendo muito mais rápida que ambas e com configurações centralizadas.
+
+### ~~EsLint~~
 EsLint tem como objetivo padronizar o código entre diversos desenvolvedores no mesmo projeto. Vale lembrar que para o EsLint funcionar corretamente nesse projeto, são necessários algumas configurações no Vs Code do desenvolvedor.
 
-### Prettier
+### ~~Prettier~~
 Prettier formata e corrige seu código de acordo com as regras do EsLint, por isso ambos utilizados em conjunto são uma verdadeira mão na roda para qualquer desenvolvedor. Assim como o EsLint, para o Prettier funcionar corretamente são necessários algumas configurações no Vs Code do desenvolvedor.
 
 ### Vitest
