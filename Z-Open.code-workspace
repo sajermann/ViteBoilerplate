@@ -14,5 +14,10 @@
 			"quickfix.biome": "explicit",
 			"source.organizeImports.biome": "explicit"
 		}
+	},
+	"extensions": {
+		"recommendations": [
+			"biomejs.biome",
+		]
 	}
 }
