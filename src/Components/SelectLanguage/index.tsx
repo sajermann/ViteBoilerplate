@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { useTranslation } from '../../Hooks/UseTranslation';
+import { useTranslation } from '~/hooks/useTranslation';
 
 const LANGUAGES_LIST = [
 	{ id: 'en', text: 'EN' },

@@ -3,8 +3,10 @@
  */
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { it, describe, expect, vi } from 'vitest';
-import { Test } from './index';
-import { TestProvider } from '../../Hooks/UseTest';
+
+import { TestProvider } from '~/hooks/useTest';
+import { Test } from '.';
+
 
 vi.mock('../../Hooks/UseTest', async () => {
 	const mod = await vi.importActual<any>('../../Hooks/UseTest');

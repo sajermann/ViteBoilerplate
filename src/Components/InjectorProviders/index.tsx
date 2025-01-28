@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { DarkModeProvider } from '../../Hooks/UseDarkMode';
-import { TestProvider } from '../../Hooks/UseTest';
+import { BrowserRouter } from 'react-router';
+import { DarkModeProvider } from '~/hooks/useDarkMode';
+import { TestProvider } from '~/hooks/useTest';
 import { Header } from '../Header';
 
-import '../../Config/i18n';
+import '~/config/i18n';
 
 export function InjectorProviders({ children }: { children: ReactNode }) {
 	return (

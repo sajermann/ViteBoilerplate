@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useTest } from '../../Hooks/UseTest';
+import { useTest } from '~/hooks/useTest';
+
 
 export function Test() {
 	const [name, setName] = useState('Batata');

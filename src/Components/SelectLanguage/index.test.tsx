@@ -3,9 +3,10 @@
  */
 import { fireEvent, render } from '@testing-library/react';
 import { it, describe, expect } from 'vitest';
-import { SelectLanguage } from './index';
-import '../../Config/i18n';
-import { useTranslation } from '../../Hooks/UseTranslation';
+
+import { useTranslation } from '~/hooks/useTranslation';
+import { SelectLanguage } from '.';
+import '~/config/i18n';
 
 function Mock() {
 	const { translate } = useTranslation();

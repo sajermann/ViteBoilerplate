@@ -1,6 +1,7 @@
-import { Route, Routes } from 'react-router-dom';
-import Home from '../../Pages/Home';
-import { Test } from '../../Pages/Test';
+import { Route, Routes } from 'react-router';
+import Home from '~/pages/Home';
+import { Test } from '~/pages/Test';
+
 
 export function RoutesConfig() {
 	return (
