@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useTranslation } from '~/Hooks/UseTranslation';
-import { delay } from '~/Utils/Delay';
-import styles from './index.module.css';
+
+import { useTranslation } from '~/hooks/useTranslation';
+import { delay } from '~/utils/delay';
 
 export default function Home() {
   const { translate } = useTranslation();
@@ -31,11 +31,11 @@ export default function Home() {
     setIsRemoving(null);
   }
   return (
-    <div className={styles.container}>
-      <h1 className={styles.heading}>
+    <div className="flex flex-col max-w-xl m-auto my-3 p-3 rounded bg-slate-900">
+      <h1 className="text-3xl text-white">
         {translate('WELCOME_TO_VITE_BOILERPLATE')} - {translate('TODO_LIST')}
       </h1>
-      <form onSubmit={addToList} className={styles.form}>
+      <form onSubmit={addToList} className="flex gap-2 my-5">
         <input
           disabled={isLoading}
           required
@@ -44,27 +44,27 @@ export default function Home() {
           placeholder={translate('NEW_ITEM')}
           value={newItem}
           onChange={e => setNewItem(e.target.value)}
-          className={styles.input}
+          className="text-gray-900 p-1 rounded bg-white"
         />
         <button
           type="submit"
-          className={styles.buttonSubmit}
+          className="!bg-green-600 rounded p-2 hover:!bg-green-900 transition-colors duration-500 disabled:cursor-not-allowed text-white"
           disabled={isLoading}
         >
           {isLoading ? translate('ADDING...') : translate('ADD')}
         </button>
       </form>
       {list.length > 0 && (
-        <h2 className={styles.subHeading}>{translate('ADDED_ITEMS')}</h2>
+        <h2 className="text-2xl text-white">{translate('ADDED_ITEMS')}</h2>
       )}
-      <ul className={styles.containerList}>
+      <ul className="flex flex-col my-3 gap-2">
         {list.map(item => (
-          <li key={item}>
-            <span>{item}</span>
+          <li className="flex text-white" key={item}>
+            <span className="flex-1">{item}</span>
             <button
               disabled={isRemoving === item}
               type="button"
-              className={styles.buttonRemove}
+              className="bg-red-600 rounded p-2 hover:!bg-red-900; transition-colors duration-500 disabled:cursor-not-allowed text-white"
               onClick={() => removeFromList(item)}
             >
               {isRemoving === item
@@ -74,6 +74,8 @@ export default function Home() {
           </li>
         ))}
       </ul>
+
+      <button className="w-10 h-10 bg-amber-400 sm:hidden">Button Test</button>
     </div>
   );
 }

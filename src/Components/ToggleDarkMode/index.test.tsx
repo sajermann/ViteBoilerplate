@@ -3,9 +3,10 @@
  */
 import { fireEvent, render } from '@testing-library/react';
 import { MockInstance, describe, expect, it, vi } from 'vitest';
+
+import { DarkModeProvider, useDarkMode } from '~/hooks/useDarkMode';
 import { ToggleDarkMode } from '.';
-import '../../Config/i18n';
-import { DarkModeProvider, useDarkMode } from '../../Hooks/UseDarkMode';
+import '~/config/i18n';
 
 function Mock0() {
   const { darkMode } = useDarkMode();
