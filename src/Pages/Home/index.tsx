@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 
 import { useTranslation } from '~/hooks/useTranslation';
 import { delay } from '~/utils/delay';
@@ -48,7 +49,7 @@ export default function Home() {
         />
         <button
           type="submit"
-          className="!bg-green-600 rounded p-2 hover:!bg-green-900 transition-colors duration-500 disabled:cursor-not-allowed text-white"
+          className="bg-green-600! rounded p-2 hover:bg-green-900! transition-colors duration-500 disabled:cursor-not-allowed text-white"
           disabled={isLoading}
         >
           {isLoading ? translate('ADDING...') : translate('ADD')}
@@ -75,7 +76,9 @@ export default function Home() {
         ))}
       </ul>
 
-      <button className="w-10 h-10 bg-amber-400 sm:hidden">Button Test</button>
+      <button type="button" className="w-10 h-10 bg-amber-400 sm:hidden">
+        Button Test
+      </button>
     </div>
   );
 }
