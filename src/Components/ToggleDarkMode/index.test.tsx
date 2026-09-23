@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { fireEvent, render } from '@testing-library/react';
-import { MockInstance, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, MockInstance, vi } from 'vitest';
 
 import { DarkModeProvider, useDarkMode } from '~/hooks/useDarkMode';
 import { ToggleDarkMode } from '.';
@@ -35,11 +35,11 @@ describe('Components/ToggleDarkMode', () => {
     ).mockReturnValue('true');
     const { getByText, debug } = await render(<Mock1 />);
     await fireEvent.click(await getByText('🌞'));
-    expect(await getByText('DarkModeOff')).toBeInTheDocument();
+    expect(await getByText('DarkModeOff')).not.toBeNull();
     debug();
 
     await fireEvent.click(await getByText('🌜'));
-    expect(await getByText('DarkModeOn')).toBeInTheDocument();
+    expect(await getByText('DarkModeOn')).not.toBeNull();
     debug();
   });
 });
